@@ -42,7 +42,14 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 
 - (void)loadView {
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
+#if TARGET_IPHONE_SIMULATOR
+    // When we're running in the simulator, the camera won't work,
+    // and so the video preview layer will be transparent
+    // we set the background to white to give greater contrast to the clip
+    view.backgroundColor = [UIColor whiteColor];
+#else
     view.backgroundColor = [UIColor blackColor];
+#endif
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
     _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
