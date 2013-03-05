@@ -21,7 +21,7 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
     NSUInteger _currentClipIndex;
     AVPlayerLayer *_clipPlayerLayer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
-    UITapGestureRecognizer *_nextClipGestureRecognizer;
+    UISwipeGestureRecognizer *_nextClipGestureRecognizer;
 }
 
 - (id)initWithAVCaptureSession:(AVCaptureSession *)session {
@@ -79,10 +79,8 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
     _toggleClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleClip)];
     [self.view addGestureRecognizer:_toggleClipGestureRecognizer];
 
-    _nextClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(nextClip)];
-    _nextClipGestureRecognizer.numberOfTapsRequired = 2;
-    // wait for the user to double tap
-    [_toggleClipGestureRecognizer requireGestureRecognizerToFail:_nextClipGestureRecognizer];
+    _nextClipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextClip)];
+    _nextClipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
     [self.view addGestureRecognizer:_nextClipGestureRecognizer];
 }
 
