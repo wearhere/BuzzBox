@@ -20,6 +20,18 @@
 		F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */; };
 		F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6D916E559130005A391 /* AVFoundation.framework */; };
 		F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */; };
+		F0E9D6FF16E5B8050005A391 /* ApplyGlassForBead.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */; };
+		F0E9D70016E5B8050005A391 /* ColorMixingLateralStripe_6.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */; };
+		F0E9D70116E5B8050005A391 /* ColorMixingPullTool_7.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */; };
+		F0E9D70216E5B8050005A391 /* ColorMixingRotatingUnison_8.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */; };
+		F0E9D70316E5B8050005A391 /* ColorMixingToothbrush_5.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */; };
+		F0E9D70416E5B8050005A391 /* ColorMixingTwitingProcess_9.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */; };
+		F0E9D70516E5B8050005A391 /* FreePlayAccordian_3.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */; };
+		F0E9D70616E5B8050005A391 /* FreePlayCreateString_4.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */; };
+		F0E9D70716E5B8050005A391 /* FreePlayFatThinHeat_2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */; };
+		F0E9D70816E5B8050005A391 /* FreePlayTaffy_1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */; };
+		F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D70916E5BD230005A391 /* CoreMedia.framework */; };
+		F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D70B16E5BD9C0005A391 /* Clips.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +54,18 @@
 		F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBAVCaptureManager.m; sourceTree = "<group>"; };
 		F0E9D6D916E559130005A391 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ApplyGlassForBead.mov; sourceTree = "<group>"; };
+		F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingLateralStripe_6.mov; sourceTree = "<group>"; };
+		F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingPullTool_7.mov; sourceTree = "<group>"; };
+		F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingRotatingUnison_8.mov; sourceTree = "<group>"; };
+		F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingToothbrush_5.mov; sourceTree = "<group>"; };
+		F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingTwitingProcess_9.mov; sourceTree = "<group>"; };
+		F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayAccordian_3.mov; sourceTree = "<group>"; };
+		F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayCreateString_4.mov; sourceTree = "<group>"; };
+		F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayFatThinHeat_2.mov; sourceTree = "<group>"; };
+		F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayTaffy_1.mov; sourceTree = "<group>"; };
+		F0E9D70916E5BD230005A391 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F0E9D70B16E5BD9C0005A391 /* Clips.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Clips.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +73,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */,
 				F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */,
 				F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */,
 				F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */,
@@ -80,6 +105,7 @@
 		F0E9D6B416E51D440005A391 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0E9D70916E5BD230005A391 /* CoreMedia.framework */,
 				F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */,
 				F0E9D6D916E559130005A391 /* AVFoundation.framework */,
 				F0E9D6B516E51D440005A391 /* UIKit.framework */,
@@ -95,6 +121,7 @@
 				F0E9D6D216E51DC70005A391 /* Classes */,
 				F0E9D6C416E51D440005A391 /* BBAppDelegate.h */,
 				F0E9D6C516E51D440005A391 /* BBAppDelegate.m */,
+				F0E9D6F416E5B7BB0005A391 /* Resources */,
 				F0E9D6BC16E51D440005A391 /* Supporting Files */,
 			);
 			path = BuzzBox;
@@ -123,6 +150,24 @@
 				F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		F0E9D6F416E5B7BB0005A391 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */,
+				F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */,
+				F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */,
+				F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */,
+				F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */,
+				F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */,
+				F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */,
+				F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */,
+				F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */,
+				F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */,
+				F0E9D70B16E5BD9C0005A391 /* Clips.plist */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,6 +226,17 @@
 				F0E9D6C816E51D440005A391 /* Default.png in Resources */,
 				F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */,
 				F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */,
+				F0E9D6FF16E5B8050005A391 /* ApplyGlassForBead.mov in Resources */,
+				F0E9D70016E5B8050005A391 /* ColorMixingLateralStripe_6.mov in Resources */,
+				F0E9D70116E5B8050005A391 /* ColorMixingPullTool_7.mov in Resources */,
+				F0E9D70216E5B8050005A391 /* ColorMixingRotatingUnison_8.mov in Resources */,
+				F0E9D70316E5B8050005A391 /* ColorMixingToothbrush_5.mov in Resources */,
+				F0E9D70416E5B8050005A391 /* ColorMixingTwitingProcess_9.mov in Resources */,
+				F0E9D70516E5B8050005A391 /* FreePlayAccordian_3.mov in Resources */,
+				F0E9D70616E5B8050005A391 /* FreePlayCreateString_4.mov in Resources */,
+				F0E9D70716E5B8050005A391 /* FreePlayFatThinHeat_2.mov in Resources */,
+				F0E9D70816E5B8050005A391 /* FreePlayTaffy_1.mov in Resources */,
+				F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
