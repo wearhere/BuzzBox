@@ -16,6 +16,10 @@
 		F0E9D6C816E51D440005A391 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6C716E51D440005A391 /* Default.png */; };
 		F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6C916E51D440005A391 /* Default@2x.png */; };
 		F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6CB16E51D440005A391 /* Default-568h@2x.png */; };
+		F0E9D6D516E51DED0005A391 /* BBBackgroundViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9D6D416E51DED0005A391 /* BBBackgroundViewController.m */; };
+		F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */; };
+		F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6D916E559130005A391 /* AVFoundation.framework */; };
+		F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +36,12 @@
 		F0E9D6C716E51D440005A391 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		F0E9D6C916E51D440005A391 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		F0E9D6CB16E51D440005A391 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		F0E9D6D316E51DED0005A391 /* BBBackgroundViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBBackgroundViewController.h; sourceTree = "<group>"; };
+		F0E9D6D416E51DED0005A391 /* BBBackgroundViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBBackgroundViewController.m; sourceTree = "<group>"; };
+		F0E9D6D616E558ED0005A391 /* BBAVCaptureManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBAVCaptureManager.h; sourceTree = "<group>"; };
+		F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBAVCaptureManager.m; sourceTree = "<group>"; };
+		F0E9D6D916E559130005A391 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +49,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */,
+				F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */,
 				F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */,
 				F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */,
 				F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */,
@@ -68,6 +80,8 @@
 		F0E9D6B416E51D440005A391 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */,
+				F0E9D6D916E559130005A391 /* AVFoundation.framework */,
 				F0E9D6B516E51D440005A391 /* UIKit.framework */,
 				F0E9D6B716E51D440005A391 /* Foundation.framework */,
 				F0E9D6B916E51D440005A391 /* CoreGraphics.framework */,
@@ -78,6 +92,7 @@
 		F0E9D6BB16E51D440005A391 /* BuzzBox */ = {
 			isa = PBXGroup;
 			children = (
+				F0E9D6D216E51DC70005A391 /* Classes */,
 				F0E9D6C416E51D440005A391 /* BBAppDelegate.h */,
 				F0E9D6C516E51D440005A391 /* BBAppDelegate.m */,
 				F0E9D6BC16E51D440005A391 /* Supporting Files */,
@@ -97,6 +112,17 @@
 				F0E9D6CB16E51D440005A391 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F0E9D6D216E51DC70005A391 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				F0E9D6D316E51DED0005A391 /* BBBackgroundViewController.h */,
+				F0E9D6D416E51DED0005A391 /* BBBackgroundViewController.m */,
+				F0E9D6D616E558ED0005A391 /* BBAVCaptureManager.h */,
+				F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */,
+			);
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +193,8 @@
 			files = (
 				F0E9D6C216E51D440005A391 /* main.m in Sources */,
 				F0E9D6C616E51D440005A391 /* BBAppDelegate.m in Sources */,
+				F0E9D6D516E51DED0005A391 /* BBBackgroundViewController.m in Sources */,
+				F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

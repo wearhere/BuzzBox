@@ -7,14 +7,34 @@
 //
 
 #import "BBAppDelegate.h"
+#import "BBAVCaptureManager.h"
+#import "BBBackgroundViewController.h"
 
-@implementation BBAppDelegate
+@implementation BBAppDelegate {
+    BBAVCaptureManager *_avCaptureManager;
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+
+    _avCaptureManager = [[BBAVCaptureManager alloc] init];
+    if (![_avCaptureManager setupSession]) {
+        NSLog(@"Could not setup recording session.");
+        abort();
+    }
+    // Start the session.
+    // This is done asychronously since -startRunning doesn't return until the session is running.
+    // This is done upon startup so that the camera will be ready for the background view controller.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [_avCaptureManager.session startRunning];
+    });
+
+    self.window.rootViewController = [[BBBackgroundViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
     [self.window makeKeyAndVisible];
     return YES;
 }
