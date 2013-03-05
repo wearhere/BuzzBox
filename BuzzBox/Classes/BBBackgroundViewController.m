@@ -10,15 +10,27 @@
 #import <QuartzCore/QuartzCore.h>
 
 static const CGSize kClipSize = (CGSize){250.0f, 250.0f};
+static const CGFloat kClipCornerRadius = 8.0f;
+static const CGFloat kClipFrameBorderWidth = 3.0f;
 static const NSTimeInterval kClipToggleDuration = 0.1;
+
+typedef NS_ENUM(NSUInteger, ClipState) {
+    ClipStateHidden,
+    ClipStateFrameShown,
+    ClipStateClipShown
+};
+
+@interface BBBackgroundViewController ()
+@property (nonatomic) ClipState clipState;
+@end
 
 @implementation BBBackgroundViewController {
     AVCaptureSession *_session;
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
 
-    BOOL _clipShown;
     NSArray *_clips;
     NSUInteger _currentClipIndex;
+    CALayer *_clipFrameLayer;
     AVPlayerLayer *_clipPlayerLayer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_nextClipGestureRecognizer;
@@ -56,18 +68,26 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
     _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [view.layer addSublayer:_videoPreviewLayer];
 
+    _clipFrameLayer = [CALayer layer];
+    _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
+    _clipFrameLayer.opaque = NO;
+    _clipFrameLayer.borderColor = [[UIColor yellowColor] CGColor];
+    _clipFrameLayer.borderWidth = kClipFrameBorderWidth;
+    _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
+    _clipFrameLayer.shadowOpacity = 0.5f;
+    [view.layer addSublayer:_clipFrameLayer];
+
     _clipPlayerLayer = [AVPlayerLayer layer];
+    // the clear background color allows us to show the layer before the video has loaded
     _clipPlayerLayer.backgroundColor = [[UIColor clearColor] CGColor];
-    _clipPlayerLayer.cornerRadius = 8.0f;
+    _clipPlayerLayer.cornerRadius = kClipCornerRadius;
     _clipPlayerLayer.masksToBounds = YES;
-    _clipPlayerLayer.shadowOpacity = 0.5f;
     _clipPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:[self playerItemForNextClip]];
     avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     _clipPlayerLayer.player = avPlayer;
-    _clipPlayerLayer.hidden = !_clipShown;
     [view.layer addSublayer:_clipPlayerLayer];
 
     self.view = view;
@@ -75,6 +95,8 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    [self updateViewsForClipState];
 
     _toggleClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleClip)];
     [self.view addGestureRecognizer:_toggleClipGestureRecognizer];
@@ -87,7 +109,7 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateVideoPreviewOrientation:self.interfaceOrientation];
-    if (_clipShown) [_clipPlayerLayer.player play];
+    if (_clipState == ClipStateClipShown) [_clipPlayerLayer.player play];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -97,6 +119,9 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 
     _clipPlayerLayer.bounds = (CGRect){CGPointZero, kClipSize};
     _clipPlayerLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+
+    _clipFrameLayer.bounds = CGRectInset(_clipPlayerLayer.bounds, -_clipFrameLayer.borderWidth, -_clipFrameLayer.borderWidth);
+    _clipFrameLayer.position = _clipPlayerLayer.position;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -125,6 +150,48 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 
 #pragma mark - Clips
 
+- (void)incrementClipState {
+    ClipState newClipState;
+    switch (self.clipState) {
+        case ClipStateHidden:
+            newClipState = ClipStateFrameShown;
+            break;
+        case ClipStateFrameShown:
+            newClipState = ClipStateClipShown;
+            break;
+        case ClipStateClipShown:
+            newClipState = ClipStateHidden;
+            break;
+    }
+    self.clipState = newClipState;
+}
+
+- (void)setClipState:(ClipState)clipState {
+    if (clipState != _clipState) {
+        _clipState = clipState;
+        [self updateViewsForClipState];
+    }
+}
+
+- (void)updateViewsForClipState {
+    [CATransaction begin];
+    [CATransaction setAnimationDuration:kClipToggleDuration];
+    if (self.clipState == ClipStateClipShown) {
+        _clipPlayerLayer.hidden = NO;
+        [_clipPlayerLayer.player play];
+    } else {
+        [_clipPlayerLayer.player pause];
+        _clipPlayerLayer.hidden = YES;
+    }
+
+    if (self.clipState == ClipStateHidden) {
+        _clipFrameLayer.hidden = YES;
+    } else {
+        _clipFrameLayer.hidden = NO;
+    }
+    [CATransaction commit];
+}
+
 - (void)playerItemDidReachEnd:(NSNotification *)notification {
     // loop the current item
     AVPlayerItem *p = [notification object];
@@ -140,33 +207,17 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
     return [AVPlayerItem playerItemWithURL:clipURL];
 }
 
-- (void)showClip:(BOOL)show {
-    if (show != _clipShown) {
-        _clipShown = show;
-        [CATransaction begin];
-        [CATransaction setAnimationDuration:kClipToggleDuration];
-        if (show) {
-            _clipPlayerLayer.hidden = NO;
-            [_clipPlayerLayer.player play];
-        } else {
-            [_clipPlayerLayer.player pause];
-            _clipPlayerLayer.hidden = YES;
-        }
-        [CATransaction commit];
-    }
-}
-
 - (void)nextClip {
     [_clipPlayerLayer.player replaceCurrentItemWithPlayerItem:[self playerItemForNextClip]];
     // dispatch_async to make sure that the clip has been swapped
     // by the time that the clip is shown
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self showClip:YES];
+        self.clipState = ClipStateClipShown;
     });
 }
 
 - (void)toggleClip {
-    [self showClip:!_clipShown];
+    [self incrementClipState];
 }
 
 @end
