@@ -17,11 +17,15 @@ static const NSTimeInterval kClipToggleDuration = 0.1;
 typedef NS_ENUM(NSUInteger, ClipState) {
     ClipStateHidden,
     ClipStateFrameShown,
-    ClipStateClipShown
+    ClipStateClipShown,
+    ClipStateIllustrationShown
 };
 
 @interface BBBackgroundViewController ()
 @property (nonatomic) ClipState clipState;
+@property (nonatomic) NSUInteger currentClipIndex;
+@property (nonatomic, strong) AVPlayerItem *currentClipItem;
+@property (nonatomic, strong) NSArray *currentIllustrationImages;
 @end
 
 @implementation BBBackgroundViewController {
@@ -29,9 +33,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
 
     NSArray *_clips;
-    NSUInteger _currentClipIndex;
     CALayer *_clipFrameLayer;
     AVPlayerLayer *_clipPlayerLayer;
+    UIImageView *_illustrationImageView;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_nextClipGestureRecognizer;
 }
@@ -83,12 +87,16 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipPlayerLayer.cornerRadius = kClipCornerRadius;
     _clipPlayerLayer.masksToBounds = YES;
     _clipPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:[self playerItemForNextClip]];
+    AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:self.currentClipItem];
     avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     _clipPlayerLayer.player = avPlayer;
     [view.layer addSublayer:_clipPlayerLayer];
+
+    _illustrationImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _illustrationImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [view addSubview:_illustrationImageView];
 
     self.view = view;
 }
@@ -122,6 +130,8 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
     _clipFrameLayer.bounds = CGRectInset(_clipPlayerLayer.bounds, -_clipFrameLayer.borderWidth, -_clipFrameLayer.borderWidth);
     _clipFrameLayer.position = _clipPlayerLayer.position;
+
+    _illustrationImageView.frame = self.view.bounds;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -160,6 +170,14 @@ typedef NS_ENUM(NSUInteger, ClipState) {
             newClipState = ClipStateClipShown;
             break;
         case ClipStateClipShown:
+            // not all clips have illustrations available
+            if ([self.currentIllustrationImages count]) {
+                newClipState = ClipStateIllustrationShown;
+            } else {
+                newClipState = ClipStateHidden;
+            }
+            break;
+        case ClipStateIllustrationShown:
             newClipState = ClipStateHidden;
             break;
     }
@@ -184,31 +202,66 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         _clipPlayerLayer.hidden = YES;
     }
 
-    if (self.clipState == ClipStateHidden) {
-        _clipFrameLayer.hidden = YES;
-    } else {
+    if (self.clipState == ClipStateFrameShown || self.clipState == ClipStateClipShown) {
         _clipFrameLayer.hidden = NO;
+    } else {
+        _clipFrameLayer.hidden = YES;
     }
     [CATransaction commit];
+
+    [UIView animateWithDuration:kClipToggleDuration animations:^{
+        if (self.clipState == ClipStateIllustrationShown) {
+            _illustrationImageView.alpha = 1.0f;
+            // retrieve the animation images if necessary
+            _illustrationImageView.animationImages = self.currentIllustrationImages;
+            _illustrationImageView.animationDuration = 3.0;
+            [_illustrationImageView startAnimating];
+        } else {
+            [_illustrationImageView stopAnimating];
+            _illustrationImageView.alpha = 0.0f;
+        }
+    }];
 }
 
-- (void)playerItemDidReachEnd:(NSNotification *)notification {
-    // loop the current item
-    AVPlayerItem *p = [notification object];
-    [p seekToTime:kCMTimeZero];
+- (void)setCurrentClipIndex:(NSUInteger)currentClipIndex {
+    if (currentClipIndex != _currentClipIndex) {
+        _currentClipIndex = currentClipIndex;
+
+        // refresh media
+        self.currentClipItem = nil;
+        [_clipPlayerLayer.player replaceCurrentItemWithPlayerItem:self.currentClipItem];
+        self.currentIllustrationImages = nil;
+        _illustrationImageView.animationImages = self.currentIllustrationImages;
+    }
 }
 
-- (AVPlayerItem *)playerItemForNextClip {
-    // the clip names include their extensions
-    NSString *clipPath = [[NSBundle mainBundle] pathForResource:_clips[_currentClipIndex] ofType:nil];
-    // loop over clip array
-    _currentClipIndex = ((_currentClipIndex + 1) % [_clips count]);
-    NSURL *clipURL = [NSURL fileURLWithPath:clipPath];
-    return [AVPlayerItem playerItemWithURL:clipURL];
+- (AVPlayerItem *)currentClipItem {
+    if (!_currentClipItem) {
+        // the clip names include their extensions
+        NSString *clipPath = [[NSBundle mainBundle] pathForResource:_clips[self.currentClipIndex] ofType:nil];
+        NSURL *clipURL = [NSURL fileURLWithPath:clipPath];
+        _currentClipItem = [AVPlayerItem playerItemWithURL:clipURL];
+    }
+    return _currentClipItem;
+}
+
+- (NSArray *)currentIllustrationImages {
+    if (!_currentIllustrationImages) {
+        NSString *currentClipName = [_clips[self.currentClipIndex] stringByDeletingPathExtension];
+
+        NSMutableArray *images = [NSMutableArray array];
+        for (NSString *imagePath in [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:currentClipName]) {
+            UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
+            [images addObject:image];
+        }
+        _currentIllustrationImages = [images copy];
+    }
+    return _currentIllustrationImages;
 }
 
 - (void)nextClip {
-    [_clipPlayerLayer.player replaceCurrentItemWithPlayerItem:[self playerItemForNextClip]];
+    // loop over clip array
+    self.currentClipIndex = ((self.currentClipIndex + 1) % [_clips count]);
     // dispatch_async to make sure that the clip has been swapped
     // by the time that the clip is shown
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -218,6 +271,12 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
 - (void)toggleClip {
     [self incrementClipState];
+}
+
+- (void)playerItemDidReachEnd:(NSNotification *)notification {
+    // loop the current item
+    AVPlayerItem *p = [notification object];
+    [p seekToTime:kCMTimeZero];
 }
 
 @end

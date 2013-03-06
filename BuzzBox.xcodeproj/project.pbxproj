@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFC16E7F24400052108 /* ApplyGlassForBead */; };
+		F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -35,6 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F044EBFC16E7F24400052108 /* ApplyGlassForBead */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApplyGlassForBead; sourceTree = "<group>"; };
+		F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMixingLateralStripe_6; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,6 +89,32 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F044EBE216E7EE9E00052108 /* Clips */ = {
+			isa = PBXGroup;
+			children = (
+				F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */,
+				F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */,
+				F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */,
+				F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */,
+				F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */,
+				F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */,
+				F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */,
+				F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */,
+				F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */,
+				F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */,
+			);
+			path = Clips;
+			sourceTree = "<group>";
+		};
+		F044EBE316E7EEFC00052108 /* Illustrations */ = {
+			isa = PBXGroup;
+			children = (
+				F044EBFC16E7F24400052108 /* ApplyGlassForBead */,
+				F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */,
+			);
+			path = Illustrations;
+			sourceTree = "<group>";
+		};
 		F0E9D6A916E51D440005A391 = {
 			isa = PBXGroup;
 			children = (
@@ -155,16 +185,8 @@
 		F0E9D6F416E5B7BB0005A391 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */,
-				F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */,
-				F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */,
-				F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */,
-				F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */,
-				F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */,
-				F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */,
-				F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */,
-				F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */,
-				F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */,
+				F044EBE316E7EEFC00052108 /* Illustrations */,
+				F044EBE216E7EE9E00052108 /* Clips */,
 				F0E9D70B16E5BD9C0005A391 /* Clips.plist */,
 			);
 			path = Resources;
@@ -237,6 +259,8 @@
 				F0E9D70716E5B8050005A391 /* FreePlayFatThinHeat_2.mov in Resources */,
 				F0E9D70816E5B8050005A391 /* FreePlayTaffy_1.mov in Resources */,
 				F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */,
+				F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */,
+				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +335,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Jeffrey Wear";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Jeffrey Wear";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -319,6 +344,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "13D308EE-A931-4AB4-A912-0EFEE446CA16";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "13D308EE-A931-4AB4-A912-0EFEE446CA16";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

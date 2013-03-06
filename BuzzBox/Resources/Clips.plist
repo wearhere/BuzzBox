@@ -2,15 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+	<string>ColorMixingLateralStripe_6.mov</string>
+	<string>ApplyGlassForBead.mov</string>
 	<string>FreePlayTaffy_1.mov</string>
 	<string>FreePlayFatThinHeat_2.mov</string>
 	<string>FreePlayAccordian_3.mov</string>
 	<string>FreePlayCreateString_4.mov</string>
 	<string>ColorMixingToothbrush_5.mov</string>
-	<string>ColorMixingLateralStripe_6.mov</string>
 	<string>ColorMixingPullTool_7.mov</string>
 	<string>ColorMixingRotatingUnison_8.mov</string>
 	<string>ColorMixingTwitingProcess_9.mov</string>
-	<string>ApplyGlassForBead.mov</string>
 </array>
 </plist>
