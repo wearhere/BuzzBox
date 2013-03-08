@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFC16E7F24400052108 /* ApplyGlassForBead */; };
 		F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */; };
+		F044EC0316E802C000052108 /* blur.png in Resources */ = {isa = PBXBuildFile; fileRef = F044EC0216E802C000052108 /* blur.png */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		F044EBFC16E7F24400052108 /* ApplyGlassForBead */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApplyGlassForBead; sourceTree = "<group>"; };
 		F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMixingLateralStripe_6; sourceTree = "<group>"; };
+		F044EC0216E802C000052108 /* blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blur.png; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -185,6 +187,7 @@
 		F0E9D6F416E5B7BB0005A391 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F044EC0216E802C000052108 /* blur.png */,
 				F044EBE316E7EEFC00052108 /* Illustrations */,
 				F044EBE216E7EE9E00052108 /* Clips */,
 				F0E9D70B16E5BD9C0005A391 /* Clips.plist */,
@@ -261,6 +264,7 @@
 				F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */,
 				F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */,
 				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
+				F044EC0316E802C000052108 /* blur.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

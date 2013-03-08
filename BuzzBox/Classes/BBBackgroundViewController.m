@@ -31,6 +31,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 @implementation BBBackgroundViewController {
     AVCaptureSession *_session;
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
+    UIImageView *_videoBlurImageView;
 
     NSArray *_clips;
     CALayer *_clipFrameLayer;
@@ -71,6 +72,10 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
     _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [view.layer addSublayer:_videoPreviewLayer];
+
+    _videoBlurImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blur.png"]];
+    _videoBlurImageView.alpha = 0.0f;
+    [view.layer addSublayer:_videoBlurImageView.layer];
 
     _clipFrameLayer = [CALayer layer];
     _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
@@ -124,6 +129,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [super viewWillLayoutSubviews];
 
     _videoPreviewLayer.frame = self.view.bounds;
+    _videoBlurImageView.frame = self.view.bounds;
 
     _clipPlayerLayer.bounds = (CGRect){CGPointZero, kClipSize};
     _clipPlayerLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
@@ -208,6 +214,12 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         _clipFrameLayer.hidden = YES;
     }
     [CATransaction commit];
+
+    if (self.clipState != ClipStateHidden) {
+        [UIView animateWithDuration:kClipToggleDuration animations:^{
+            _videoBlurImageView.alpha = 1.0f;
+        }];
+    }
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
         if (self.clipState == ClipStateIllustrationShown) {
