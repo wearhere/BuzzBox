@@ -9,9 +9,14 @@
 #import "BBAppDelegate.h"
 #import "BBAVCaptureManager.h"
 #import "BBBackgroundViewController.h"
+#import "BBConfigurationViewController.h"
+
+@interface BBAppDelegate () <BBConfigurationViewControllerDelegate>
+@end
 
 @implementation BBAppDelegate {
     BBAVCaptureManager *_avCaptureManager;
+    UIViewController *_mainViewController;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -34,9 +39,19 @@
         [_avCaptureManager.session startRunning];
     });
 
-    self.window.rootViewController = [[BBBackgroundViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
+    self.window.rootViewController = [[BBConfigurationViewController alloc] initWithDelegate:self];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)configurationViewControllerDidSelectProjection:(BBConfigurationViewController *)viewController {
+    _mainViewController = [[BBBackgroundViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
+    _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
+}
+
+- (void)configurationViewControllerDidSelectWizard:(BBConfigurationViewController *)viewController {
+
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
