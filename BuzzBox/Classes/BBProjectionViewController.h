@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+@class BBReceiver;
 @interface BBProjectionViewController : UIViewController
 
-- (instancetype)initWithAVCaptureSession:(AVCaptureSession *)session;
+- (instancetype)initWithAVCaptureSession:(AVCaptureSession *)session
+                                receiver:(BBReceiver *)receiver;
 
 @end

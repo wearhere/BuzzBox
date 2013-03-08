@@ -7,6 +7,8 @@
 //
 
 #import "BBProjectionViewController.h"
+#import "BBReceiver.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 static const CGSize kClipSize = (CGSize){250.0f, 250.0f};
@@ -37,15 +39,19 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     CALayer *_clipFrameLayer;
     AVPlayerLayer *_clipPlayerLayer;
     UIImageView *_illustrationImageView;
+
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_nextClipGestureRecognizer;
+    BBReceiver *_receiver;
 }
 
-- (id)initWithAVCaptureSession:(AVCaptureSession *)session {
+- (id)initWithAVCaptureSession:(AVCaptureSession *)session receiver:(BBReceiver *)receiver {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         NSParameterAssert(session);
+        NSParameterAssert(receiver);
         _session = session;
+        _receiver = receiver;
 
         NSString *clipsPath = [[NSBundle mainBundle] pathForResource:@"Clips" ofType:@"plist"];
         _clips = [NSArray arrayWithContentsOfFile:clipsPath];
@@ -117,6 +123,19 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _nextClipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextClip)];
     _nextClipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
     [self.view addGestureRecognizer:_nextClipGestureRecognizer];
+
+    [self registerMessageHandlers];
+}
+
+- (void)registerMessageHandlers {
+    BBProjectionViewController *__weak weakSelf = self;
+
+    [_receiver registerMessageReceived:@"toggleClip" handler:^{
+        [weakSelf toggleClip];
+    }];
+    [_receiver registerMessageReceived:@"nextClip" handler:^{
+        [weakSelf nextClip];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -14,6 +14,7 @@
 @interface BBConfigurationViewController ()
 @property (weak, nonatomic) IBOutlet UIButton *projectionButton;
 @property (weak, nonatomic) IBOutlet UIButton *wizardButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end
 
 @implementation BBConfigurationViewController {
@@ -28,12 +29,29 @@
     return self;
 }
 
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.activityIndicatorView.hidesWhenStopped = YES;
+}
+
 - (IBAction)projectionSelected:(id)sender {
+    self.projectionButton.hidden = YES;
+    self.wizardButton.hidden = YES;
     [_delegate configurationViewControllerDidSelectProjection:self];
 }
 
 - (IBAction)wizardSelected:(id)sender {
+    self.projectionButton.hidden = YES;
+    self.wizardButton.hidden = YES;
     [_delegate configurationViewControllerDidSelectWizard:self];
+}
+
+- (void)showActivityIndicator {
+    [self.activityIndicatorView startAnimating];
+}
+
+- (void)hideActivityIndicator {
+    [self.activityIndicatorView stopAnimating];
 }
 
 @end

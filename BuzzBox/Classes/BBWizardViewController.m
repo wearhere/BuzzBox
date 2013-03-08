@@ -7,21 +7,24 @@
 //
 
 #import "BBWizardViewController.h"
+#import "BBSender.h"
 
 @interface BBWizardViewController ()
 
 @end
 
 @implementation BBWizardViewController {
+    BBSender *_sender;
+
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_nextClipGestureRecognizer;
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+- (id)initWithSender:(BBSender *)sender {
+    self = [super init];
     if (self) {
-        // Custom initialization
+        NSParameterAssert(sender);
+        _sender = sender;
     }
     return self;
 }
@@ -39,11 +42,11 @@
 }
 
 - (void)nextClip {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    [_sender sendMessage:@"nextClip"];
 }
 
 - (void)toggleClip {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
+    [_sender sendMessage:@"toggleClip"];
 }
 
 @end

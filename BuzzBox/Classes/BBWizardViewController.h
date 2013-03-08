@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class BBSender;
 @interface BBWizardViewController : UIViewController
+
+- (instancetype)initWithSender:(BBSender *)sender;
 
 @end

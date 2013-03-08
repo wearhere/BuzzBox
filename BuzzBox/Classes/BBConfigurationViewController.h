@@ -13,6 +13,9 @@
 
 - (instancetype)initWithDelegate:(id<BBConfigurationViewControllerDelegate>)delegate;
 
+- (void)showActivityIndicator;
+- (void)hideActivityIndicator;
+
 @end
 
 @protocol BBConfigurationViewControllerDelegate <NSObject>

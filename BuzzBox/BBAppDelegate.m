@@ -11,12 +11,18 @@
 #import "BBConfigurationViewController.h"
 #import "BBProjectionViewController.h"
 #import "BBWizardViewController.h"
+#import "BBSender.h"
+#import "BBReceiver.h"
 
-@interface BBAppDelegate () <BBConfigurationViewControllerDelegate>
+@interface BBAppDelegate () <BBConfigurationViewControllerDelegate, BBSenderDelegate, NSNetServiceBrowserDelegate>
 @end
 
 @implementation BBAppDelegate {
     BBAVCaptureManager *_avCaptureManager;
+
+    NSNetServiceBrowser *_senderBrowser;
+    BBSender *_sender;
+    BBConfigurationViewController *_configurationViewController;
     UIViewController *_mainViewController;
 }
 
@@ -40,21 +46,10 @@
         [_avCaptureManager.session startRunning];
     });
 
-    self.window.rootViewController = [[BBConfigurationViewController alloc] initWithDelegate:self];
+    _configurationViewController = [[BBConfigurationViewController alloc] initWithDelegate:self];
+    self.window.rootViewController = _configurationViewController;
     [self.window makeKeyAndVisible];
     return YES;
-}
-
-- (void)configurationViewControllerDidSelectProjection:(BBConfigurationViewController *)viewController {
-    _mainViewController = [[BBProjectionViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
-    _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
-}
-
-- (void)configurationViewControllerDidSelectWizard:(BBConfigurationViewController *)viewController {
-    _mainViewController = [[BBWizardViewController alloc] init];
-    _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -82,6 +77,55 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - BBConfigurationViewController Delegate Methods
+
+- (void)configurationViewControllerDidSelectProjection:(BBConfigurationViewController *)viewController {
+    [_configurationViewController showActivityIndicator];
+    
+    _senderBrowser = [[NSNetServiceBrowser alloc] init];
+    _senderBrowser.delegate = self;
+    [_senderBrowser searchForServicesOfType:[BBSender serviceType] inDomain:@""];
+}
+
+- (void)configurationViewControllerDidSelectWizard:(BBConfigurationViewController *)viewController {
+    [_configurationViewController showActivityIndicator];
+    
+    _sender = [[BBSender alloc] init];
+    _sender.delegate = self;
+    [_sender start];
+}
+
+#pragma mark - NSNetServiceBrowser Delegate Methods
+
+- (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
+    [_configurationViewController hideActivityIndicator];
+
+    // dispatch_async to let activity indicator hide
+    dispatch_async(dispatch_get_main_queue(), ^{
+        BBReceiver *receiver = [[BBReceiver alloc] initWithMessageService:aNetService];
+        [receiver start];
+        
+        _mainViewController = [[BBProjectionViewController alloc] initWithAVCaptureSession:_avCaptureManager.session receiver:receiver];
+        _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
+    });
+}
+
+#pragma mark - BBSender Delegate Methods
+
+- (void)receiverDidConnectToSender:(BBSender *)sender {
+    [_configurationViewController hideActivityIndicator];
+
+    // dispatch_async to let activity indicator hide
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _mainViewController = [[BBWizardViewController alloc] initWithSender:_sender];
+        _sender = nil;
+        
+        _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
+    });
 }
 
 @end

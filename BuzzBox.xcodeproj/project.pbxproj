@@ -14,6 +14,11 @@
 		F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */; };
 		F044EC4316E96C6C00052108 /* BBWizardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC4116E96C6C00052108 /* BBWizardViewController.m */; };
 		F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC4216E96C6C00052108 /* BBWizardViewController.xib */; };
+		F044EC5F16E9704A00052108 /* BBSender.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC5E16E9704A00052108 /* BBSender.m */; };
+		F044EC6316E9710400052108 /* BBMessageProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC6216E9710400052108 /* BBMessageProtocol.m */; };
+		F044EC6616E9716E00052108 /* BBReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC6516E9716E00052108 /* BBReceiver.m */; };
+		F044EC8516E9744200052108 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC8016E9744200052108 /* Server.m */; };
+		F044EC8616E9744200052108 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC8216E9744200052108 /* Connection.m */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -51,6 +56,16 @@
 		F044EC4016E96C6C00052108 /* BBWizardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBWizardViewController.h; sourceTree = "<group>"; };
 		F044EC4116E96C6C00052108 /* BBWizardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBWizardViewController.m; sourceTree = "<group>"; };
 		F044EC4216E96C6C00052108 /* BBWizardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBWizardViewController.xib; sourceTree = "<group>"; };
+		F044EC5D16E9704A00052108 /* BBSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBSender.h; sourceTree = "<group>"; };
+		F044EC5E16E9704A00052108 /* BBSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBSender.m; sourceTree = "<group>"; };
+		F044EC6116E9710400052108 /* BBMessageProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBMessageProtocol.h; sourceTree = "<group>"; };
+		F044EC6216E9710400052108 /* BBMessageProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBMessageProtocol.m; sourceTree = "<group>"; };
+		F044EC6416E9716E00052108 /* BBReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBReceiver.h; sourceTree = "<group>"; };
+		F044EC6516E9716E00052108 /* BBReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBReceiver.m; sourceTree = "<group>"; };
+		F044EC7F16E9744200052108 /* Server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		F044EC8016E9744200052108 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
+		F044EC8116E9744200052108 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
+		F044EC8216E9744200052108 /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -127,6 +142,30 @@
 			path = Illustrations;
 			sourceTree = "<group>";
 		};
+		F044EC5C16E9703100052108 /* Business Logic */ = {
+			isa = PBXGroup;
+			children = (
+				F044EC6116E9710400052108 /* BBMessageProtocol.h */,
+				F044EC6216E9710400052108 /* BBMessageProtocol.m */,
+				F044EC5D16E9704A00052108 /* BBSender.h */,
+				F044EC5E16E9704A00052108 /* BBSender.m */,
+				F044EC6416E9716E00052108 /* BBReceiver.h */,
+				F044EC6516E9716E00052108 /* BBReceiver.m */,
+			);
+			name = "Business Logic";
+			sourceTree = "<group>";
+		};
+		F044EC7E16E9732800052108 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				F044EC7F16E9744200052108 /* Server.h */,
+				F044EC8016E9744200052108 /* Server.m */,
+				F044EC8116E9744200052108 /* Connection.h */,
+				F044EC8216E9744200052108 /* Connection.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		F0E9D6A916E51D440005A391 = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +225,8 @@
 		F0E9D6D216E51DC70005A391 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				F044EC7E16E9732800052108 /* Networking */,
+				F044EC5C16E9703100052108 /* Business Logic */,
 				F044EC3B16E9671500052108 /* BBConfigurationViewController.h */,
 				F044EC3C16E9671500052108 /* BBConfigurationViewController.m */,
 				F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */,
@@ -299,6 +340,11 @@
 				F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */,
 				F044EC3E16E9671500052108 /* BBConfigurationViewController.m in Sources */,
 				F044EC4316E96C6C00052108 /* BBWizardViewController.m in Sources */,
+				F044EC5F16E9704A00052108 /* BBSender.m in Sources */,
+				F044EC6316E9710400052108 /* BBMessageProtocol.m in Sources */,
+				F044EC6616E9716E00052108 /* BBReceiver.m in Sources */,
+				F044EC8516E9744200052108 /* Server.m in Sources */,
+				F044EC8616E9744200052108 /* Connection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
