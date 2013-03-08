@@ -1,5 +1,5 @@
 //
-//  BBBackgroundViewController.h
+//  BBProjectionViewController.h
 //  BuzzBox
 //
 //  Created by Jeffrey Wear on 3/4/13.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
-@interface BBBackgroundViewController : UIViewController
+@interface BBProjectionViewController : UIViewController
 
 - (instancetype)initWithAVCaptureSession:(AVCaptureSession *)session;
 

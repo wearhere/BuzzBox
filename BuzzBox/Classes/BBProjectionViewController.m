@@ -1,12 +1,12 @@
 //
-//  BBBackgroundViewController.m
+//  BBProjectionViewController.m
 //  BuzzBox
 //
 //  Created by Jeffrey Wear on 3/4/13.
 //  Copyright (c) 2013 Jeffrey Wear. All rights reserved.
 //
 
-#import "BBBackgroundViewController.h"
+#import "BBProjectionViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 static const CGSize kClipSize = (CGSize){250.0f, 250.0f};
@@ -21,14 +21,14 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     ClipStateIllustrationShown
 };
 
-@interface BBBackgroundViewController ()
+@interface BBProjectionViewController ()
 @property (nonatomic) ClipState clipState;
 @property (nonatomic) NSUInteger currentClipIndex;
 @property (nonatomic, strong) AVPlayerItem *currentClipItem;
 @property (nonatomic, strong) NSArray *currentIllustrationImages;
 @end
 
-@implementation BBBackgroundViewController {
+@implementation BBProjectionViewController {
     AVCaptureSession *_session;
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
     UIImageView *_videoBlurImageView;

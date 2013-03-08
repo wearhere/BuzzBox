@@ -7,7 +7,7 @@
 //
 
 #import "BBConfigurationViewController.h"
-#import "BBBackgroundViewController.h"
+#import "BBProjectionViewController.h"
 #import "BBAppDelegate.h"
 #import "BBAVCaptureManager.h"
 

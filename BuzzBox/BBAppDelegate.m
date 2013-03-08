@@ -8,7 +8,7 @@
 
 #import "BBAppDelegate.h"
 #import "BBAVCaptureManager.h"
-#import "BBBackgroundViewController.h"
+#import "BBProjectionViewController.h"
 #import "BBConfigurationViewController.h"
 
 @interface BBAppDelegate () <BBConfigurationViewControllerDelegate>
@@ -45,7 +45,7 @@
 }
 
 - (void)configurationViewControllerDidSelectProjection:(BBConfigurationViewController *)viewController {
-    _mainViewController = [[BBBackgroundViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
+    _mainViewController = [[BBProjectionViewController alloc] initWithAVCaptureSession:_avCaptureManager.session];
     _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
 }
