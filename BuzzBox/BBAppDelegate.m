@@ -8,8 +8,9 @@
 
 #import "BBAppDelegate.h"
 #import "BBAVCaptureManager.h"
-#import "BBProjectionViewController.h"
 #import "BBConfigurationViewController.h"
+#import "BBProjectionViewController.h"
+#import "BBWizardViewController.h"
 
 @interface BBAppDelegate () <BBConfigurationViewControllerDelegate>
 @end
@@ -51,7 +52,9 @@
 }
 
 - (void)configurationViewControllerDidSelectWizard:(BBConfigurationViewController *)viewController {
-
+    _mainViewController = [[BBWizardViewController alloc] init];
+    _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

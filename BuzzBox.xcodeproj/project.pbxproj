@@ -12,6 +12,8 @@
 		F044EC0316E802C000052108 /* blur.png in Resources */ = {isa = PBXBuildFile; fileRef = F044EC0216E802C000052108 /* blur.png */; };
 		F044EC3E16E9671500052108 /* BBConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC3C16E9671500052108 /* BBConfigurationViewController.m */; };
 		F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */; };
+		F044EC4316E96C6C00052108 /* BBWizardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC4116E96C6C00052108 /* BBWizardViewController.m */; };
+		F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC4216E96C6C00052108 /* BBWizardViewController.xib */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -46,6 +48,9 @@
 		F044EC3B16E9671500052108 /* BBConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBConfigurationViewController.h; sourceTree = "<group>"; };
 		F044EC3C16E9671500052108 /* BBConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBConfigurationViewController.m; sourceTree = "<group>"; };
 		F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBConfigurationViewController.xib; sourceTree = "<group>"; };
+		F044EC4016E96C6C00052108 /* BBWizardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBWizardViewController.h; sourceTree = "<group>"; };
+		F044EC4116E96C6C00052108 /* BBWizardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBWizardViewController.m; sourceTree = "<group>"; };
+		F044EC4216E96C6C00052108 /* BBWizardViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBWizardViewController.xib; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -181,13 +186,16 @@
 		F0E9D6D216E51DC70005A391 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				F044EC3B16E9671500052108 /* BBConfigurationViewController.h */,
+				F044EC3C16E9671500052108 /* BBConfigurationViewController.m */,
+				F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */,
+				F044EC4016E96C6C00052108 /* BBWizardViewController.h */,
+				F044EC4116E96C6C00052108 /* BBWizardViewController.m */,
+				F044EC4216E96C6C00052108 /* BBWizardViewController.xib */,
 				F0E9D6D316E51DED0005A391 /* BBProjectionViewController.h */,
 				F0E9D6D416E51DED0005A391 /* BBProjectionViewController.m */,
 				F0E9D6D616E558ED0005A391 /* BBAVCaptureManager.h */,
 				F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */,
-				F044EC3B16E9671500052108 /* BBConfigurationViewController.h */,
-				F044EC3C16E9671500052108 /* BBConfigurationViewController.m */,
-				F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -274,6 +282,7 @@
 				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
 				F044EC0316E802C000052108 /* blur.png in Resources */,
 				F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */,
+				F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +298,7 @@
 				F0E9D6D516E51DED0005A391 /* BBProjectionViewController.m in Sources */,
 				F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */,
 				F044EC3E16E9671500052108 /* BBConfigurationViewController.m in Sources */,
+				F044EC4316E96C6C00052108 /* BBWizardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
