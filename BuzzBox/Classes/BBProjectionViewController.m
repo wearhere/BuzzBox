@@ -17,13 +17,12 @@ static const CGFloat kClipFrameBorderWidth = 3.0f;
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
 typedef NS_ENUM(NSUInteger, ClipState) {
-    ClipStateHidden,
     ClipStateFrameShown,
-    ClipStateClipShown,
-    ClipStateIllustrationShown
+    ClipStateClipShown
 };
 
-@interface BBProjectionViewController ()
+@interface BBProjectionViewController () <UIGestureRecognizerDelegate>
+@property (nonatomic) BOOL interfaceShown;
 @property (nonatomic) ClipState clipState;
 @property (nonatomic) NSUInteger currentClipIndex;
 @property (nonatomic, strong) AVPlayerItem *currentClipItem;
@@ -40,6 +39,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     AVPlayerLayer *_clipPlayerLayer;
     UIImageView *_illustrationImageView;
 
+    UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_nextClipGestureRecognizer;
     BBReceiver *_receiver;
@@ -115,9 +115,14 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self updateViewsForClipState];
+    [self updateViews];
+
+    _toggleInterfaceGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleInterface)];
+    _toggleInterfaceGestureRecognizer.delegate = self;
+    [self.view addGestureRecognizer:_toggleInterfaceGestureRecognizer];
 
     _toggleClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleClip)];
+    _toggleClipGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:_toggleClipGestureRecognizer];
 
     _nextClipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextClip)];
@@ -130,6 +135,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)registerMessageHandlers {
     BBProjectionViewController *__weak weakSelf = self;
 
+    [_receiver registerMessageReceived:@"toggleInterface" handler:^{
+        [weakSelf toggleInterface];
+    }];
     [_receiver registerMessageReceived:@"toggleClip" handler:^{
         [weakSelf toggleClip];
     }];
@@ -185,25 +193,36 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
 #pragma mark - Clips
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    BOOL touchIsInLeftHalf = ([touch locationInView:self.view].x < CGRectGetMidX(self.view.bounds));
+    if (gestureRecognizer == _toggleInterfaceGestureRecognizer) {
+        return touchIsInLeftHalf;
+    } else if (gestureRecognizer == _toggleClipGestureRecognizer) {
+        return !touchIsInLeftHalf;
+    } else {
+        return YES;
+    }
+}
+
+- (void)setInterfaceShown:(BOOL)interfaceShown {
+    if (interfaceShown != _interfaceShown) {
+        _interfaceShown = interfaceShown;
+        [self updateViews];
+    }
+}
+
+- (void)toggleInterface {
+    self.interfaceShown = !self.interfaceShown;
+}
+
 - (void)incrementClipState {
     ClipState newClipState;
     switch (self.clipState) {
-        case ClipStateHidden:
-            newClipState = ClipStateFrameShown;
-            break;
         case ClipStateFrameShown:
             newClipState = ClipStateClipShown;
             break;
         case ClipStateClipShown:
-            // not all clips have illustrations available
-            if ([self.currentIllustrationImages count]) {
-                newClipState = ClipStateIllustrationShown;
-            } else {
-                newClipState = ClipStateHidden;
-            }
-            break;
-        case ClipStateIllustrationShown:
-            newClipState = ClipStateHidden;
+            newClipState = ClipStateFrameShown;
             break;
     }
     self.clipState = newClipState;
@@ -212,14 +231,15 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)setClipState:(ClipState)clipState {
     if (clipState != _clipState) {
         _clipState = clipState;
-        [self updateViewsForClipState];
+        [self updateViews];
     }
 }
 
-- (void)updateViewsForClipState {
+- (void)updateViews {
     [CATransaction begin];
     [CATransaction setAnimationDuration:kClipToggleDuration];
-    if (self.clipState == ClipStateClipShown) {
+    if (self.interfaceShown &&
+        (self.clipState == ClipStateClipShown)) {
         _clipPlayerLayer.hidden = NO;
         [_clipPlayerLayer.player play];
     } else {
@@ -227,21 +247,22 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         _clipPlayerLayer.hidden = YES;
     }
 
-    if (self.clipState == ClipStateFrameShown || self.clipState == ClipStateClipShown) {
+    if (self.interfaceShown &&
+        (self.clipState == ClipStateFrameShown || self.clipState == ClipStateClipShown)) {
         _clipFrameLayer.hidden = NO;
     } else {
         _clipFrameLayer.hidden = YES;
     }
     [CATransaction commit];
 
-    if (self.clipState != ClipStateHidden) {
+    if (self.interfaceShown) {
         [UIView animateWithDuration:kClipToggleDuration animations:^{
             _videoBlurImageView.alpha = 1.0f;
         }];
     }
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
-        if (self.clipState == ClipStateIllustrationShown) {
+        if (!self.interfaceShown && [self.currentIllustrationImages count]) {
             _illustrationImageView.alpha = 1.0f;
             // retrieve the animation images if necessary
             _illustrationImageView.animationImages = self.currentIllustrationImages;
@@ -293,11 +314,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)nextClip {
     // loop over clip array
     self.currentClipIndex = ((self.currentClipIndex + 1) % [_clips count]);
-    // dispatch_async to make sure that the clip has been swapped
-    // by the time that the clip is shown
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.clipState = ClipStateClipShown;
-    });
 }
 
 - (void)toggleClip {
