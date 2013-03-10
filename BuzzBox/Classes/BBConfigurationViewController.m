@@ -49,7 +49,7 @@
     }
     // Start the session.
     // This is done asychronously since -startRunning doesn't return until the session is running.
-    // This is done upon startup so that the camera will be ready for the background view controller.
+    // This is done upon startup so that the camera will be ready for the projection view controller.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_avCaptureManager.session startRunning];
     });
