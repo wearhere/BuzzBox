@@ -49,7 +49,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         NSParameterAssert(session);
+#if !TARGET_IPHONE_SIMULATOR
         NSParameterAssert(receiver);
+#endif
         _session = session;
         _receiver = receiver;
 

@@ -83,10 +83,16 @@
 
 - (void)configurationViewControllerDidSelectProjection:(BBConfigurationViewController *)viewController {
     [_configurationViewController showActivityIndicator];
-    
+
+#if TARGET_IPHONE_SIMULATOR
+    _mainViewController = [[BBProjectionViewController alloc] initWithAVCaptureSession:_avCaptureManager.session receiver:nil];
+    _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    [self.window.rootViewController presentViewController:_mainViewController animated:YES completion:nil];
+#else
     _senderBrowser = [[NSNetServiceBrowser alloc] init];
     _senderBrowser.delegate = self;
     [_senderBrowser searchForServicesOfType:[BBSender serviceType] inDomain:@""];
+#endif
 }
 
 - (void)configurationViewControllerDidSelectWizard:(BBConfigurationViewController *)viewController {
