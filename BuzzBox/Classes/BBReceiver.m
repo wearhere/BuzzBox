@@ -51,17 +51,11 @@
 #pragma mark - ConnectionDelegate Method Implementations
 
 - (void)connectionAttemptFailed:(Connection*)connection {
-    [[[UIAlertView alloc] initWithTitle:@"Could Not Connect to Wizard"
-                                message:@"Please restart the app to try again."
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [self.delegate receiverCouldNotConnectToSender:self];
 }
 
 - (void)connectionTerminated:(Connection*)connection {
-    [[[UIAlertView alloc] initWithTitle:@"Lost Connection to Wizard"
-                                message:@"Please restart the app to try again."
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    [self.delegate receiverLostConnectionToSender:self];
 }
 
 - (void)receivedNetworkPacket:(NSDictionary*)packet viaConnection:(Connection*)connection {

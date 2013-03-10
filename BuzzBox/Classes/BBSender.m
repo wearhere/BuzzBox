@@ -28,7 +28,8 @@
 - (id)init {
     self = [super init];
     if (self) {
-        _messageServer = [[Server alloc] initWithServiceType:[[self class] serviceType] name:[[UIDevice currentDevice] name]];
+        _messageServer = [[Server alloc] initWithServiceType:[[self class] serviceType]
+                                                        name:[[UIDevice currentDevice] name]];
         _messageServer.delegate = self;
     }
     return self;
@@ -50,11 +51,8 @@
 #pragma mark - ServerDelegate Method Implementations
 
 - (void) serverFailed:(Server*)server reason:(NSString*)reason {
-    [[[UIAlertView alloc] initWithTitle:@"Wizard Server Failed"
-                                message:[NSString stringWithFormat:@"Due to reason: %@. Please restart the app to try again.", reason]
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
     [self stop];
+    [self.delegate senderCouldNotConnectToReceiver:self];
 }
 
 - (void) handleNewConnection:(Connection*)connection {
@@ -64,7 +62,7 @@
     _receiverConnection = connection;
     _receiverConnection.delegate = self;
 
-    [self.delegate receiverDidConnectToSender:self];
+    [self.delegate senderDidConnectToReceiver:self];
 }
 
 #pragma mark - ConnectionDelegate Method Implementations
@@ -73,11 +71,12 @@
 - (void) connectionAttemptFailed:(Connection*)connection {
 }
 
-// One of the clients disconnected, remove it from our list
 - (void) connectionTerminated:(Connection*)connection {
     if (connection == _receiverConnection) {
         _receiverConnection = nil;
     }
+
+    [self.delegate senderLostConnectionToReceiver:self];
 }
 
 // We shouldn't be getting messages back

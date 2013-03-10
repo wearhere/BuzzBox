@@ -25,5 +25,7 @@
 
 @protocol BBSenderDelegate <NSObject>
 @required
-- (void)receiverDidConnectToSender:(BBSender *)sender;
+- (void)senderCouldNotConnectToReceiver:(BBSender *)sender;
+- (void)senderDidConnectToReceiver:(BBSender *)sender;
+- (void)senderLostConnectionToReceiver:(BBSender *)sender;
 @end
