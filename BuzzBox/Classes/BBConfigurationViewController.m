@@ -16,6 +16,7 @@
 @interface BBConfigurationViewController () <BBReceiverDelegate, BBSenderDelegate, NSNetServiceBrowserDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *projectionButton;
 @property (weak, nonatomic) IBOutlet UIButton *wizardButton;
+@property (weak, nonatomic) IBOutlet UILabel *waitingForConnectionLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @end
 
@@ -59,7 +60,7 @@
     self.projectionButton.hidden = YES;
     self.wizardButton.hidden = YES;
 
-    [self showActivityIndicator];
+    [self showWaitingFor:@"projection"];
 
     // don't wait for a wizard to attach to a projection in the simulator
     // --the projection won't fully work in the simulator anyway;
@@ -79,18 +80,21 @@
     self.projectionButton.hidden = YES;
     self.wizardButton.hidden = YES;
 
-    [self showActivityIndicator];
+    [self showWaitingFor:@"wizard"];
 
     _sender = [[BBSender alloc] init];
     _sender.delegate = self;
     [_sender start];
 }
 
-- (void)showActivityIndicator {
+- (void)showWaitingFor:(NSString *)event {
+    self.waitingForConnectionLabel.text = [NSString stringWithFormat:@"Waiting for %@...", event];
+    self.waitingForConnectionLabel.hidden = NO;
     [self.activityIndicatorView startAnimating];
 }
 
-- (void)hideActivityIndicator {
+- (void)hideWaiting {
+    self.waitingForConnectionLabel.hidden = YES;
     [self.activityIndicatorView stopAnimating];
 }
 
@@ -99,7 +103,7 @@
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
     [aNetServiceBrowser stop];
 
-    [self hideActivityIndicator];
+    [self hideWaiting];
 
     // dispatch_async to let activity indicator hide
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -122,7 +126,7 @@
                       cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 
     // show the activity indicator until we reconnect
-    [self showActivityIndicator];
+    [self showWaitingFor:@"wizard"];
 
     // dispatch_async to let activity indicator show
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -144,7 +148,7 @@
                       cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 
     // show the activity indicator until we reconnect
-    [self showActivityIndicator];
+    [self showWaitingFor:@"wizard"];
 
     // dispatch_async to let activity indicator show
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -169,7 +173,7 @@
 }
 
 - (void)senderDidConnectToReceiver:(BBSender *)sender {
-    [self hideActivityIndicator];
+    [self hideWaiting];
 
     // dispatch_async to let activity indicator hide
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -187,7 +191,7 @@
                       cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
 
     // show the activity indicator until we reconnect
-    [self showActivityIndicator];
+    [self showWaitingFor:@"projection"];
 
     // dispatch_async to let activity indicator show
     dispatch_async(dispatch_get_main_queue(), ^{
