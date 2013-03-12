@@ -13,7 +13,7 @@
 #import "BBSender.h"
 #import "BBReceiver.h"
 
-@interface BBConfigurationViewController () <BBReceiverDelegate, BBSenderDelegate, NSNetServiceBrowserDelegate>
+@interface BBConfigurationViewController () <BBReceiverDelegate, BBSenderDelegate, NSNetServiceBrowserDelegate, UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *projectionButton;
 @property (weak, nonatomic) IBOutlet UIButton *wizardButton;
 @property (weak, nonatomic) IBOutlet UILabel *waitingForConnectionLabel;
@@ -98,6 +98,12 @@
     [self.activityIndicatorView stopAnimating];
 }
 
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Abort"]) {
+        abort();
+    }
+}
+
 #pragma mark - NSNetServiceBrowser Delegate Methods
 
 - (void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
@@ -120,10 +126,13 @@
 #pragma mark - BBReceiver Delegate Methods
 
 - (void)receiverCouldNotConnectToSender:(BBReceiver *)receiver {
-    [[[UIAlertView alloc] initWithTitle:@"Could Not Connect to Wizard"
-                                message:@"App will retry."
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could Not Connect to Wizard"
+                                                    message:nil
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Abort"
+                                          otherButtonTitles:@"Retry", nil];
+    alert.delegate = self;
+    [alert show];
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"wizard"];
@@ -142,10 +151,12 @@
 }
 
 - (void)receiverLostConnectionToSender:(BBReceiver *)receiver {
-    [[[UIAlertView alloc] initWithTitle:@"Lost Connection to Wizard"
-                                message:@"App will retry."
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection to Wizard"
+                                                    message:nil
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Abort" otherButtonTitles:@"Retry", nil];
+    alert.delegate = self;
+    [alert show];
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"wizard"];
@@ -185,10 +196,12 @@
 }
 
 - (void)senderLostConnectionToReceiver:(BBSender *)sender {
-    [[[UIAlertView alloc] initWithTitle:@"Lost Connection to Projection"
-                                message:@"App will retry."
-                               delegate:nil
-                      cancelButtonTitle:@"Ok" otherButtonTitles:nil] show];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection to Projection"
+                                                    message:nil
+                                                   delegate:nil
+                                          cancelButtonTitle:@"Abort" otherButtonTitles:@"Retry", nil];
+    alert.delegate = self;
+    [alert show];
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"projection"];
