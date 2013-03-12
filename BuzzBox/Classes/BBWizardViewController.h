@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#define DEBUGGING_WIZARD_VIEW 0
+
 @class BBSender;
 @interface BBWizardViewController : UIViewController
 

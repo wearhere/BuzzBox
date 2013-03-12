@@ -24,7 +24,9 @@
 - (id)initWithSender:(BBSender *)sender {
     self = [super init];
     if (self) {
+#if !DEBUGGING_WIZARD_VIEW
         NSParameterAssert(sender);
+#endif
         _sender = sender;
     }
     return self;

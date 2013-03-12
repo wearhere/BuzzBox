@@ -82,9 +82,13 @@
 
     [self showWaitingFor:@"projection"];
 
+#if DEBUGGING_WIZARD_VIEW
+    [self senderDidConnectToReceiver:_sender];
+#else
     _sender = [[BBSender alloc] init];
     _sender.delegate = self;
     [_sender start];
+#endif
 }
 
 - (void)showWaitingFor:(NSString *)event {
