@@ -60,7 +60,7 @@
     self.projectionButton.hidden = YES;
     self.wizardButton.hidden = YES;
 
-    [self showWaitingFor:@"projection"];
+    [self showWaitingFor:@"wizard"];
 
     // don't wait for a wizard to attach to a projection in the simulator
     // --the projection won't fully work in the simulator anyway;
@@ -80,7 +80,7 @@
     self.projectionButton.hidden = YES;
     self.wizardButton.hidden = YES;
 
-    [self showWaitingFor:@"wizard"];
+    [self showWaitingFor:@"projection"];
 
     _sender = [[BBSender alloc] init];
     _sender.delegate = self;
