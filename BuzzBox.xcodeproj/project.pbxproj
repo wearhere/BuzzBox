@@ -19,6 +19,9 @@
 		F044EC6616E9716E00052108 /* BBReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC6516E9716E00052108 /* BBReceiver.m */; };
 		F044EC8516E9744200052108 /* Server.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC8016E9744200052108 /* Server.m */; };
 		F044EC8616E9744200052108 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC8216E9744200052108 /* Connection.m */; };
+		F08F29B016EEEBFC00C76004 /* Bead in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AD16EEEBFC00C76004 /* Bead */; };
+		F08F29B116EEEBFC00C76004 /* Color Mix in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AE16EEEBFC00C76004 /* Color Mix */; };
+		F08F29B216EEEBFC00C76004 /* Free Play in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AF16EEEBFC00C76004 /* Free Play */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -32,16 +35,6 @@
 		F0E9D6D816E558ED0005A391 /* BBAVCaptureManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */; };
 		F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6D916E559130005A391 /* AVFoundation.framework */; };
 		F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */; };
-		F0E9D6FF16E5B8050005A391 /* ApplyGlassForBead.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */; };
-		F0E9D70016E5B8050005A391 /* ColorMixingLateralStripe_6.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */; };
-		F0E9D70116E5B8050005A391 /* ColorMixingPullTool_7.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */; };
-		F0E9D70216E5B8050005A391 /* ColorMixingRotatingUnison_8.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */; };
-		F0E9D70316E5B8050005A391 /* ColorMixingToothbrush_5.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */; };
-		F0E9D70416E5B8050005A391 /* ColorMixingTwitingProcess_9.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */; };
-		F0E9D70516E5B8050005A391 /* FreePlayAccordian_3.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */; };
-		F0E9D70616E5B8050005A391 /* FreePlayCreateString_4.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */; };
-		F0E9D70716E5B8050005A391 /* FreePlayFatThinHeat_2.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */; };
-		F0E9D70816E5B8050005A391 /* FreePlayTaffy_1.mov in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */; };
 		F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D70916E5BD230005A391 /* CoreMedia.framework */; };
 		F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D70B16E5BD9C0005A391 /* Clips.plist */; };
 /* End PBXBuildFile section */
@@ -66,6 +59,9 @@
 		F044EC8016E9744200052108 /* Server.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Server.m; sourceTree = "<group>"; };
 		F044EC8116E9744200052108 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		F044EC8216E9744200052108 /* Connection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
+		F08F29AD16EEEBFC00C76004 /* Bead */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bead; sourceTree = "<group>"; };
+		F08F29AE16EEEBFC00C76004 /* Color Mix */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Color Mix"; sourceTree = "<group>"; };
+		F08F29AF16EEEBFC00C76004 /* Free Play */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Free Play"; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -85,16 +81,6 @@
 		F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBAVCaptureManager.m; sourceTree = "<group>"; };
 		F0E9D6D916E559130005A391 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ApplyGlassForBead.mov; sourceTree = "<group>"; };
-		F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingLateralStripe_6.mov; sourceTree = "<group>"; };
-		F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingPullTool_7.mov; sourceTree = "<group>"; };
-		F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingRotatingUnison_8.mov; sourceTree = "<group>"; };
-		F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingToothbrush_5.mov; sourceTree = "<group>"; };
-		F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = ColorMixingTwitingProcess_9.mov; sourceTree = "<group>"; };
-		F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayAccordian_3.mov; sourceTree = "<group>"; };
-		F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayCreateString_4.mov; sourceTree = "<group>"; };
-		F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayFatThinHeat_2.mov; sourceTree = "<group>"; };
-		F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = FreePlayTaffy_1.mov; sourceTree = "<group>"; };
 		F0E9D70916E5BD230005A391 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		F0E9D70B16E5BD9C0005A391 /* Clips.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Clips.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -119,16 +105,9 @@
 		F044EBE216E7EE9E00052108 /* Clips */ = {
 			isa = PBXGroup;
 			children = (
-				F0E9D6F516E5B8050005A391 /* ApplyGlassForBead.mov */,
-				F0E9D6F616E5B8050005A391 /* ColorMixingLateralStripe_6.mov */,
-				F0E9D6F716E5B8050005A391 /* ColorMixingPullTool_7.mov */,
-				F0E9D6F816E5B8050005A391 /* ColorMixingRotatingUnison_8.mov */,
-				F0E9D6F916E5B8050005A391 /* ColorMixingToothbrush_5.mov */,
-				F0E9D6FA16E5B8050005A391 /* ColorMixingTwitingProcess_9.mov */,
-				F0E9D6FB16E5B8050005A391 /* FreePlayAccordian_3.mov */,
-				F0E9D6FC16E5B8050005A391 /* FreePlayCreateString_4.mov */,
-				F0E9D6FD16E5B8050005A391 /* FreePlayFatThinHeat_2.mov */,
-				F0E9D6FE16E5B8050005A391 /* FreePlayTaffy_1.mov */,
+				F08F29AD16EEEBFC00C76004 /* Bead */,
+				F08F29AE16EEEBFC00C76004 /* Color Mix */,
+				F08F29AF16EEEBFC00C76004 /* Free Play */,
 			);
 			path = Clips;
 			sourceTree = "<group>";
@@ -308,22 +287,15 @@
 				F0E9D6C816E51D440005A391 /* Default.png in Resources */,
 				F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */,
 				F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */,
-				F0E9D6FF16E5B8050005A391 /* ApplyGlassForBead.mov in Resources */,
-				F0E9D70016E5B8050005A391 /* ColorMixingLateralStripe_6.mov in Resources */,
-				F0E9D70116E5B8050005A391 /* ColorMixingPullTool_7.mov in Resources */,
-				F0E9D70216E5B8050005A391 /* ColorMixingRotatingUnison_8.mov in Resources */,
-				F0E9D70316E5B8050005A391 /* ColorMixingToothbrush_5.mov in Resources */,
-				F0E9D70416E5B8050005A391 /* ColorMixingTwitingProcess_9.mov in Resources */,
-				F0E9D70516E5B8050005A391 /* FreePlayAccordian_3.mov in Resources */,
-				F0E9D70616E5B8050005A391 /* FreePlayCreateString_4.mov in Resources */,
-				F0E9D70716E5B8050005A391 /* FreePlayFatThinHeat_2.mov in Resources */,
-				F0E9D70816E5B8050005A391 /* FreePlayTaffy_1.mov in Resources */,
 				F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */,
 				F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */,
 				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
 				F044EC0316E802C000052108 /* blur.png in Resources */,
 				F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */,
 				F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */,
+				F08F29B016EEEBFC00C76004 /* Bead in Resources */,
+				F08F29B116EEEBFC00C76004 /* Color Mix in Resources */,
+				F08F29B216EEEBFC00C76004 /* Free Play in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
