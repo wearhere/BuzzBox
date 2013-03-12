@@ -11,9 +11,9 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-static const CGSize kClipSize = (CGSize){250.0f, 250.0f};
+static const CGSize kClipSize = (CGSize){280.0f, 280.0f};
 static const CGFloat kClipCornerRadius = 8.0f;
-static const CGFloat kClipFrameBorderWidth = 3.0f;
+static const CGFloat kClipFrameBorderWidth = 5.0f;
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
 typedef NS_ENUM(NSUInteger, ClipState) {
@@ -88,10 +88,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipFrameLayer = [CALayer layer];
     _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
     _clipFrameLayer.opaque = NO;
-    _clipFrameLayer.borderColor = [[UIColor yellowColor] CGColor];
+    _clipFrameLayer.borderColor = [[UIColor colorWithRed:40.0f/255.0f green:135.0f/255.0f blue:170.0f/255.0f alpha:1.0f] CGColor];
     _clipFrameLayer.borderWidth = kClipFrameBorderWidth;
     _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
     _clipFrameLayer.shadowOpacity = 0.5f;
+    _clipFrameLayer.shadowOffset = CGSizeMake(0.0f, 3.0f);
     [view.layer addSublayer:_clipFrameLayer];
 
     _clipPlayerLayer = [AVPlayerLayer layer];
