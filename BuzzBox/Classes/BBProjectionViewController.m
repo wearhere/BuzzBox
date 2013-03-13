@@ -54,7 +54,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         NSParameterAssert(session);
-#if !TARGET_IPHONE_SIMULATOR
+#if !DEBUGGING_PROJECTION_VIEW
         NSParameterAssert(receiver);
 #endif
         _session = session;

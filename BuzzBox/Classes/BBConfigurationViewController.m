@@ -62,10 +62,7 @@
 
     [self showWaitingFor:@"wizard"];
 
-    // don't wait for a wizard to attach to a projection in the simulator
-    // --the projection won't fully work in the simulator anyway;
-    // we're most likely looking to debug the projection's view
-#if (TARGET_IPHONE_SIMULATOR && DEBUGGING_PROJECTION_VIEW)
+#if DEBUGGING_PROJECTION_VIEW
     _mainViewController = [[BBProjectionViewController alloc] initWithAVCaptureSession:_avCaptureManager.session receiver:nil];
     _mainViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:_mainViewController animated:YES completion:nil];
