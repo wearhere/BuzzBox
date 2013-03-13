@@ -130,6 +130,7 @@
 #pragma mark - BBReceiver Delegate Methods
 
 - (void)receiverCouldNotConnectToSender:(BBReceiver *)receiver {
+#if !AUTO_RETRY
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Could Not Connect to Wizard"
                                                     message:nil
                                                    delegate:nil
@@ -137,6 +138,7 @@
                                           otherButtonTitles:@"Retry", nil];
     alert.delegate = self;
     [alert show];
+#endif
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"wizard"];
@@ -155,12 +157,14 @@
 }
 
 - (void)receiverLostConnectionToSender:(BBReceiver *)receiver {
+#if !AUTO_RETRY
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection to Wizard"
                                                     message:nil
                                                    delegate:nil
                                           cancelButtonTitle:@"Abort" otherButtonTitles:@"Retry", nil];
     alert.delegate = self;
     [alert show];
+#endif
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"wizard"];
@@ -200,12 +204,14 @@
 }
 
 - (void)senderLostConnectionToReceiver:(BBSender *)sender {
+#if !AUTO_RETRY
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Lost Connection to Projection"
                                                     message:nil
                                                    delegate:nil
                                           cancelButtonTitle:@"Abort" otherButtonTitles:@"Retry", nil];
     alert.delegate = self;
     [alert show];
+#endif
 
     // show the activity indicator until we reconnect
     [self showWaitingFor:@"projection"];

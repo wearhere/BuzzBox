@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+
 #define DEBUGGING_WIZARD_VIEW 0
+#define AUTO_RETRY 1
 
 @class BBSender;
 @interface BBWizardViewController : UIViewController
