@@ -175,13 +175,15 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         CABasicAnimation *clipTitlePositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         CABasicAnimation *strokeAnimation = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
+
+        static const NSTimeInterval kZoomAnimationDuration = 0.3;
         boundsAnimation.duration =
             clippingBoundsAnimation.duration = clipBoundsAnimation.duration =
             clippingPositionAnimation.duration = clipPositionAnimation.duration =
             clipThumbnailBoundsAnimation.duration = clipThumbnailPositionAnimation.duration =
             clipTitleBoundsAnimation.duration = clipTitlePositionAnimation.duration =
-            pathAnimation.duration = 0.3;
-        strokeAnimation.duration = (_selected ? 0.8 : 0.6);
+            pathAnimation.duration = kZoomAnimationDuration;
+        strokeAnimation.duration = (_selected ? 0.8 : kZoomAnimationDuration);
         strokeAnimation.delegate = self;
 
         static const NSTimeInterval kThumbnailFadeDuration = 0.2;
