@@ -19,7 +19,7 @@
 
 NSString *const BBInstructionIndexChanged = @"BBInstructionIndexChanged";
 
-static const NSTimeInterval kClipToggleDuration = 0.1;
+static const NSTimeInterval kClipToggleDuration = 0.3;
 
 static const CGFloat kInstructionLabelMargin = 10.0f;
 
@@ -119,7 +119,7 @@ static BBProjectionViewController *__projectionViewController = nil;
     _clipTableView = [[BBClipTableView alloc] initWithFrame:view.bounds];
     _clipTableView.backgroundColor = [UIColor clearColor];
     _clipTableView.opaque = NO;
-    _clipTableView.layer.opacity = 0.0f;
+    _clipTableView.alpha = 0.0f;
     [view.layer addSublayer:_clipTableView.layer];
 
     _instructionLabel = [[BBTitleLabel alloc] initWithFrame:CGRectZero];
@@ -248,18 +248,18 @@ static BBProjectionViewController *__projectionViewController = nil;
 }
 
 - (void)updateForRodPosition {
-    [CATransaction begin];
-    [CATransaction setAnimationDuration:kClipToggleDuration];
     BOOL interfaceShown = (_rodPosition.zPos == BBRodPositionZFront);
-    if (interfaceShown) {
-        if (_instructionIndex == 0) {
-            _instructionLabel.text = [self nextInstruction];
-            [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+    [UIView animateWithDuration:kClipToggleDuration animations:^{
+        if (interfaceShown) {
+            if (_instructionIndex == 0) {
+                _instructionLabel.text = [self nextInstruction];
+                [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+            }
+            _clipTableView.alpha = ((_instructionIndex < ([_instructions count] - 1)) ? 0.5f : 1.0f);
+        } else {
+            _clipTableView.alpha = 0.0f;
         }
-        _clipTableView.layer.opacity = ((_instructionIndex < ([_instructions count] - 1)) ? 0.5f : 1.0f);
-    } else {
-        _clipTableView.layer.opacity = 0.0f;
-    }
+    }];
 
     if (interfaceShown && (_rodPosition.yPos == BBRodPositionYMiddle)) {
         BBClipView *newClip;
@@ -295,7 +295,6 @@ static BBProjectionViewController *__projectionViewController = nil;
     } else {
         self.currentClip = nil;
     }
-    [CATransaction commit];
 
     if (!interfaceShown && _instructionIndex == 4) {
         [UIView animateWithDuration:0.3 animations:^{
