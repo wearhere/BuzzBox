@@ -182,9 +182,9 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         CGColorRef strokeColor;
         if (selected) {
             bounds = (CGRect){CGPointZero, kSelectedClipSize};
-            strokeColor = CGColorCreateCopy([[UIColor colorWithRed:40.0f/255.0f
-                                                             green:135.0f/255.0f
-                                                              blue:170.0f/255.0f
+            strokeColor = CGColorCreateCopy([[UIColor colorWithRed:0.0f/255.0f
+                                                             green:180.0f/255.0f
+                                                              blue:220.0f/255.0f
                                                              alpha:1.0f] CGColor]);
         } else {
             bounds = self.superlayer.bounds;

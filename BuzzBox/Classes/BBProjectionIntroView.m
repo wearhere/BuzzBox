@@ -43,9 +43,9 @@ static const NSTimeInterval kCountdownDuration = 3.0;
         self.opaque = NO;
         
         self.shapeLayer.cornerRadius = 8.0f;
-        self.shapeLayer.strokeColor = [[UIColor colorWithRed:40.0f/255.0f
-                                                       green:135.0f/255.0f
-                                                        blue:170.0f/255.0f
+        self.shapeLayer.strokeColor = [[UIColor colorWithRed:0.0F/255.0f
+                                                       green:180.0f/255.0f
+                                                        blue:220.0f/255.0f
                                                        alpha:1.0f] CGColor];
         self.shapeLayer.fillColor = self.backgroundColor.CGColor;
 
