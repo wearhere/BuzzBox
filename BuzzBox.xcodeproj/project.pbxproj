@@ -23,6 +23,15 @@
 		F08F29B116EEEBFC00C76004 /* Color Mix in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AE16EEEBFC00C76004 /* Color Mix */; };
 		F08F29B216EEEBFC00C76004 /* Free Play in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AF16EEEBFC00C76004 /* Free Play */; };
 		F08F29B616EF044500C76004 /* BBClipTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F08F29B516EF044500C76004 /* BBClipTableView.m */; };
+		F08F29D116F07CB700C76004 /* Bead_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29C816F07CB700C76004 /* Bead_1.png */; };
+		F08F29D216F07CB700C76004 /* Bead_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29C916F07CB700C76004 /* Bead_2.png */; };
+		F08F29D316F07CB700C76004 /* Bead_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CA16F07CB700C76004 /* Bead_3.png */; };
+		F08F29D416F07CB700C76004 /* ColorMix_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CB16F07CB700C76004 /* ColorMix_1.png */; };
+		F08F29D516F07CB700C76004 /* ColorMix_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CC16F07CB700C76004 /* ColorMix_2.png */; };
+		F08F29D616F07CB700C76004 /* ColorMix_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CD16F07CB700C76004 /* ColorMix_3.png */; };
+		F08F29D716F07CB700C76004 /* FreePlay_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CE16F07CB700C76004 /* FreePlay_1.png */; };
+		F08F29D816F07CB700C76004 /* FreePlay_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CF16F07CB700C76004 /* FreePlay_2.png */; };
+		F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29D016F07CB700C76004 /* FreePlay_3.png */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -65,6 +74,15 @@
 		F08F29AF16EEEBFC00C76004 /* Free Play */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Free Play"; sourceTree = "<group>"; };
 		F08F29B416EF044500C76004 /* BBClipTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBClipTableView.h; sourceTree = "<group>"; };
 		F08F29B516EF044500C76004 /* BBClipTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBClipTableView.m; sourceTree = "<group>"; };
+		F08F29C816F07CB700C76004 /* Bead_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_1.png; sourceTree = "<group>"; };
+		F08F29C916F07CB700C76004 /* Bead_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_2.png; sourceTree = "<group>"; };
+		F08F29CA16F07CB700C76004 /* Bead_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_3.png; sourceTree = "<group>"; };
+		F08F29CB16F07CB700C76004 /* ColorMix_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorMix_1.png; sourceTree = "<group>"; };
+		F08F29CC16F07CB700C76004 /* ColorMix_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorMix_2.png; sourceTree = "<group>"; };
+		F08F29CD16F07CB700C76004 /* ColorMix_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ColorMix_3.png; sourceTree = "<group>"; };
+		F08F29CE16F07CB700C76004 /* FreePlay_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_1.png; sourceTree = "<group>"; };
+		F08F29CF16F07CB700C76004 /* FreePlay_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_2.png; sourceTree = "<group>"; };
+		F08F29D016F07CB700C76004 /* FreePlay_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_3.png; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -159,6 +177,22 @@
 			name = Projection;
 			sourceTree = "<group>";
 		};
+		F08F29C716F07AA900C76004 /* Thumbnails */ = {
+			isa = PBXGroup;
+			children = (
+				F08F29C816F07CB700C76004 /* Bead_1.png */,
+				F08F29C916F07CB700C76004 /* Bead_2.png */,
+				F08F29CA16F07CB700C76004 /* Bead_3.png */,
+				F08F29CB16F07CB700C76004 /* ColorMix_1.png */,
+				F08F29CC16F07CB700C76004 /* ColorMix_2.png */,
+				F08F29CD16F07CB700C76004 /* ColorMix_3.png */,
+				F08F29CE16F07CB700C76004 /* FreePlay_1.png */,
+				F08F29CF16F07CB700C76004 /* FreePlay_2.png */,
+				F08F29D016F07CB700C76004 /* FreePlay_3.png */,
+			);
+			path = Thumbnails;
+			sourceTree = "<group>";
+		};
 		F0E9D6A916E51D440005A391 = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +273,7 @@
 				F044EC0216E802C000052108 /* blur.png */,
 				F044EBE316E7EEFC00052108 /* Illustrations */,
 				F044EBE216E7EE9E00052108 /* Clips */,
+				F08F29C716F07AA900C76004 /* Thumbnails */,
 				F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */,
 			);
 			path = Resources;
@@ -309,6 +344,15 @@
 				F08F29B016EEEBFC00C76004 /* Bead in Resources */,
 				F08F29B116EEEBFC00C76004 /* Color Mix in Resources */,
 				F08F29B216EEEBFC00C76004 /* Free Play in Resources */,
+				F08F29D116F07CB700C76004 /* Bead_1.png in Resources */,
+				F08F29D216F07CB700C76004 /* Bead_2.png in Resources */,
+				F08F29D316F07CB700C76004 /* Bead_3.png in Resources */,
+				F08F29D416F07CB700C76004 /* ColorMix_1.png in Resources */,
+				F08F29D516F07CB700C76004 /* ColorMix_2.png in Resources */,
+				F08F29D616F07CB700C76004 /* ColorMix_3.png in Resources */,
+				F08F29D716F07CB700C76004 /* FreePlay_1.png in Resources */,
+				F08F29D816F07CB700C76004 /* FreePlay_2.png in Resources */,
+				F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

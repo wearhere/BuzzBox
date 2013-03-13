@@ -29,13 +29,16 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 @end
 
 @implementation BBClipLayer {
+    NSString *_clipPath;
     CALayer *_clipClippingLayer;
     AVPlayerLayer *_clip;
+    UIImageView *_clipThumbnailImageView;
 }
 
 - (instancetype)initWithClip:(NSString *)clipPath position:(BBClipPosition)position {
     self = [super init];
     if (self) {
+        _clipPath = clipPath;
         self.backgroundColor = [UIColor clearColor].CGColor;
         self.opaque = NO;
         self.cornerRadius = 8.0f;
@@ -56,12 +59,14 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         _clip = [AVPlayerLayer layer];
         _clip.backgroundColor = _clipClippingLayer.backgroundColor;
         _clip.opaque = _clipClippingLayer.opaque;
-
-        NSURL *clipURL = [NSURL fileURLWithPath:clipPath];
-        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:clipURL];
-        _clip.player = [AVPlayer playerWithPlayerItem:playerItem];
         _clip.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [_clipClippingLayer addSublayer:_clip];
+
+        NSString *clipThumbnailName = [[clipPath lastPathComponent] stringByDeletingPathExtension];
+        UIImage *clipThumbnailImage = [UIImage imageNamed:clipThumbnailName];
+        _clipThumbnailImageView = [[UIImageView alloc] initWithImage:clipThumbnailImage];
+        _clipThumbnailImageView.contentMode = UIViewContentModeScaleAspectFill;
+        [_clipClippingLayer addSublayer:_clipThumbnailImageView.layer];
 
         CGPoint anchorPoint;
         switch (position) {
@@ -90,6 +95,8 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
                             CGSizeMake(CGRectGetWidth(_clipClippingLayer.bounds),
                                        CGRectGetHeight(_clipClippingLayer.bounds) + 2.0f)};
     _clip.position = CGPointMake(CGRectGetMidX(_clipClippingLayer.bounds), CGRectGetMidY(_clipClippingLayer.bounds));
+    _clipThumbnailImageView.layer.bounds = _clipClippingLayer.bounds;
+    _clipThumbnailImageView.layer.position = CGPointMake(CGRectGetMidX(_clipClippingLayer.bounds), CGRectGetMidY(_clipClippingLayer.bounds));
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -102,13 +109,35 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         CABasicAnimation *clippingPositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         CABasicAnimation *clipBoundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
         CABasicAnimation *clipPositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        CABasicAnimation *clipThumbnailBoundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
+        CABasicAnimation *clipThumbnailPositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         CABasicAnimation *strokeAnimation = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
-        boundsAnimation.duration = clippingBoundsAnimation.duration = clipBoundsAnimation.duration =
+        boundsAnimation.duration =
+            clippingBoundsAnimation.duration = clipBoundsAnimation.duration =
             clippingPositionAnimation.duration = clipPositionAnimation.duration =
+            clipThumbnailBoundsAnimation.duration = clipThumbnailPositionAnimation.duration =
             pathAnimation.duration = 0.3;
-        strokeAnimation.duration = 0.6;
+        strokeAnimation.duration = (_selected ? 0.8 : 0.6);
         strokeAnimation.delegate = self;
+
+        static const NSTimeInterval kThumbnailFadeDuration = 0.2;
+        NSTimeInterval thumbnailFadeDelay = strokeAnimation.duration - kThumbnailFadeDuration;
+        [UIView animateWithDuration:0.2
+                              delay:(_selected ? thumbnailFadeDelay : 0.0)
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             _clipThumbnailImageView.alpha = (_selected ? 0.0f : 1.0f);
+                         } completion:nil];
+        if (_selected) {
+            BBClipLayer *__weak weakSelf = self;
+            double delayInSeconds = thumbnailFadeDelay - 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                BBClipLayer *strongSelf = weakSelf;
+                if (strongSelf->_selected) [strongSelf load];
+            });
+        }
 
         CGRect bounds;
         CGColorRef strokeColor;
@@ -126,19 +155,23 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         boundsAnimation.fromValue = [NSValue valueWithCGRect:self.bounds];
         pathAnimation.fromValue = (__bridge id)(self.path);
         clippingBoundsAnimation.fromValue = [NSValue valueWithCGRect:_clipClippingLayer.bounds];
-        clipPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clipClippingLayer.position];
+        clippingPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clipClippingLayer.position];
         clipBoundsAnimation.fromValue = [NSValue valueWithCGRect:_clip.bounds];
         clipPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clip.position];
+        clipThumbnailBoundsAnimation.fromValue = [NSValue valueWithCGRect:_clipThumbnailImageView.layer.bounds];
+        clipThumbnailPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clipThumbnailImageView.layer.position];
 
         self.bounds = bounds;
         [self setNeedsLayout];
         [self layoutIfNeeded];
         
         [self addAnimation:boundsAnimation forKey:@"bounds"];
-        [_clipClippingLayer addAnimation:boundsAnimation forKey:@"bounds"];
+        [_clipClippingLayer addAnimation:clippingBoundsAnimation forKey:@"bounds"];
         [_clipClippingLayer addAnimation:clippingPositionAnimation forKey:@"position"];
-        [_clip addAnimation:boundsAnimation forKey:@"bounds"];
+        [_clip addAnimation:clipBoundsAnimation forKey:@"bounds"];
         [_clip addAnimation:clipPositionAnimation forKey:@"position"];
+        [_clipThumbnailImageView.layer addAnimation:clipThumbnailBoundsAnimation forKey:@"bounds"];
+        [_clipThumbnailImageView.layer addAnimation:clipThumbnailPositionAnimation forKey:@"position"];
 
         [self addAnimation:pathAnimation forKey:@"path"];
 
@@ -152,7 +185,16 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if ([anim isKindOfClass:[CABasicAnimation class]] &&
         [((CABasicAnimation *)anim).keyPath isEqualToString:@"strokeColor"] && _selected) {
+        [self load];
         [self play];
+    }
+}
+
+- (void)load {
+    if (!_clip.player) {
+        NSURL *clipURL = [NSURL fileURLWithPath:_clipPath];
+        AVPlayerItem *playerItem = [AVPlayerItem playerItemWithURL:clipURL];
+        _clip.player = [AVPlayer playerWithPlayerItem:playerItem];
     }
 }
 
