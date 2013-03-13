@@ -48,7 +48,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     NSInteger _instructionIndex;
 
     UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
-    UITapGestureRecognizer *_toggleClipGestureRecognizer;
+    UITapGestureRecognizer *_beginTutorialGestureRecognizer;
     UISwipeGestureRecognizer *_previousRowGestureRecognizer, *_nextRowGestureRecognizer;
     BBReceiver *_receiver;
 
@@ -98,7 +98,6 @@ static BBProjectionViewController *__projectionViewController = nil;
     _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh cameraPosition:AVCaptureDevicePositionBack];
     _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
 
-    _backgroundBlurred = YES;
     _filter = [[GPUImageFastBlurFilter alloc] init];
     _filter.blurPasses = 5;
     _filter.blurSize = 5.0f;
@@ -106,10 +105,11 @@ static BBProjectionViewController *__projectionViewController = nil;
     _filteredVideoView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
     [view.layer addSublayer:_filteredVideoView.layer];
 
-    [_videoCamera addTarget:_filter];
-    [_filter addTarget:_filteredVideoView];
+    // start un-filtered
+    [_videoCamera addTarget:_filteredVideoView];
 
     _introView = [[BBProjectionIntroView alloc] initWithFrame:CGRectZero];
+    _introView.alpha = 0.0f;
     [view.layer addSublayer:_introView.layer];
     
     _illustrationImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
@@ -142,16 +142,15 @@ static BBProjectionViewController *__projectionViewController = nil;
 
     [_videoCamera startCameraCapture];
 
-    [self setBackgroundBlurred:YES];
     [self updateForRodPosition];
 
     _toggleInterfaceGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleInterface)];
     _toggleInterfaceGestureRecognizer.delegate = self;
     [_filteredVideoView addGestureRecognizer:_toggleInterfaceGestureRecognizer];
 
-    _toggleClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleClip)];
-    _toggleClipGestureRecognizer.delegate = self;
-    [_filteredVideoView addGestureRecognizer:_toggleClipGestureRecognizer];
+    _beginTutorialGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(beginTutorial)];
+    _beginTutorialGestureRecognizer.delegate = self;
+    [_filteredVideoView addGestureRecognizer:_beginTutorialGestureRecognizer];
 
     _previousRowGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousRow)];
     _previousRowGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
@@ -181,17 +180,6 @@ static BBProjectionViewController *__projectionViewController = nil;
         BBProjectionViewController *strongSelf = weakSelf;
         [args[0] getValue:&(strongSelf->_rodPosition.yPos)];
         [strongSelf updateForRodPosition];
-    }];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [_introView countDownWithCompletion:^{
-        [UIView animateWithDuration:.3 animations:^{
-            _introView.alpha = 0.0f;
-            [self setBackgroundBlurred:NO];
-            _instructionLabel.alpha = 1.0f;
-        }];
     }];
 }
 
@@ -243,7 +231,7 @@ static BBProjectionViewController *__projectionViewController = nil;
     BOOL touchIsInLeftHalf = ([touch locationInView:self.view].x < CGRectGetMidX(self.view.bounds));
     if (gestureRecognizer == _toggleInterfaceGestureRecognizer) {
         return touchIsInLeftHalf;
-    } else if (gestureRecognizer == _toggleClipGestureRecognizer) {
+    } else if (gestureRecognizer == _beginTutorialGestureRecognizer) {
         return !touchIsInLeftHalf;
     } else {
         return YES;
@@ -315,7 +303,7 @@ static BBProjectionViewController *__projectionViewController = nil;
         }];
     }
 
-    [self setBackgroundBlurred:(interfaceShown || _instructionIndex == 0)];
+    [self setBackgroundBlurred:interfaceShown];
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
         if (!interfaceShown && [self.currentIllustrationImages count]) {
@@ -378,14 +366,19 @@ static BBProjectionViewController *__projectionViewController = nil;
     [_clipTableView nextRow];
 }
 
-- (void)toggleClip {
-    _rodPosition.yPos = BBRodPositionYMiddle;
-    if (_rodPosition.xPos == BBRodPositionXNone) {
-        _rodPosition.xPos = BBRodPositionXCenter;
-    } else {
-        _rodPosition.xPos = BBRodPositionXNone;
-    }
-    [self updateForRodPosition];
+- (void)beginTutorial {
+    [UIView animateWithDuration:0.3 animations:^{
+        [self setBackgroundBlurred:YES];
+        _introView.alpha = 1.0f;
+    } completion:^(BOOL finished) {
+        [_introView countDownWithCompletion:^{
+            [UIView animateWithDuration:.3 animations:^{
+                _introView.alpha = 0.0f;
+                [self setBackgroundBlurred:NO];
+                _instructionLabel.alpha = 1.0f;
+            }];
+        }];
+    }];
 }
 
 @end
