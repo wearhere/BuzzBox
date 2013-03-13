@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F044EC0316E802C000052108 /* blur.png in Resources */ = {isa = PBXBuildFile; fileRef = F044EC0216E802C000052108 /* blur.png */; };
 		F044EC3E16E9671500052108 /* BBConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC3C16E9671500052108 /* BBConfigurationViewController.m */; };
 		F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */; };
 		F044EC4316E96C6C00052108 /* BBWizardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC4116E96C6C00052108 /* BBWizardViewController.m */; };
@@ -44,6 +43,7 @@
 		F0C0FB6816F0A44800CA0501 /* BBProjectionIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C0FB6716F0A44800CA0501 /* BBProjectionIntroView.m */; };
 		F0C0FB6B16F0ADA000CA0501 /* BBTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C0FB6A16F0ADA000CA0501 /* BBTitleLabel.m */; };
 		F0C0FB6D16F0ADF500CA0501 /* Instructions.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */; };
+		F0C0FB8616F0BDB000CA0501 /* tint-01.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB8516F0BDB000CA0501 /* tint-01.png */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -62,7 +62,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F044EC0216E802C000052108 /* blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blur.png; sourceTree = "<group>"; };
 		F044EC3B16E9671500052108 /* BBConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBConfigurationViewController.h; sourceTree = "<group>"; };
 		F044EC3C16E9671500052108 /* BBConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBConfigurationViewController.m; sourceTree = "<group>"; };
 		F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BBConfigurationViewController.xib; sourceTree = "<group>"; };
@@ -109,6 +108,7 @@
 		F0C0FB6916F0ADA000CA0501 /* BBTitleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBTitleLabel.h; sourceTree = "<group>"; };
 		F0C0FB6A16F0ADA000CA0501 /* BBTitleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBTitleLabel.m; sourceTree = "<group>"; };
 		F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Instructions.plist; sourceTree = "<group>"; };
+		F0C0FB8516F0BDB000CA0501 /* tint-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tint-01.png"; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -315,8 +315,8 @@
 		F0E9D6F416E5B7BB0005A391 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F0C0FB8516F0BDB000CA0501 /* tint-01.png */,
 				F08F29F116F0827B00C76004 /* Fonts */,
-				F044EC0216E802C000052108 /* blur.png */,
 				F044EBE316E7EEFC00052108 /* Illustrations */,
 				F044EBE216E7EE9E00052108 /* Clips */,
 				F08F29C716F07AA900C76004 /* Thumbnails */,
@@ -384,7 +384,6 @@
 				F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */,
 				F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */,
 				F0E9D70C16E5BD9C0005A391 /* ClipCollections.plist in Resources */,
-				F044EC0316E802C000052108 /* blur.png in Resources */,
 				F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */,
 				F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */,
 				F08F29B016EEEBFC00C76004 /* Bead in Resources */,
@@ -411,6 +410,7 @@
 				F08F29F516F0832E00C76004 /* ClipTitles.plist in Resources */,
 				F0C0FB6516F09FCD00CA0501 /* Bead_3 in Resources */,
 				F0C0FB6D16F0ADF500CA0501 /* Instructions.plist in Resources */,
+				F0C0FB8616F0BDB000CA0501 /* tint-01.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -87,7 +87,8 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [view.layer addSublayer:_videoPreviewLayer];
 
-    _videoBlurImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blur.png"]];
+    _videoBlurImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tint-01.png"]];
+    _videoBlurImageView.contentMode = UIViewContentModeScaleAspectFill;
     [view.layer addSublayer:_videoBlurImageView.layer];
     
     _introView = [[BBProjectionIntroView alloc] initWithFrame:CGRectZero];

@@ -7,13 +7,14 @@
 //
 
 #import "BBProjectionIntroView.h"
+#import "BBTitleLabel.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 
 static const CGFloat kIntroLabelMargin = 20.0f;
 
-static const NSTimeInterval kCountdownDuration = 3.0;
+static const NSTimeInterval kCountdownDuration = 7.0;
 
 @interface BBIntroLabel : UIView
 - (void)countDownWithDuration:(NSTimeInterval)duration;
@@ -24,7 +25,7 @@ static const NSTimeInterval kCountdownDuration = 3.0;
 @end
 
 @implementation BBIntroLabel {
-    UILabel *_label;
+    BBTitleLabel *_label;
 }
 
 + (Class)layerClass {
@@ -48,10 +49,11 @@ static const NSTimeInterval kCountdownDuration = 3.0;
                                                        alpha:1.0f] CGColor];
         self.shapeLayer.fillColor = self.backgroundColor.CGColor;
 
-        _label = [[UILabel alloc] initWithFrame:CGRectZero];
+        _label = [[BBTitleLabel alloc] initWithFrame:CGRectZero];
         _label.backgroundColor = self.backgroundColor;
         _label.opaque = self.opaque;
         _label.font = [UIFont fontWithName:@"ApexNew-Medium" size:20.0f];
+        _label.textColor = [UIColor whiteColor];
         _label.textAlignment = NSTextAlignmentCenter;
         _label.numberOfLines = 2;
         _label.text = @"Welcome to BuzzBox!\nLet's get started.";
