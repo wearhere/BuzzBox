@@ -25,8 +25,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
 @interface BBProjectionViewController () <UIGestureRecognizerDelegate>
 @property (nonatomic, weak) BBClipView *currentClip;
-@property (nonatomic) NSUInteger currentClipIndex;
-@property (nonatomic, strong) AVPlayerItem *currentClipItem;
 @property (nonatomic, strong) NSArray *currentIllustrationImages;
 @end
 
@@ -37,16 +35,12 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
     UIImageView *_videoBlurImageView;
 
-    NSArray *_clips;
-    CALayer *_clipFrameLayer;
-    AVPlayerLayer *_clipPlayerLayer;
-    UIImageView *_illustrationImageView;
-
     UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_previousRowGestureRecognizer, *_nextRowGestureRecognizer;
     BBReceiver *_receiver;
 
+    UIImageView *_illustrationImageView;
     BBClipTableView *_clipTableView;
 }
 
@@ -59,9 +53,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 #endif
         _session = session;
         _receiver = receiver;
-
-        NSString *clipsPath = [[NSBundle mainBundle] pathForResource:@"Clips" ofType:@"plist"];
-        _clips = [NSArray arrayWithContentsOfFile:clipsPath];
     }
     return self;
 }
@@ -249,7 +240,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
             _illustrationImageView.alpha = 1.0f;
             // retrieve the animation images if necessary
             _illustrationImageView.animationImages = self.currentIllustrationImages;
-            _illustrationImageView.animationDuration = 3.0;
+            // 3 seconds for 4 images
+            static const CGFloat kAnimationFrameRate = 3.0 / 4.0;
+            _illustrationImageView.animationDuration = kAnimationFrameRate * [_illustrationImageView.animationImages count];
             [_illustrationImageView startAnimating];
         } else {
             [_illustrationImageView stopAnimating];
@@ -269,37 +262,20 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         [_currentClip setSelected:NO];
         _currentClip = currentClip;
         [_currentClip setSelected:YES];
-    }
-}
 
-- (void)setCurrentClipIndex:(NSUInteger)currentClipIndex {
-    if (currentClipIndex != _currentClipIndex) {
-        _currentClipIndex = currentClipIndex;
-
-        // refresh media
-        self.currentClipItem = nil;
-        [_clipPlayerLayer.player replaceCurrentItemWithPlayerItem:self.currentClipItem];
-        self.currentIllustrationImages = nil;
-        _illustrationImageView.animationImages = self.currentIllustrationImages;
+        // note that the illustration images are not cleared when the current clip is cleared
+        // because the images corresponding to the last clip display while the interface is hidden
+        if (_currentClip) {
+            self.currentIllustrationImages = nil;
+            _illustrationImageView.animationImages = self.currentIllustrationImages;
+        }
     }
-}
-
-- (AVPlayerItem *)currentClipItem {
-    if (!_currentClipItem) {
-        // the clip names include their extensions
-        NSString *clipPath = [[NSBundle mainBundle] pathForResource:@"FreePlay_2.mov" ofType:nil inDirectory:@"Free Play"];
-        NSURL *clipURL = [NSURL fileURLWithPath:clipPath];
-        _currentClipItem = [AVPlayerItem playerItemWithURL:clipURL];
-    }
-    return _currentClipItem;
 }
 
 - (NSArray *)currentIllustrationImages {
-    if (!_currentIllustrationImages) {
-        NSString *currentClipName = [_clips[self.currentClipIndex] stringByDeletingPathExtension];
-
+    if (!_currentIllustrationImages && _currentClip) {
         NSMutableArray *images = [NSMutableArray array];
-        for (NSString *imagePath in [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:currentClipName]) {
+        for (NSString *imagePath in [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:_currentClip.name]) {
             UIImage *image = [[UIImage alloc] initWithContentsOfFile:imagePath];
             [images addObject:image];
         }

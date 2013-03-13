@@ -328,6 +328,7 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 @end
 
 @implementation BBClipView {
+    NSString *_name;
     BBClipLayer *_clipLayer;
 
     UITapGestureRecognizer *_toggleSelectedRecognizer;
@@ -337,6 +338,8 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 - (instancetype)initWithClip:(NSString *)clipPath position:(BBClipPosition)position {
     self = [super initWithFrame:CGRectZero];
     if (self) {
+        _name = [[clipPath lastPathComponent] stringByDeletingPathExtension];
+        
         self.layer.backgroundColor = [UIColor clearColor].CGColor;
         self.layer.opaque = NO;
 

@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFC16E7F24400052108 /* ApplyGlassForBead */; };
-		F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */ = {isa = PBXBuildFile; fileRef = F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */; };
 		F044EC0316E802C000052108 /* blur.png in Resources */ = {isa = PBXBuildFile; fileRef = F044EC0216E802C000052108 /* blur.png */; };
 		F044EC3E16E9671500052108 /* BBConfigurationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F044EC3C16E9671500052108 /* BBConfigurationViewController.m */; };
 		F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F044EC3D16E9671500052108 /* BBConfigurationViewController.xib */; };
@@ -23,6 +21,14 @@
 		F08F29B116EEEBFC00C76004 /* Color Mix in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AE16EEEBFC00C76004 /* Color Mix */; };
 		F08F29B216EEEBFC00C76004 /* Free Play in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AF16EEEBFC00C76004 /* Free Play */; };
 		F08F29B616EF044500C76004 /* BBClipTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F08F29B516EF044500C76004 /* BBClipTableView.m */; };
+		F08F29BF16F07A8400C76004 /* Bead_1 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29B716F07A8400C76004 /* Bead_1 */; };
+		F08F29C016F07A8400C76004 /* Bead_2 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29B816F07A8400C76004 /* Bead_2 */; };
+		F08F29C116F07A8400C76004 /* ColorMix_1 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29B916F07A8400C76004 /* ColorMix_1 */; };
+		F08F29C216F07A8400C76004 /* ColorMix_2 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29BA16F07A8400C76004 /* ColorMix_2 */; };
+		F08F29C316F07A8400C76004 /* ColorMix_3 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29BB16F07A8400C76004 /* ColorMix_3 */; };
+		F08F29C416F07A8400C76004 /* FreePlay_1 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29BC16F07A8400C76004 /* FreePlay_1 */; };
+		F08F29C516F07A8400C76004 /* FreePlay_2 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29BD16F07A8400C76004 /* FreePlay_2 */; };
+		F08F29C616F07A8400C76004 /* FreePlay_3 in Resources */ = {isa = PBXBuildFile; fileRef = F08F29BE16F07A8400C76004 /* FreePlay_3 */; };
 		F08F29D116F07CB700C76004 /* Bead_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29C816F07CB700C76004 /* Bead_1.png */; };
 		F08F29D216F07CB700C76004 /* Bead_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29C916F07CB700C76004 /* Bead_2.png */; };
 		F08F29D316F07CB700C76004 /* Bead_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CA16F07CB700C76004 /* Bead_3.png */; };
@@ -34,6 +40,7 @@
 		F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29D016F07CB700C76004 /* FreePlay_3.png */; };
 		F08F29F316F082B200C76004 /* apexnewmedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F08F29F216F082B200C76004 /* apexnewmedium.ttf */; };
 		F08F29F516F0832E00C76004 /* ClipTitles.plist in Resources */ = {isa = PBXBuildFile; fileRef = F08F29F416F0832E00C76004 /* ClipTitles.plist */; };
+		F0C0FB6516F09FCD00CA0501 /* Bead_3 in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB6416F09FCD00CA0501 /* Bead_3 */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -52,8 +59,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		F044EBFC16E7F24400052108 /* ApplyGlassForBead */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ApplyGlassForBead; sourceTree = "<group>"; };
-		F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMixingLateralStripe_6; sourceTree = "<group>"; };
 		F044EC0216E802C000052108 /* blur.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blur.png; sourceTree = "<group>"; };
 		F044EC3B16E9671500052108 /* BBConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBConfigurationViewController.h; sourceTree = "<group>"; };
 		F044EC3C16E9671500052108 /* BBConfigurationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBConfigurationViewController.m; sourceTree = "<group>"; };
@@ -76,6 +81,14 @@
 		F08F29AF16EEEBFC00C76004 /* Free Play */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Free Play"; sourceTree = "<group>"; };
 		F08F29B416EF044500C76004 /* BBClipTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBClipTableView.h; sourceTree = "<group>"; };
 		F08F29B516EF044500C76004 /* BBClipTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBClipTableView.m; sourceTree = "<group>"; };
+		F08F29B716F07A8400C76004 /* Bead_1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bead_1; sourceTree = "<group>"; };
+		F08F29B816F07A8400C76004 /* Bead_2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bead_2; sourceTree = "<group>"; };
+		F08F29B916F07A8400C76004 /* ColorMix_1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMix_1; sourceTree = "<group>"; };
+		F08F29BA16F07A8400C76004 /* ColorMix_2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMix_2; sourceTree = "<group>"; };
+		F08F29BB16F07A8400C76004 /* ColorMix_3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ColorMix_3; sourceTree = "<group>"; };
+		F08F29BC16F07A8400C76004 /* FreePlay_1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FreePlay_1; sourceTree = "<group>"; };
+		F08F29BD16F07A8400C76004 /* FreePlay_2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FreePlay_2; sourceTree = "<group>"; };
+		F08F29BE16F07A8400C76004 /* FreePlay_3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = FreePlay_3; sourceTree = "<group>"; };
 		F08F29C816F07CB700C76004 /* Bead_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_1.png; sourceTree = "<group>"; };
 		F08F29C916F07CB700C76004 /* Bead_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_2.png; sourceTree = "<group>"; };
 		F08F29CA16F07CB700C76004 /* Bead_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bead_3.png; sourceTree = "<group>"; };
@@ -87,6 +100,7 @@
 		F08F29D016F07CB700C76004 /* FreePlay_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_3.png; sourceTree = "<group>"; };
 		F08F29F216F082B200C76004 /* apexnewmedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = apexnewmedium.ttf; sourceTree = "<group>"; };
 		F08F29F416F0832E00C76004 /* ClipTitles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ClipTitles.plist; sourceTree = "<group>"; };
+		F0C0FB6416F09FCD00CA0501 /* Bead_3 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bead_3; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -140,8 +154,15 @@
 		F044EBE316E7EEFC00052108 /* Illustrations */ = {
 			isa = PBXGroup;
 			children = (
-				F044EBFC16E7F24400052108 /* ApplyGlassForBead */,
-				F044EBFD16E7F24400052108 /* ColorMixingLateralStripe_6 */,
+				F08F29B716F07A8400C76004 /* Bead_1 */,
+				F08F29B816F07A8400C76004 /* Bead_2 */,
+				F0C0FB6416F09FCD00CA0501 /* Bead_3 */,
+				F08F29B916F07A8400C76004 /* ColorMix_1 */,
+				F08F29BA16F07A8400C76004 /* ColorMix_2 */,
+				F08F29BB16F07A8400C76004 /* ColorMix_3 */,
+				F08F29BC16F07A8400C76004 /* FreePlay_1 */,
+				F08F29BD16F07A8400C76004 /* FreePlay_2 */,
+				F08F29BE16F07A8400C76004 /* FreePlay_3 */,
 			);
 			path = Illustrations;
 			sourceTree = "<group>";
@@ -350,14 +371,20 @@
 				F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */,
 				F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */,
 				F0E9D70C16E5BD9C0005A391 /* ClipCollections.plist in Resources */,
-				F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */,
-				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
 				F044EC0316E802C000052108 /* blur.png in Resources */,
 				F044EC3F16E9671500052108 /* BBConfigurationViewController.xib in Resources */,
 				F044EC4416E96C6C00052108 /* BBWizardViewController.xib in Resources */,
 				F08F29B016EEEBFC00C76004 /* Bead in Resources */,
 				F08F29B116EEEBFC00C76004 /* Color Mix in Resources */,
 				F08F29B216EEEBFC00C76004 /* Free Play in Resources */,
+				F08F29BF16F07A8400C76004 /* Bead_1 in Resources */,
+				F08F29C016F07A8400C76004 /* Bead_2 in Resources */,
+				F08F29C116F07A8400C76004 /* ColorMix_1 in Resources */,
+				F08F29C216F07A8400C76004 /* ColorMix_2 in Resources */,
+				F08F29C316F07A8400C76004 /* ColorMix_3 in Resources */,
+				F08F29C416F07A8400C76004 /* FreePlay_1 in Resources */,
+				F08F29C516F07A8400C76004 /* FreePlay_2 in Resources */,
+				F08F29C616F07A8400C76004 /* FreePlay_3 in Resources */,
 				F08F29D116F07CB700C76004 /* Bead_1.png in Resources */,
 				F08F29D216F07CB700C76004 /* Bead_2.png in Resources */,
 				F08F29D316F07CB700C76004 /* Bead_3.png in Resources */,
@@ -369,6 +396,7 @@
 				F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */,
 				F08F29F316F082B200C76004 /* apexnewmedium.ttf in Resources */,
 				F08F29F516F0832E00C76004 /* ClipTitles.plist in Resources */,
+				F0C0FB6516F09FCD00CA0501 /* Bead_3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,6 +11,7 @@
 
 @interface BBClipView : UIView
 
+@property (nonatomic, readonly) NSString *name;
 - (void)setSelected:(BOOL)selected;
 
 @end
