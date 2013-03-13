@@ -10,24 +10,13 @@
 
 @implementation BBTitleLabel
 
-- (void)drawTextInRect:(CGRect)rect {
-    CGSize shadowOffset = self.shadowOffset;
-    UIColor *textColor = self.textColor;
-
-    CGContextRef c = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(c, 1);
-    CGContextSetLineJoin(c, kCGLineJoinRound);
-
-    CGContextSetTextDrawingMode(c, kCGTextStroke);
-    self.textColor = [UIColor blackColor];
-    [super drawTextInRect:rect];
-
-    CGContextSetTextDrawingMode(c, kCGTextFill);
-    self.textColor = textColor;
-    self.shadowOffset = CGSizeMake(0, 0);
-    [super drawTextInRect:rect];
-
-    self.shadowOffset = shadowOffset;
+- (id)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.shadowColor = [UIColor blackColor];
+        self.shadowOffset = CGSizeMake(0.0, 2.25f);
+    }
+    return self;
 }
 
 @end
