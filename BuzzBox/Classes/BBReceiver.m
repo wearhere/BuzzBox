@@ -44,7 +44,7 @@
     _senderConnection = nil;
 }
 
-- (void)registerMessageReceived:(NSString *)message handler:(void (^)(void))handler {
+- (void)registerMessageReceived:(NSString *)message handler:(void (^)(NSArray *))handler {
     _handlers[message] = [handler copy];
 }
 
@@ -60,9 +60,10 @@
 
 - (void)receivedNetworkPacket:(NSDictionary*)packet viaConnection:(Connection*)connection {
     NSString *messageName = packet[BBMessageName];
-    void(^handler)(void) = _handlers[messageName];
+    NSArray *messageArgs = packet[BBMessageArgs];
+    void(^handler)(NSArray *) = _handlers[messageName];
     if (handler) {
-        handler();
+        handler(messageArgs);
     }
 }
 

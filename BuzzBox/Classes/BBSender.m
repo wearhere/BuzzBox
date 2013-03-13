@@ -44,8 +44,8 @@
     [_receiverConnection close];
 }
 
-- (void)sendMessage:(NSString *)message {
-    [_receiverConnection sendNetworkPacket:@{ BBMessageName: message }];
+- (void)sendMessage:(NSString *)message args:(NSArray *)args {
+    [_receiverConnection sendNetworkPacket:@{ BBMessageName: message, BBMessageArgs: args }];
 }
 
 #pragma mark - ServerDelegate Method Implementations

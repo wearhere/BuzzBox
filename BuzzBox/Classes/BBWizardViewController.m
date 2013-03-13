@@ -44,42 +44,17 @@
 @end
 
 
-typedef NS_ENUM(NSUInteger, BBRodPositionX) {
-    BBRodPositionXNone,
-    BBRodPositionXLeft,
-    BBRodPositionXMiddle,
-    BBRodPositionXRight
-};
-
-typedef NS_ENUM(NSUInteger, BBRodPositionY) {
-    BBRodPositionYNone,
-    BBRodPositionYUp,
-    BBRodPositionYDown
-};
-
-typedef NS_ENUM(NSUInteger, BBRodPositionZ) {
-    BBRodPositionZBack,
-    BBRodPositionZFront
-};
-
-struct BBRodPosition {
-    BBRodPositionX xPos;
-    BBRodPositionY yPos;
-    BBRodPositionZ zPos;
-};
-typedef struct BBRodPosition BBRodPosition;
-
 static const CGSize kRodSize = {50.0f, 50.0f};
-
 
 @interface BBWizardViewController () <UIGestureRecognizerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *flameView;
 @property (weak, nonatomic) IBOutlet BBFenceView *fenceView;
 @property (weak, nonatomic) IBOutlet UIView *rodLeftView;
-@property (weak, nonatomic) IBOutlet UIView *rodMiddleView;
+@property (weak, nonatomic) IBOutlet UIView *rodCenterView;
 @property (weak, nonatomic) IBOutlet UIView *rodRightView;
 @property (weak, nonatomic) IBOutlet UIView *upDownView;
 @property (weak, nonatomic) IBOutlet UIView *rodUpView;
+@property (weak, nonatomic) IBOutlet UIView *rodMiddleView;
 @property (weak, nonatomic) IBOutlet UIView *rodDownView;
 
 @end
@@ -178,8 +153,8 @@ static const CGSize kRodSize = {50.0f, 50.0f};
         CGPoint topDownRodCenter = _topDownRodView.center;
         if (CGRectContainsPoint(self.rodLeftView.frame, topDownRodCenter)) {
             newRodPos.xPos = BBRodPositionXLeft;
-        } else if (CGRectContainsPoint(self.rodMiddleView.frame, topDownRodCenter)) {
-            newRodPos.xPos = BBRodPositionXMiddle;
+        } else if (CGRectContainsPoint(self.rodCenterView.frame, topDownRodCenter)) {
+            newRodPos.xPos = BBRodPositionXCenter;
         } else if (CGRectContainsPoint(self.rodRightView.frame, topDownRodCenter)) {
             newRodPos.xPos = BBRodPositionXRight;
         }
@@ -187,6 +162,8 @@ static const CGSize kRodSize = {50.0f, 50.0f};
         CGPoint frontBackRodCenter = _frontBackRodView.center;
         if (CGRectContainsPoint(self.rodUpView.frame, frontBackRodCenter)) {
             newRodPos.yPos = BBRodPositionYUp;
+        } else if (CGRectContainsPoint(self.rodMiddleView.frame, frontBackRodCenter)) {
+            newRodPos.yPos = BBRodPositionYMiddle;
         } else if (CGRectContainsPoint(self.rodDownView.frame, frontBackRodCenter)) {
             newRodPos.yPos = BBRodPositionYDown;
         }
@@ -194,13 +171,13 @@ static const CGSize kRodSize = {50.0f, 50.0f};
 
     // generate notifications
     if (newRodPos.zPos != _rodPosition.zPos) {
-        NSLog(@"z pos changed: %u", newRodPos.zPos);
+        [_sender sendMessage:@"zPosChanged" args:@[ @(newRodPos.zPos) ]];
     }
     if (newRodPos.xPos != _rodPosition.xPos) {
-        NSLog(@"x pos changed: %u", newRodPos.xPos);
+        [_sender sendMessage:@"xPosChanged" args:@[ @(newRodPos.xPos) ]];
     }
     if (newRodPos.yPos != _rodPosition.yPos) {
-        NSLog(@"y pos changed: %u", newRodPos.yPos);
+        [_sender sendMessage:@"yPosChanged" args:@[ @(newRodPos.yPos) ]];
     }
 
     _rodPosition = newRodPos;

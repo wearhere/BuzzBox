@@ -12,6 +12,32 @@
 #define DEBUGGING_WIZARD_VIEW 0
 #define AUTO_RETRY 1
 
+typedef NS_ENUM(NSUInteger, BBRodPositionX) {
+    BBRodPositionXNone,
+    BBRodPositionXLeft,
+    BBRodPositionXRight,
+    BBRodPositionXCenter
+};
+
+typedef NS_ENUM(NSUInteger, BBRodPositionY) {
+    BBRodPositionYMiddle,
+    BBRodPositionYUp,
+    BBRodPositionYDown,
+    BBRodPositionYNone
+};
+
+typedef NS_ENUM(NSUInteger, BBRodPositionZ) {
+    BBRodPositionZBack,
+    BBRodPositionZFront
+};
+
+struct BBRodPosition {
+    BBRodPositionX xPos;
+    BBRodPositionY yPos;
+    BBRodPositionZ zPos;
+};
+typedef struct BBRodPosition BBRodPosition;
+
 @class BBSender;
 @interface BBWizardViewController : UIViewController
 

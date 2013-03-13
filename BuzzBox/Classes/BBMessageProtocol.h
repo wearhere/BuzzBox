@@ -9,3 +9,4 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const BBMessageName;
+extern NSString *const BBMessageArgs;

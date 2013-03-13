@@ -18,7 +18,7 @@
 
 - (BOOL)start;
 
-- (void)sendMessage:(NSString *)message;
+- (void)sendMessage:(NSString *)message args:(NSArray *)args;
 
 @end
 

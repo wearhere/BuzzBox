@@ -18,7 +18,7 @@
 
 - (BOOL)start;
 
-- (void)registerMessageReceived:(NSString *)message handler:(void (^)(void))handler;
+- (void)registerMessageReceived:(NSString *)message handler:(void (^)(NSArray *args))handler;
 
 @end
 

@@ -8,28 +8,33 @@
 
 #import "BBProjectionViewController.h"
 #import "BBReceiver.h"
+#import "BBClipTableView.h"
+#import "BBWizardViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
+
 
 static const CGSize kClipSize = (CGSize){280.0f, 280.0f};
 static const CGFloat kClipCornerRadius = 8.0f;
 static const CGFloat kClipFrameBorderWidth = 5.0f;
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
+static const NSTimeInterval kRowSwapRepeatDelay = 0.75;
+
 typedef NS_ENUM(NSUInteger, ClipState) {
-    ClipStateFrameShown,
-    ClipStateClipShown
+    ClipStateClipShown,
+    ClipStateFrameShown
 };
 
 @interface BBProjectionViewController () <UIGestureRecognizerDelegate>
-@property (nonatomic) BOOL interfaceShown;
-@property (nonatomic) ClipState clipState;
 @property (nonatomic) NSUInteger currentClipIndex;
 @property (nonatomic, strong) AVPlayerItem *currentClipItem;
 @property (nonatomic, strong) NSArray *currentIllustrationImages;
 @end
 
 @implementation BBProjectionViewController {
+    BBRodPosition _rodPosition;
+
     AVCaptureSession *_session;
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
     UIImageView *_videoBlurImageView;
@@ -41,8 +46,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
     UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
-    UISwipeGestureRecognizer *_nextClipGestureRecognizer;
+    UISwipeGestureRecognizer *_previousRowGestureRecognizer, *_nextRowGestureRecognizer;
+    NSTimer *_changeRowAgainTimer;
     BBReceiver *_receiver;
+
+    BBClipTableView *_clipTableView;
 }
 
 - (id)initWithAVCaptureSession:(AVCaptureSession *)session receiver:(BBReceiver *)receiver {
@@ -85,6 +93,16 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _videoBlurImageView.alpha = 0.0f;
     [view.layer addSublayer:_videoBlurImageView.layer];
 
+    _illustrationImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    _illustrationImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [view addSubview:_illustrationImageView];
+
+    _clipTableView = [[BBClipTableView alloc] initWithFrame:CGRectZero];
+    _clipTableView.backgroundColor = [UIColor clearColor];
+    _clipTableView.opaque = NO;
+    _clipTableView.layer.opacity = 0.0f;
+    [view addSubview:_clipTableView];
+
     _clipFrameLayer = [CALayer layer];
     _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
     _clipFrameLayer.opaque = NO;
@@ -93,7 +111,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
     _clipFrameLayer.shadowOpacity = 0.5f;
     _clipFrameLayer.shadowOffset = CGSizeMake(0.0f, 3.0f);
-    [view.layer addSublayer:_clipFrameLayer];
+    [_clipTableView.layer addSublayer:_clipFrameLayer];
 
     _clipPlayerLayer = [AVPlayerLayer layer];
     // the clear background color allows us to show the layer before the video has loaded
@@ -106,11 +124,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
                                                  name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     _clipPlayerLayer.player = avPlayer;
-    [view.layer addSublayer:_clipPlayerLayer];
-
-    _illustrationImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
-    _illustrationImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [view addSubview:_illustrationImageView];
+    [_clipTableView.layer addSublayer:_clipPlayerLayer];
 
     self.view = view;
 }
@@ -118,7 +132,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    [self updateViews];
+    [self updateForRodPosition];
 
     _toggleInterfaceGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleInterface)];
     _toggleInterfaceGestureRecognizer.delegate = self;
@@ -128,9 +142,13 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _toggleClipGestureRecognizer.delegate = self;
     [self.view addGestureRecognizer:_toggleClipGestureRecognizer];
 
-    _nextClipGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextClip)];
-    _nextClipGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-    [self.view addGestureRecognizer:_nextClipGestureRecognizer];
+    _previousRowGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousRow)];
+    _previousRowGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
+    [self.view addGestureRecognizer:_previousRowGestureRecognizer];
+
+    _nextRowGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextRow)];
+    _nextRowGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
+    [self.view addGestureRecognizer:_nextRowGestureRecognizer];
 
     [self registerMessageHandlers];
 }
@@ -138,21 +156,26 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)registerMessageHandlers {
     BBProjectionViewController *__weak weakSelf = self;
 
-    [_receiver registerMessageReceived:@"toggleInterface" handler:^{
-        [weakSelf toggleInterface];
+    [_receiver registerMessageReceived:@"zPosChanged" handler:^(NSArray *args) {
+        BBProjectionViewController *strongSelf = weakSelf;
+        [args[0] getValue:&(strongSelf->_rodPosition.zPos)];
+        [strongSelf updateForRodPosition];
     }];
-    [_receiver registerMessageReceived:@"toggleClip" handler:^{
-        [weakSelf toggleClip];
+    [_receiver registerMessageReceived:@"xPosChanged" handler:^(NSArray *args) {
+        BBProjectionViewController *strongSelf = weakSelf;
+        [args[0] getValue:&(strongSelf->_rodPosition.xPos)];
+        [strongSelf updateForRodPosition];
     }];
-    [_receiver registerMessageReceived:@"nextClip" handler:^{
-        [weakSelf nextClip];
+    [_receiver registerMessageReceived:@"yPosChanged" handler:^(NSArray *args) {
+        BBProjectionViewController *strongSelf = weakSelf;
+        [args[0] getValue:&(strongSelf->_rodPosition.yPos)];
+        [strongSelf updateForRodPosition];
     }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self updateVideoPreviewOrientation:self.interfaceOrientation];
-    if (_clipState == ClipStateClipShown) [_clipPlayerLayer.player play];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -168,6 +191,8 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipFrameLayer.position = _clipPlayerLayer.position;
 
     _illustrationImageView.frame = self.view.bounds;
+
+    _clipTableView.frame = self.view.bounds;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
@@ -207,65 +232,44 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     }
 }
 
-- (void)setInterfaceShown:(BOOL)interfaceShown {
-    if (interfaceShown != _interfaceShown) {
-        _interfaceShown = interfaceShown;
-        [self updateViews];
-    }
-}
-
 - (void)toggleInterface {
-    self.interfaceShown = !self.interfaceShown;
-}
-
-- (void)incrementClipState {
-    ClipState newClipState;
-    switch (self.clipState) {
-        case ClipStateFrameShown:
-            newClipState = ClipStateClipShown;
-            break;
-        case ClipStateClipShown:
-            newClipState = ClipStateFrameShown;
-            break;
+    if (_rodPosition.zPos == BBRodPositionZBack) {
+        _rodPosition.zPos = BBRodPositionZFront;
+    } else {
+        _rodPosition.zPos = BBRodPositionZBack;
     }
-    self.clipState = newClipState;
+    [self updateForRodPosition];
 }
 
-- (void)setClipState:(ClipState)clipState {
-    if (clipState != _clipState) {
-        _clipState = clipState;
-        [self updateViews];
-    }
-}
-
-- (void)updateViews {
+- (void)updateForRodPosition {
     [CATransaction begin];
     [CATransaction setAnimationDuration:kClipToggleDuration];
-    if (self.interfaceShown &&
-        (self.clipState == ClipStateClipShown)) {
+    BOOL interfaceShown = (_rodPosition.zPos == BBRodPositionZFront);
+    if (interfaceShown) {
+        _clipTableView.layer.opacity = 1.0f;
+    } else {
+        _clipTableView.layer.opacity = 0.0f;
+    }
+
+    if (interfaceShown &&
+        (_rodPosition.xPos != BBRodPositionXNone) &&
+        (_rodPosition.yPos == BBRodPositionYMiddle)) {
         _clipPlayerLayer.hidden = NO;
         [_clipPlayerLayer.player play];
+        _clipFrameLayer.hidden = NO;
     } else {
         [_clipPlayerLayer.player pause];
         _clipPlayerLayer.hidden = YES;
-    }
-
-    if (self.interfaceShown &&
-        (self.clipState == ClipStateFrameShown || self.clipState == ClipStateClipShown)) {
-        _clipFrameLayer.hidden = NO;
-    } else {
         _clipFrameLayer.hidden = YES;
     }
     [CATransaction commit];
 
-    if (self.interfaceShown) {
-        [UIView animateWithDuration:kClipToggleDuration animations:^{
-            _videoBlurImageView.alpha = 1.0f;
-        }];
-    }
+    [UIView animateWithDuration:kClipToggleDuration animations:^{
+        _videoBlurImageView.alpha = (interfaceShown ? 1.0f : 0.0f);
+    }];
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
-        if (!self.interfaceShown && [self.currentIllustrationImages count]) {
+        if (!interfaceShown && [self.currentIllustrationImages count]) {
             _illustrationImageView.alpha = 1.0f;
             // retrieve the animation images if necessary
             _illustrationImageView.animationImages = self.currentIllustrationImages;
@@ -276,6 +280,32 @@ typedef NS_ENUM(NSUInteger, ClipState) {
             _illustrationImageView.alpha = 0.0f;
         }
     }];
+
+    BOOL rodUp = (_rodPosition.yPos == BBRodPositionYUp);
+    BOOL rodDown = (_rodPosition.yPos == BBRodPositionYDown);
+    if (rodUp || rodDown) {
+        if (!_changeRowAgainTimer) {
+            if (rodUp) {
+                [self previousRow];
+            } else  {
+                [self nextRow];
+            }
+            _changeRowAgainTimer = [NSTimer scheduledTimerWithTimeInterval:kRowSwapAnimationDuration + kRowSwapRepeatDelay
+                                                                    target:self
+                                                                  selector:@selector(changeRowAgainIfNecessary:)
+                                                                  userInfo:nil
+                                                                   repeats:NO];
+        }
+    } else {
+        [_changeRowAgainTimer invalidate];
+        _changeRowAgainTimer = nil;
+    }
+}
+
+- (void)changeRowAgainIfNecessary:(NSTimer *)timer {
+    [_changeRowAgainTimer invalidate];
+    _changeRowAgainTimer = nil;
+    [self updateForRodPosition];
 }
 
 - (void)setCurrentClipIndex:(NSUInteger)currentClipIndex {
@@ -293,7 +323,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (AVPlayerItem *)currentClipItem {
     if (!_currentClipItem) {
         // the clip names include their extensions
-        NSString *clipPath = [[NSBundle mainBundle] pathForResource:_clips[self.currentClipIndex] ofType:nil];
+        NSString *clipPath = [[NSBundle mainBundle] pathForResource:@"FreePlay_2.mov" ofType:nil inDirectory:@"Free Play"];
         NSURL *clipURL = [NSURL fileURLWithPath:clipPath];
         _currentClipItem = [AVPlayerItem playerItemWithURL:clipURL];
     }
@@ -314,13 +344,22 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     return _currentIllustrationImages;
 }
 
-- (void)nextClip {
-    // loop over clip array
-    self.currentClipIndex = ((self.currentClipIndex + 1) % [_clips count]);
+- (void)previousRow {
+    [_clipTableView previousRow];
+}
+
+- (void)nextRow {
+    [_clipTableView nextRow];
 }
 
 - (void)toggleClip {
-    [self incrementClipState];
+    _rodPosition.yPos = BBRodPositionYMiddle;
+    if (_rodPosition.xPos == BBRodPositionXNone) {
+        _rodPosition.xPos = BBRodPositionXCenter;
+    } else {
+        _rodPosition.xPos = BBRodPositionXNone;
+    }
+    [self updateForRodPosition];
 }
 
 - (void)playerItemDidReachEnd:(NSNotification *)notification {

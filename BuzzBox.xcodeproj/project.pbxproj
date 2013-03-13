@@ -22,6 +22,7 @@
 		F08F29B016EEEBFC00C76004 /* Bead in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AD16EEEBFC00C76004 /* Bead */; };
 		F08F29B116EEEBFC00C76004 /* Color Mix in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AE16EEEBFC00C76004 /* Color Mix */; };
 		F08F29B216EEEBFC00C76004 /* Free Play in Resources */ = {isa = PBXBuildFile; fileRef = F08F29AF16EEEBFC00C76004 /* Free Play */; };
+		F08F29B616EF044500C76004 /* BBClipTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F08F29B516EF044500C76004 /* BBClipTableView.m */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -36,7 +37,7 @@
 		F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6D916E559130005A391 /* AVFoundation.framework */; };
 		F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */; };
 		F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D70916E5BD230005A391 /* CoreMedia.framework */; };
-		F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D70B16E5BD9C0005A391 /* Clips.plist */; };
+		F0E9D70C16E5BD9C0005A391 /* ClipCollections.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,8 @@
 		F08F29AD16EEEBFC00C76004 /* Bead */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Bead; sourceTree = "<group>"; };
 		F08F29AE16EEEBFC00C76004 /* Color Mix */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Color Mix"; sourceTree = "<group>"; };
 		F08F29AF16EEEBFC00C76004 /* Free Play */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Free Play"; sourceTree = "<group>"; };
+		F08F29B416EF044500C76004 /* BBClipTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBClipTableView.h; sourceTree = "<group>"; };
+		F08F29B516EF044500C76004 /* BBClipTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBClipTableView.m; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -82,7 +85,7 @@
 		F0E9D6D916E559130005A391 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		F0E9D70916E5BD230005A391 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		F0E9D70B16E5BD9C0005A391 /* Clips.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Clips.plist; sourceTree = "<group>"; };
+		F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ClipCollections.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +146,17 @@
 				F044EC8216E9744200052108 /* Connection.m */,
 			);
 			name = Networking;
+			sourceTree = "<group>";
+		};
+		F08F29B316EEECA600C76004 /* Projection */ = {
+			isa = PBXGroup;
+			children = (
+				F0E9D6D316E51DED0005A391 /* BBProjectionViewController.h */,
+				F0E9D6D416E51DED0005A391 /* BBProjectionViewController.m */,
+				F08F29B416EF044500C76004 /* BBClipTableView.h */,
+				F08F29B516EF044500C76004 /* BBClipTableView.m */,
+			);
+			name = Projection;
 			sourceTree = "<group>";
 		};
 		F0E9D6A916E51D440005A391 = {
@@ -212,8 +226,7 @@
 				F044EC4016E96C6C00052108 /* BBWizardViewController.h */,
 				F044EC4116E96C6C00052108 /* BBWizardViewController.m */,
 				F044EC4216E96C6C00052108 /* BBWizardViewController.xib */,
-				F0E9D6D316E51DED0005A391 /* BBProjectionViewController.h */,
-				F0E9D6D416E51DED0005A391 /* BBProjectionViewController.m */,
+				F08F29B316EEECA600C76004 /* Projection */,
 				F0E9D6D616E558ED0005A391 /* BBAVCaptureManager.h */,
 				F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */,
 			);
@@ -226,7 +239,7 @@
 				F044EC0216E802C000052108 /* blur.png */,
 				F044EBE316E7EEFC00052108 /* Illustrations */,
 				F044EBE216E7EE9E00052108 /* Clips */,
-				F0E9D70B16E5BD9C0005A391 /* Clips.plist */,
+				F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -287,7 +300,7 @@
 				F0E9D6C816E51D440005A391 /* Default.png in Resources */,
 				F0E9D6CA16E51D440005A391 /* Default@2x.png in Resources */,
 				F0E9D6CC16E51D440005A391 /* Default-568h@2x.png in Resources */,
-				F0E9D70C16E5BD9C0005A391 /* Clips.plist in Resources */,
+				F0E9D70C16E5BD9C0005A391 /* ClipCollections.plist in Resources */,
 				F044EBFE16E7F24400052108 /* ApplyGlassForBead in Resources */,
 				F044EBFF16E7F24400052108 /* ColorMixingLateralStripe_6 in Resources */,
 				F044EC0316E802C000052108 /* blur.png in Resources */,
@@ -317,6 +330,7 @@
 				F044EC6616E9716E00052108 /* BBReceiver.m in Sources */,
 				F044EC8516E9744200052108 /* Server.m in Sources */,
 				F044EC8616E9744200052108 /* Connection.m in Sources */,
+				F08F29B616EF044500C76004 /* BBClipTableView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

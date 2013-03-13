@@ -9,3 +9,4 @@
 #import "BBMessageProtocol.h"
 
 NSString *const BBMessageName = @"BBMessageName";
+NSString *const BBMessageArgs = @"BBMessageArgs";
