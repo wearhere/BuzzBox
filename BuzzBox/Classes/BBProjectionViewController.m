@@ -16,6 +16,8 @@
 #import <QuartzCore/QuartzCore.h>
 
 
+NSString *const BBInstructionIndexChanged = @"BBInstructionIndexChanged";
+
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
 static const CGFloat kInstructionLabelMargin = 10.0f;
@@ -51,6 +53,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     BBClipTableView *_clipTableView;
 }
 
+static BBProjectionViewController *__projectionViewController = nil;
++ (NSInteger)instructionIndex {
+    return __projectionViewController->_instructionIndex;
+}
+
 - (id)initWithAVCaptureSession:(AVCaptureSession *)session receiver:(BBReceiver *)receiver {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
@@ -63,6 +70,8 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 
         NSString *instructionsPath = [[NSBundle mainBundle] pathForResource:@"Instructions" ofType:@"plist"];
         _instructions = [NSArray arrayWithContentsOfFile:instructionsPath];
+
+        __projectionViewController = self;
     }
     return self;
 }
@@ -201,7 +210,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 }
 
 - (NSString *)nextInstruction {
-    return _instructions[++_instructionIndex];
+    NSString *nextInstruction = _instructions[++_instructionIndex];
+    [[NSNotificationCenter defaultCenter] postNotificationName:BBInstructionIndexChanged object:nil];
+    return nextInstruction;
 }
 
 - (CAAnimation *)nextInstructionTransition {
@@ -273,10 +284,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
                 newClip = _clipTableView.currentRow.leftClip;
                 break;
             case BBRodPositionXCenter:
-                if (_instructionIndex == 3) {
-                    _instructionLabel.text = [self nextInstruction];
-                    [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
-                }
                 newClip = _clipTableView.currentRow.centerClip;
                 break;
             case BBRodPositionXRight:
@@ -333,6 +340,10 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     if (_rodPosition.yPos == BBRodPositionYUp) {
         [self previousRow];
     } else if (_rodPosition.yPos == BBRodPositionYDown) {
+        if (_instructionIndex == 3) {
+            _instructionLabel.text = [self nextInstruction];
+            [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+        }
         [self nextRow];
     }
 }

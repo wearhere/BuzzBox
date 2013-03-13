@@ -8,6 +8,7 @@
 
 #import "BBClipTableView.h"
 #import "BBTitleLabel.h"
+#import "BBProjectionViewController.h"
 
 #import <AVFoundation/AVFoundation.h>
 
@@ -376,23 +377,34 @@ static const NSUInteger kNumClips = 3;
         _rowTitleLabel.font = [UIFont fontWithName:@"ApexNew-Medium" size:20.0f];
         _rowTitleLabel.textColor = [UIColor whiteColor];
         _rowTitleLabel.text = [collectionName uppercaseString];
+        if ([BBProjectionViewController instructionIndex] < 1) {
+            _rowTitleLabel.alpha = 0.0f;
+        }
         [self addSubview:_rowTitleLabel];
 
         NSArray *clipPaths = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:collectionName];
         NSMutableArray *clips = [NSMutableArray arrayWithCapacity:[clipPaths count]];
         BBClipPosition position = BBClipPositionLeft;
-        for (NSString *clipPath in clipPaths) {
+        for (NSUInteger clipIndex = 0; clipIndex < [clipPaths count]; clipIndex++) {
+            NSString *clipPath = clipPaths[clipIndex];
             BBClipView *clip = [[BBClipView alloc] initWithClip:clipPath position:position];
-            clip.layer.zPosition = 0.0f;
             position++;
+            clip.layer.zPosition = 0.0f;
             clip.delegate = self;
             [self addSubview:clip];
             [clips addObject:clip];
             if ([clips count] == kNumClips) break;
         }
         _clips = [clips copy];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(instructionIndexChanged:) name:BBInstructionIndexChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)layoutSubviews {
@@ -443,6 +455,14 @@ static const NSUInteger kNumClips = 3;
     if (selected) self.selectedClip = clipView;
 }
 
+- (void)instructionIndexChanged:(NSNotification *)notification {
+    if ([BBProjectionViewController instructionIndex] == 3) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _rowTitleLabel.alpha = 1.0f;
+        }];
+    }
+}
+
 @end
 
 
@@ -460,16 +480,26 @@ const CGFloat kRowSwapAnimationDuration = 0.25;
         NSString *clipCollectionsPath = [[NSBundle mainBundle] pathForResource:@"ClipCollections" ofType:@"plist"];
         NSArray *clipCollections = [NSArray arrayWithContentsOfFile:clipCollectionsPath];
         NSMutableArray *rows = [NSMutableArray arrayWithCapacity:[clipCollections count]];
-        for (NSString *collectionName in clipCollections) {
+        for (NSUInteger collectionIndex = 0; collectionIndex < [clipCollections count]; collectionIndex++) {
+            NSString *collectionName = clipCollections[collectionIndex];
             BBClipTableRowView *rowView = [[BBClipTableRowView alloc] initWithClipCollection:collectionName];
-            rowView.layer.zPosition = 0.0f;
+            rowView.layer.zPosition = ((collectionIndex == 0) ? 10.0f : 0.0f);
+            rowView.alpha = ((collectionIndex > 0) ? 0.0f : 1.0f);
             [self addSubview:rowView];
             [rows addObject:rowView];
         }
         ((BBClipTableRowView *)rows[0]).layer.zPosition = 10.0f;
         _rows = [rows copy];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(instructionIndexChanged:)
+                                                     name:BBInstructionIndexChanged object:nil];
     }
     return self;
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)layoutSubviews {
@@ -513,6 +543,16 @@ const CGFloat kRowSwapAnimationDuration = 0.25;
             [self setNeedsLayout];
             [self layoutIfNeeded];
         } completion:nil];
+    }
+}
+
+- (void)instructionIndexChanged:(NSNotification *)notification {
+    if ([BBProjectionViewController instructionIndex] == 3) {
+        [UIView animateWithDuration:0.3 animations:^{
+            [_rows enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
+                view.alpha = 1.0f;
+            }];
+        }];
     }
 }
 

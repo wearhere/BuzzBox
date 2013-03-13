@@ -11,8 +11,12 @@
 
 #define DEBUGGING_PROJECTION_VIEW 0
 
+extern NSString *const BBInstructionIndexChanged;
+
 @class BBReceiver;
 @interface BBProjectionViewController : UIViewController
+
++ (NSInteger)instructionIndex;
 
 - (instancetype)initWithAVCaptureSession:(AVCaptureSession *)session
                                 receiver:(BBReceiver *)receiver;
