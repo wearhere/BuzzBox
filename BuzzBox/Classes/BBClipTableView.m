@@ -514,6 +514,15 @@ const CGFloat kRowSwapAnimationDuration = 0.25;
     }
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
+    UIView *view = [super hitTest:point withEvent:event];
+    if (view == self) {
+        return self.superview;
+    } else {
+        return view;
+    }
+}
+
 - (BBClipTableRowView *)currentRow {
     return _rows[_currentRowIndex];
 }
