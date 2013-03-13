@@ -14,7 +14,7 @@
 
 static const CGFloat kIntroLabelMargin = 20.0f;
 
-static const NSTimeInterval kCountdownDuration = 7.0;
+static const NSTimeInterval kCountdownDuration = 3.0;
 
 @interface BBIntroLabel : UIView
 - (void)countDownWithDuration:(NSTimeInterval)duration;
