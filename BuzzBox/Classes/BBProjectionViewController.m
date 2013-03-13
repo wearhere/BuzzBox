@@ -14,9 +14,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 
-static const CGSize kClipSize = (CGSize){280.0f, 280.0f};
-static const CGFloat kClipCornerRadius = 8.0f;
-static const CGFloat kClipFrameBorderWidth = 5.0f;
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
 static const NSTimeInterval kRowSwapRepeatDelay = 0.75;
@@ -27,6 +24,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 };
 
 @interface BBProjectionViewController () <UIGestureRecognizerDelegate>
+@property (nonatomic, weak) BBClipView *currentClip;
 @property (nonatomic) NSUInteger currentClipIndex;
 @property (nonatomic, strong) AVPlayerItem *currentClipItem;
 @property (nonatomic, strong) NSArray *currentIllustrationImages;
@@ -103,28 +101,28 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipTableView.layer.opacity = 0.0f;
     [view addSubview:_clipTableView];
 
-    _clipFrameLayer = [CALayer layer];
-    _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
-    _clipFrameLayer.opaque = NO;
-    _clipFrameLayer.borderColor = [[UIColor colorWithRed:40.0f/255.0f green:135.0f/255.0f blue:170.0f/255.0f alpha:1.0f] CGColor];
-    _clipFrameLayer.borderWidth = kClipFrameBorderWidth;
-    _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
-    _clipFrameLayer.shadowOpacity = 0.5f;
-    _clipFrameLayer.shadowOffset = CGSizeMake(0.0f, 3.0f);
-    [_clipTableView.layer addSublayer:_clipFrameLayer];
-
-    _clipPlayerLayer = [AVPlayerLayer layer];
-    // the clear background color allows us to show the layer before the video has loaded
-    _clipPlayerLayer.backgroundColor = [[UIColor clearColor] CGColor];
-    _clipPlayerLayer.cornerRadius = kClipCornerRadius;
-    _clipPlayerLayer.masksToBounds = YES;
-    _clipPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:self.currentClipItem];
-    avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
-                                                 name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-    _clipPlayerLayer.player = avPlayer;
-    [_clipTableView.layer addSublayer:_clipPlayerLayer];
+//    _clipFrameLayer = [CALayer layer];
+//    _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
+//    _clipFrameLayer.opaque = NO;
+//    _clipFrameLayer.borderColor = [[UIColor colorWithRed:40.0f/255.0f green:135.0f/255.0f blue:170.0f/255.0f alpha:1.0f] CGColor];
+//    _clipFrameLayer.borderWidth = kClipFrameBorderWidth;
+//    _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
+//    _clipFrameLayer.shadowOpacity = 0.5f;
+//    _clipFrameLayer.shadowOffset = CGSizeMake(0.0f, 3.0f);
+//    [_clipTableView.layer addSublayer:_clipFrameLayer];
+//
+//    _clipPlayerLayer = [AVPlayerLayer layer];
+//    // the clear background color allows us to show the layer before the video has loaded
+//    _clipPlayerLayer.backgroundColor = [[UIColor clearColor] CGColor];
+//    _clipPlayerLayer.cornerRadius = kClipCornerRadius;
+//    _clipPlayerLayer.masksToBounds = YES;
+//    _clipPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
+//    AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:self.currentClipItem];
+//    avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
+//                                                 name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+//    _clipPlayerLayer.player = avPlayer;
+//    [_clipTableView.layer addSublayer:_clipPlayerLayer];
 
     self.view = view;
 }
@@ -184,11 +182,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _videoPreviewLayer.frame = self.view.bounds;
     _videoBlurImageView.frame = self.view.bounds;
 
-    _clipPlayerLayer.bounds = (CGRect){CGPointZero, kClipSize};
-    _clipPlayerLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-
-    _clipFrameLayer.bounds = CGRectInset(_clipPlayerLayer.bounds, -_clipFrameLayer.borderWidth, -_clipFrameLayer.borderWidth);
-    _clipFrameLayer.position = _clipPlayerLayer.position;
+//    _clipPlayerLayer.bounds = (CGRect){CGPointZero, kClipSize};
+//    _clipPlayerLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
+//
+//    _clipFrameLayer.bounds = CGRectInset(_clipPlayerLayer.bounds, -_clipFrameLayer.borderWidth, -_clipFrameLayer.borderWidth);
+//    _clipFrameLayer.position = _clipPlayerLayer.position;
 
     _illustrationImageView.frame = self.view.bounds;
 
@@ -251,16 +249,30 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         _clipTableView.layer.opacity = 0.0f;
     }
 
-    if (interfaceShown &&
-        (_rodPosition.xPos != BBRodPositionXNone) &&
-        (_rodPosition.yPos == BBRodPositionYMiddle)) {
-        _clipPlayerLayer.hidden = NO;
-        [_clipPlayerLayer.player play];
-        _clipFrameLayer.hidden = NO;
+    if (interfaceShown && (_rodPosition.yPos == BBRodPositionYMiddle)) {
+        BBClipView *newClip;
+        switch (_rodPosition.xPos) {
+            case BBRodPositionXLeft:
+                newClip = _clipTableView.currentRow.leftClip;
+                break;
+            case BBRodPositionXCenter:
+                newClip = _clipTableView.currentRow.centerClip;
+                break;
+            case BBRodPositionXRight:
+                newClip = _clipTableView.currentRow.rightClip;
+                break;
+            case BBRodPositionXNone:
+                break;
+        }
+        self.currentClip = newClip;
+//        _clipPlayerLayer.hidden = NO;
+//        [_clipPlayerLayer.player play];
+//        _clipFrameLayer.hidden = NO;
     } else {
-        [_clipPlayerLayer.player pause];
-        _clipPlayerLayer.hidden = YES;
-        _clipFrameLayer.hidden = YES;
+//        [_clipPlayerLayer.player pause];
+//        _clipPlayerLayer.hidden = YES;
+//        _clipFrameLayer.hidden = YES;
+        self.currentClip = nil;
     }
     [CATransaction commit];
 
@@ -306,6 +318,14 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [_changeRowAgainTimer invalidate];
     _changeRowAgainTimer = nil;
     [self updateForRodPosition];
+}
+
+- (void)setCurrentClip:(BBClipView *)currentClip {
+    if (currentClip != _currentClip) {
+        [_currentClip setSelected:NO];
+        _currentClip = currentClip;
+        [_currentClip setSelected:YES];
+    }
 }
 
 - (void)setCurrentClipIndex:(NSUInteger)currentClipIndex {
