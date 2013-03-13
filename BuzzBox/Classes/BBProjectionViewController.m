@@ -228,11 +228,19 @@ static BBProjectionViewController *__projectionViewController = nil;
 #pragma mark - Clips
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    BOOL debuggingProjectionView = NO;
+#if DEBUGGING_PROJECTION_VIEW
+    debuggingProjectionView = YES;
+#endif
+
+    // when debugging, the view will be split down the middle
+    // when running for real, the view will be entirely given over to starting the tutorial
+    // to minimize user error
     BOOL touchIsInLeftHalf = ([touch locationInView:self.view].x < CGRectGetMidX(self.view.bounds));
     if (gestureRecognizer == _toggleInterfaceGestureRecognizer) {
-        return touchIsInLeftHalf;
+        return (debuggingProjectionView ? touchIsInLeftHalf : NO);
     } else if (gestureRecognizer == _beginTutorialGestureRecognizer) {
-        return !touchIsInLeftHalf;
+        return (debuggingProjectionView ? !touchIsInLeftHalf : YES);
     } else {
         return YES;
     }
