@@ -44,6 +44,7 @@
 		F0C0FB6B16F0ADA000CA0501 /* BBTitleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C0FB6A16F0ADA000CA0501 /* BBTitleLabel.m */; };
 		F0C0FB6D16F0ADF500CA0501 /* Instructions.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */; };
 		F0C0FB8616F0BDB000CA0501 /* tint-01.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB8516F0BDB000CA0501 /* tint-01.png */; };
+		F0C0FB8816F0E35800CA0501 /* buzzbox_icon-02.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB8716F0E35800CA0501 /* buzzbox_icon-02.png */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -109,6 +110,7 @@
 		F0C0FB6A16F0ADA000CA0501 /* BBTitleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBTitleLabel.m; sourceTree = "<group>"; };
 		F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Instructions.plist; sourceTree = "<group>"; };
 		F0C0FB8516F0BDB000CA0501 /* tint-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tint-01.png"; sourceTree = "<group>"; };
+		F0C0FB8716F0E35800CA0501 /* buzzbox_icon-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buzzbox_icon-02.png"; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -287,6 +289,7 @@
 				F0E9D6BE16E51D440005A391 /* InfoPlist.strings */,
 				F0E9D6C116E51D440005A391 /* main.m */,
 				F0E9D6C316E51D440005A391 /* BuzzBox-Prefix.pch */,
+				F0C0FB8716F0E35800CA0501 /* buzzbox_icon-02.png */,
 				F0E9D6C716E51D440005A391 /* Default.png */,
 				F0E9D6C916E51D440005A391 /* Default@2x.png */,
 				F0E9D6CB16E51D440005A391 /* Default-568h@2x.png */,
@@ -411,6 +414,7 @@
 				F0C0FB6516F09FCD00CA0501 /* Bead_3 in Resources */,
 				F0C0FB6D16F0ADF500CA0501 /* Instructions.plist in Resources */,
 				F0C0FB8616F0BDB000CA0501 /* tint-01.png in Resources */,
+				F0C0FB8816F0E35800CA0501 /* buzzbox_icon-02.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
