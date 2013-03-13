@@ -382,6 +382,7 @@ static const NSUInteger kNumClips = 3;
 @end
 
 @implementation BBClipTableRowView {
+    BBTitleLabel *_rowTitleLabel;
     NSArray *_clips;
 }
 
@@ -393,6 +394,14 @@ static const NSUInteger kNumClips = 3;
 - (instancetype)initWithClipCollection:(NSString *)collectionName {
     self = [super initWithFrame:CGRectZero];
     if (self) {
+        _rowTitleLabel = [[BBTitleLabel alloc] initWithFrame:CGRectZero];
+        _rowTitleLabel.backgroundColor = [UIColor clearColor];
+        _rowTitleLabel.opaque = NO;
+        _rowTitleLabel.font = [UIFont fontWithName:@"ApexNew-Medium" size:20.0f];
+        _rowTitleLabel.textColor = [UIColor whiteColor];
+        _rowTitleLabel.text = [collectionName uppercaseString];
+        [self addSubview:_rowTitleLabel];
+
         NSArray *clipPaths = [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:collectionName];
         NSMutableArray *clips = [NSMutableArray arrayWithCapacity:[clipPaths count]];
         BBClipPosition position = BBClipPositionLeft;
@@ -413,6 +422,11 @@ static const NSUInteger kNumClips = 3;
 - (void)layoutSubviews {
     if (_selectedClip) return;
     [super layoutSubviews];
+
+    CGSize sizeThatFitsRowTitle = [_rowTitleLabel sizeThatFits:self.bounds.size];
+    _rowTitleLabel.frame = (CGRect){CGPointMake(CGRectGetMinX(self.bounds) + kClipMargin,
+                                                CGRectGetMinY(self.bounds)),
+                                    sizeThatFitsRowTitle};
 
     NSUInteger numClips = [_clips count];
     CGFloat clipWidth = (CGRectGetWidth(self.bounds) - (numClips + 1) * kClipMargin) / numClips;
