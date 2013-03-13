@@ -47,15 +47,14 @@
 static const CGSize kRodSize = {80.0f, 80.0f};
 
 @interface BBWizardViewController () <UIGestureRecognizerDelegate>
-@property (weak, nonatomic) IBOutlet UIView *flameView;
-@property (weak, nonatomic) IBOutlet BBFenceView *fenceView;
-@property (weak, nonatomic) IBOutlet UIView *rodLeftView;
-@property (weak, nonatomic) IBOutlet UIView *rodCenterView;
-@property (weak, nonatomic) IBOutlet UIView *rodRightView;
-@property (weak, nonatomic) IBOutlet UIView *upDownView;
-@property (weak, nonatomic) IBOutlet UIView *rodUpView;
-@property (weak, nonatomic) IBOutlet UIView *rodMiddleView;
-@property (weak, nonatomic) IBOutlet UIView *rodDownView;
+
+@property (nonatomic, readonly) CGRect leftArea, centerArea, rightArea;
+@property (nonatomic, readonly) CGRect topArea, middleArea, bottomArea;
+
+@property (weak, nonatomic) IBOutlet UIView *deadMansSwitchView;
+
+@property (nonatomic) BOOL deadMansSwitchPressed;
+@property (nonatomic) BOOL rodHeld;
 
 @end
 
@@ -63,9 +62,12 @@ static const CGSize kRodSize = {80.0f, 80.0f};
     BBSender *_sender;
 
     BBRodPosition _rodPosition;
-    UIView *_topDownRodView, *_frontBackRodView;
+    BBRodPositionY _previousRowPosition;
+    BOOL _transitionedDuringPreviousUpdate;
+    UIView *_rodView;
     BOOL _haltTrackingRodViewX;
-    UIPanGestureRecognizer *_topDownRodDragGestureRecognizer, *_frontBackRodDragGestureRecognizer;
+    UIPanGestureRecognizer *_gridDragGestureRecognizer;
+    UILongPressGestureRecognizer *_deadMansSwitchPressRecognizer;
 }
 
 - (id)initWithSender:(BBSender *)sender {
@@ -83,88 +85,119 @@ static const CGSize kRodSize = {80.0f, 80.0f};
 {
     [super viewDidLoad];
 
-    _topDownRodView = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, kRodSize}];
-    _topDownRodView.center = self.flameView.center;
-    _topDownRodView.backgroundColor = [UIColor blueColor];
-    _topDownRodView.layer.cornerRadius = CGRectGetWidth(_topDownRodView.frame) / 2.0f;
-    [self.view addSubview:_topDownRodView];
+    _rodView = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, kRodSize}];
+    _rodView.center = CGPointMake(160, 60);
+    _rodView.backgroundColor = [UIColor blueColor];
+    _rodView.layer.cornerRadius = CGRectGetWidth(_rodView.frame) / 2.0f;
+    [self.view addSubview:_rodView];
 
-    _topDownRodDragGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(topDownRodDragged:)];
-    [_topDownRodView addGestureRecognizer:_topDownRodDragGestureRecognizer];
+    _gridDragGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(topDownRodDragged:)];
+    [_rodView addGestureRecognizer:_gridDragGestureRecognizer];
 
-    _frontBackRodView = [[UIView alloc] initWithFrame:(CGRect){CGPointZero, kRodSize}];
-    _frontBackRodView.center = [self.upDownView.superview convertPoint:self.upDownView.center toView:self.upDownView];
-    _frontBackRodView.backgroundColor = [UIColor blueColor];
-    _frontBackRodView.layer.cornerRadius = CGRectGetWidth(_frontBackRodView.frame) / 2.0f;
-    [self.upDownView addSubview:_frontBackRodView];
-
-    _frontBackRodDragGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(frontBackRodDragged:)];
-    [_frontBackRodView addGestureRecognizer:_frontBackRodDragGestureRecognizer];
-
-    self.fenceView.backgroundColor = [UIColor clearColor];   // fence will stroke itself
+    _deadMansSwitchPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deadMansSwitchPressed:)];
+    [self.deadMansSwitchView addGestureRecognizer:_deadMansSwitchPressRecognizer];    
 }
+
+- (CGRect)leftArea {
+    return (CGRect){20, 20, 80, 280};
+}
+
+- (CGRect)centerArea {
+    return (CGRect){120, 20, 80, 280};
+}
+
+- (CGRect)rightArea {
+    return (CGRect){220, 20, 80, 280};}
+
+- (CGRect)topArea {
+    return (CGRect){20, 20, 280, 80};}
+
+- (CGRect)middleArea {
+    return (CGRect){20, 120, 280, 80};}
+
+- (CGRect)bottomArea {
+    return (CGRect){20, 220, 280, 80};}
 
 - (void)topDownRodDragged:(UIPanGestureRecognizer *)recognizer {
-    // update position of rod, with caveat that it cannot not travel right onto the up-down view
-    CGPoint rodTranslation = [recognizer translationInView:_topDownRodView.superview];
-    [recognizer setTranslation:CGPointZero inView:_topDownRodView.superview];
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            self.rodHeld = YES;
 
-    CGRect newRodFrame = CGRectOffset(_topDownRodView.frame, rodTranslation.x, rodTranslation.y);
-    CGFloat upDownViewLeftEdge = CGRectGetMinX(self.upDownView.frame);
-    if (CGRectGetMaxX(newRodFrame) > upDownViewLeftEdge) {
-        newRodFrame.origin.x = upDownViewLeftEdge - CGRectGetWidth(newRodFrame);
-        _haltTrackingRodViewX = YES;
-    } else if (_haltTrackingRodViewX) {
-        // wait to update the rod's x position
-        // until the user's finger aligns with the rod again
-        CGPoint recognizerLocation = [recognizer locationInView:self.view];
-        if (recognizerLocation.x > _topDownRodView.center.x) {
-            newRodFrame.origin.x = _topDownRodView.frame.origin.x;
-        } else {
-            _haltTrackingRodViewX = NO;
-        }
+            // update position of rod, with caveat that it cannot not travel right onto the up-down view
+            CGPoint rodTranslation = [recognizer translationInView:_rodView.superview];
+            [recognizer setTranslation:CGPointZero inView:_rodView.superview];
+
+            CGRect newRodFrame = CGRectOffset(_rodView.frame, rodTranslation.x, rodTranslation.y);
+            CGFloat deadMansSwitchLeftEdge = CGRectGetMinX(self.deadMansSwitchView.frame);
+            if (CGRectGetMaxX(newRodFrame) > deadMansSwitchLeftEdge) {
+                newRodFrame.origin.x = deadMansSwitchLeftEdge - CGRectGetWidth(newRodFrame);
+                _haltTrackingRodViewX = YES;
+            } else if (_haltTrackingRodViewX) {
+                // wait to update the rod's x position
+                // until the user's finger aligns with the rod again
+                CGPoint recognizerLocation = [recognizer locationInView:self.view];
+                if (recognizerLocation.x > _rodView.center.x) {
+                    newRodFrame.origin.x = _rodView.frame.origin.x;
+                } else {
+                    _haltTrackingRodViewX = NO;
+                }
+            }
+
+            _rodView.frame = newRodFrame;
+
+            [self updateRodPosition];
+            break;
+        default:
+            self.rodHeld = NO;
+            [self updateRodPosition];
+            break;
     }
-
-    _topDownRodView.frame = newRodFrame;
-
-    [self updateRodPosition];
 }
 
-- (void)frontBackRodDragged:(UIPanGestureRecognizer *)recognizer {
-    // update position of rod along up-down view's y axis
-    CGPoint rodTranslation = [recognizer translationInView:_frontBackRodView.superview];
-    [recognizer setTranslation:CGPointZero inView:_frontBackRodView.superview];
+- (void)deadMansSwitchPressed:(UILongPressGestureRecognizer *)recognizer {
+    switch (recognizer.state) {
+        case UIGestureRecognizerStateBegan:
+        case UIGestureRecognizerStateChanged:
+            self.deadMansSwitchPressed = YES;
+            break;
+        default:
+            self.deadMansSwitchPressed = NO;
+            break;
+    }
+}
 
-    CGRect newRodFrame = CGRectOffset(_frontBackRodView.frame, 0.0f, rodTranslation.y);
-    _frontBackRodView.frame = newRodFrame;
-
-    [self updateRodPosition];
+- (void)setDeadMansSwitchPressed:(BOOL)deadMansSwitchPressed {
+    if (deadMansSwitchPressed != _deadMansSwitchPressed) {
+        _deadMansSwitchPressed = deadMansSwitchPressed;
+        [self updateRodPosition];
+    }
 }
 
 - (void)updateRodPosition {
     // update position
     BBRodPosition newRodPos = {BBRodPositionXNone, BBRodPositionYNone, BBRodPositionZBack};
-    if (_topDownRodView.center.y > CGRectGetMaxY(self.fenceView.frame)) {
+    if (self.deadMansSwitchPressed) {
         newRodPos.zPos = BBRodPositionZFront;
     }
 
-    // x, y positions can only assume non-default values if the rod is front
-    if (newRodPos.zPos == BBRodPositionZFront) {
-        CGPoint topDownRodCenter = _topDownRodView.center;
-        if (CGRectContainsPoint(self.rodLeftView.frame, topDownRodCenter)) {
+    // x, y positions can only assume non-default values if the rod is held
+    if (self.rodHeld) {
+        CGPoint rodCenter = _rodView.center;
+
+        if (CGRectContainsPoint(self.leftArea, rodCenter)) {
             newRodPos.xPos = BBRodPositionXLeft;
-        } else if (CGRectContainsPoint(self.rodCenterView.frame, topDownRodCenter)) {
+        } else if (CGRectContainsPoint(self.centerArea, rodCenter)) {
             newRodPos.xPos = BBRodPositionXCenter;
-        } else if (CGRectContainsPoint(self.rodRightView.frame, topDownRodCenter)) {
+        } else if (CGRectContainsPoint(self.rightArea, rodCenter)) {
             newRodPos.xPos = BBRodPositionXRight;
         }
 
-        CGPoint frontBackRodCenter = _frontBackRodView.center;
-        if (CGRectContainsPoint(self.rodUpView.frame, frontBackRodCenter)) {
+        if (CGRectContainsPoint(self.topArea, rodCenter)) {
             newRodPos.yPos = BBRodPositionYUp;
-        } else if (CGRectContainsPoint(self.rodMiddleView.frame, frontBackRodCenter)) {
+        } else if (CGRectContainsPoint(self.middleArea, rodCenter)) {
             newRodPos.yPos = BBRodPositionYMiddle;
-        } else if (CGRectContainsPoint(self.rodDownView.frame, frontBackRodCenter)) {
+        } else if (CGRectContainsPoint(self.bottomArea, rodCenter)) {
             newRodPos.yPos = BBRodPositionYDown;
         }
     }
@@ -176,8 +209,26 @@ static const CGSize kRodSize = {80.0f, 80.0f};
     if (newRodPos.xPos != _rodPosition.xPos) {
         [_sender sendMessage:@"xPosChanged" args:@[ @(newRodPos.xPos) ]];
     }
-    if (newRodPos.yPos != _rodPosition.yPos) {
-        [_sender sendMessage:@"yPosChanged" args:@[ @(newRodPos.yPos) ]];
+    if (newRodPos.yPos != _rodPosition.yPos || _transitionedDuringPreviousUpdate) {
+        _transitionedDuringPreviousUpdate = NO;
+        if (newRodPos.yPos == BBRodPositionYNone) {
+            [_sender sendMessage:@"yPosChanged" args:@[ @(BBRodPositionYNone) ]];
+        } else {
+            if (_previousRowPosition != BBRodPositionYNone) {
+                if (newRodPos.yPos < _previousRowPosition) {
+                    [_sender sendMessage:@"yPosChanged" args:@[ @(BBRodPositionYUp) ]];
+                    _transitionedDuringPreviousUpdate = YES;
+                } else if (newRodPos.yPos == _previousRowPosition) {
+                    [_sender sendMessage:@"yPosChanged" args:@[ @(BBRodPositionYMiddle) ]];
+                } else {
+                    [_sender sendMessage:@"yPosChanged" args:@[ @(BBRodPositionYDown) ]];
+                    _transitionedDuringPreviousUpdate = YES;
+                }
+            } else {
+                [_sender sendMessage:@"yPosChanged" args:@[ @(BBRodPositionYMiddle) ]];
+            }
+            _previousRowPosition = newRodPos.yPos;
+        }
     }
 
     _rodPosition = newRodPos;

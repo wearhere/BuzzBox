@@ -15,15 +15,15 @@
 typedef NS_ENUM(NSUInteger, BBRodPositionX) {
     BBRodPositionXNone,
     BBRodPositionXLeft,
-    BBRodPositionXRight,
-    BBRodPositionXCenter
+    BBRodPositionXCenter,
+    BBRodPositionXRight
 };
 
 typedef NS_ENUM(NSUInteger, BBRodPositionY) {
-    BBRodPositionYMiddle,
+    BBRodPositionYNone,
     BBRodPositionYUp,
-    BBRodPositionYDown,
-    BBRodPositionYNone
+    BBRodPositionYMiddle,
+    BBRodPositionYDown
 };
 
 typedef NS_ENUM(NSUInteger, BBRodPositionZ) {

@@ -45,7 +45,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
     UISwipeGestureRecognizer *_previousRowGestureRecognizer, *_nextRowGestureRecognizer;
-    NSTimer *_changeRowAgainTimer;
     BBReceiver *_receiver;
 
     BBClipTableView *_clipTableView;
@@ -182,12 +181,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _videoPreviewLayer.frame = self.view.bounds;
     _videoBlurImageView.frame = self.view.bounds;
 
-//    _clipPlayerLayer.bounds = (CGRect){CGPointZero, kClipSize};
-//    _clipPlayerLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-//
-//    _clipFrameLayer.bounds = CGRectInset(_clipPlayerLayer.bounds, -_clipFrameLayer.borderWidth, -_clipFrameLayer.borderWidth);
-//    _clipFrameLayer.position = _clipPlayerLayer.position;
-
     _illustrationImageView.frame = self.view.bounds;
 
     _clipTableView.frame = self.view.bounds;
@@ -265,13 +258,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
                 break;
         }
         self.currentClip = newClip;
-//        _clipPlayerLayer.hidden = NO;
-//        [_clipPlayerLayer.player play];
-//        _clipFrameLayer.hidden = NO;
     } else {
-//        [_clipPlayerLayer.player pause];
-//        _clipPlayerLayer.hidden = YES;
-//        _clipFrameLayer.hidden = YES;
         self.currentClip = nil;
     }
     [CATransaction commit];
@@ -293,31 +280,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         }
     }];
 
-    BOOL rodUp = (_rodPosition.yPos == BBRodPositionYUp);
-    BOOL rodDown = (_rodPosition.yPos == BBRodPositionYDown);
-    if (rodUp || rodDown) {
-        if (!_changeRowAgainTimer) {
-            if (rodUp) {
-                [self previousRow];
-            } else  {
-                [self nextRow];
-            }
-            _changeRowAgainTimer = [NSTimer scheduledTimerWithTimeInterval:kRowSwapAnimationDuration + kRowSwapRepeatDelay
-                                                                    target:self
-                                                                  selector:@selector(changeRowAgainIfNecessary:)
-                                                                  userInfo:nil
-                                                                   repeats:NO];
-        }
-    } else {
-        [_changeRowAgainTimer invalidate];
-        _changeRowAgainTimer = nil;
+    if (_rodPosition.yPos == BBRodPositionYUp) {
+        [self previousRow];
+    } else if (_rodPosition.yPos == BBRodPositionYDown) {
+        [self nextRow];
     }
-}
-
-- (void)changeRowAgainIfNecessary:(NSTimer *)timer {
-    [_changeRowAgainTimer invalidate];
-    _changeRowAgainTimer = nil;
-    [self updateForRodPosition];
 }
 
 - (void)setCurrentClip:(BBClipView *)currentClip {
