@@ -32,6 +32,8 @@
 		F08F29D716F07CB700C76004 /* FreePlay_1.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CE16F07CB700C76004 /* FreePlay_1.png */; };
 		F08F29D816F07CB700C76004 /* FreePlay_2.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29CF16F07CB700C76004 /* FreePlay_2.png */; };
 		F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */ = {isa = PBXBuildFile; fileRef = F08F29D016F07CB700C76004 /* FreePlay_3.png */; };
+		F08F29F316F082B200C76004 /* apexnewmedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F08F29F216F082B200C76004 /* apexnewmedium.ttf */; };
+		F08F29F516F0832E00C76004 /* ClipTitles.plist in Resources */ = {isa = PBXBuildFile; fileRef = F08F29F416F0832E00C76004 /* ClipTitles.plist */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -83,6 +85,8 @@
 		F08F29CE16F07CB700C76004 /* FreePlay_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_1.png; sourceTree = "<group>"; };
 		F08F29CF16F07CB700C76004 /* FreePlay_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_2.png; sourceTree = "<group>"; };
 		F08F29D016F07CB700C76004 /* FreePlay_3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FreePlay_3.png; sourceTree = "<group>"; };
+		F08F29F216F082B200C76004 /* apexnewmedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = apexnewmedium.ttf; sourceTree = "<group>"; };
+		F08F29F416F0832E00C76004 /* ClipTitles.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ClipTitles.plist; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -193,6 +197,14 @@
 			path = Thumbnails;
 			sourceTree = "<group>";
 		};
+		F08F29F116F0827B00C76004 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				F08F29F216F082B200C76004 /* apexnewmedium.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		F0E9D6A916E51D440005A391 = {
 			isa = PBXGroup;
 			children = (
@@ -270,11 +282,13 @@
 		F0E9D6F416E5B7BB0005A391 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F08F29F116F0827B00C76004 /* Fonts */,
 				F044EC0216E802C000052108 /* blur.png */,
 				F044EBE316E7EEFC00052108 /* Illustrations */,
 				F044EBE216E7EE9E00052108 /* Clips */,
 				F08F29C716F07AA900C76004 /* Thumbnails */,
 				F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */,
+				F08F29F416F0832E00C76004 /* ClipTitles.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -353,6 +367,8 @@
 				F08F29D716F07CB700C76004 /* FreePlay_1.png in Resources */,
 				F08F29D816F07CB700C76004 /* FreePlay_2.png in Resources */,
 				F08F29D916F07CB700C76004 /* FreePlay_3.png in Resources */,
+				F08F29F316F082B200C76004 /* apexnewmedium.ttf in Resources */,
+				F08F29F516F0832E00C76004 /* ClipTitles.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

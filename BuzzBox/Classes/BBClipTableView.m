@@ -11,6 +11,45 @@
 #import <AVFoundation/AVFoundation.h>
 
 
+static NSString *BBTitleForClipWithName(NSString *clipName) {
+    static NSDictionary *clipTitles;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSString *clipTitlesPath = [[NSBundle mainBundle] pathForResource:@"ClipTitles" ofType:@"plist"];
+        clipTitles = [NSDictionary dictionaryWithContentsOfFile:clipTitlesPath];
+    });
+    return clipTitles[clipName];
+}
+
+
+@interface BBTitleLabel : UILabel
+@end
+
+@implementation BBTitleLabel
+
+- (void)drawTextInRect:(CGRect)rect {
+    CGSize shadowOffset = self.shadowOffset;
+    UIColor *textColor = self.textColor;
+
+    CGContextRef c = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(c, 1);
+    CGContextSetLineJoin(c, kCGLineJoinRound);
+
+    CGContextSetTextDrawingMode(c, kCGTextStroke);
+    self.textColor = [UIColor blackColor];
+    [super drawTextInRect:rect];
+
+    CGContextSetTextDrawingMode(c, kCGTextFill);
+    self.textColor = textColor;
+    self.shadowOffset = CGSizeMake(0, 0);
+    [super drawTextInRect:rect];
+    
+    self.shadowOffset = shadowOffset;
+}
+
+@end
+
+
 static const CGSize kSelectedClipSize = (CGSize){280.0f, 280.0f};
 static const CGFloat kClipCornerRadius = 8.0f;
 static const CGFloat kClipFrameBorderWidth = 5.0f;
@@ -33,6 +72,7 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
     CALayer *_clipClippingLayer;
     AVPlayerLayer *_clip;
     UIImageView *_clipThumbnailImageView;
+    BBTitleLabel *_clipTitleLabel;
 }
 
 - (instancetype)initWithClip:(NSString *)clipPath position:(BBClipPosition)position {
@@ -62,11 +102,22 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         _clip.videoGravity = AVLayerVideoGravityResizeAspectFill;
         [_clipClippingLayer addSublayer:_clip];
 
-        NSString *clipThumbnailName = [[clipPath lastPathComponent] stringByDeletingPathExtension];
-        UIImage *clipThumbnailImage = [UIImage imageNamed:clipThumbnailName];
+        NSString *clipName = [[clipPath lastPathComponent] stringByDeletingPathExtension];
+        UIImage *clipThumbnailImage = [UIImage imageNamed:clipName];
         _clipThumbnailImageView = [[UIImageView alloc] initWithImage:clipThumbnailImage];
         _clipThumbnailImageView.contentMode = UIViewContentModeScaleAspectFill;
         [_clipClippingLayer addSublayer:_clipThumbnailImageView.layer];
+
+        _clipTitleLabel = [[BBTitleLabel alloc] initWithFrame:CGRectZero];
+        _clipTitleLabel.backgroundColor = [UIColor colorWithCGColor:_clipClippingLayer.backgroundColor];
+        _clipTitleLabel.layer.opaque = _clipClippingLayer.opaque;
+        _clipTitleLabel.font = [UIFont fontWithName:@"ApexNew-Medium" size:18.0f];
+        _clipTitleLabel.numberOfLines = 2;
+        _clipTitleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _clipTitleLabel.textColor = [UIColor whiteColor];
+        _clipTitleLabel.text = [BBTitleForClipWithName(clipName) uppercaseString];
+        _clipTitleLabel.layer.anchorPoint = CGPointMake(0.0f, 0.0f);
+        [_clipClippingLayer addSublayer:_clipTitleLabel.layer];
 
         CGPoint anchorPoint;
         switch (position) {
@@ -97,6 +148,15 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
     _clip.position = CGPointMake(CGRectGetMidX(_clipClippingLayer.bounds), CGRectGetMidY(_clipClippingLayer.bounds));
     _clipThumbnailImageView.layer.bounds = _clipClippingLayer.bounds;
     _clipThumbnailImageView.layer.position = CGPointMake(CGRectGetMidX(_clipClippingLayer.bounds), CGRectGetMidY(_clipClippingLayer.bounds));
+
+    static const CGFloat kTitleMargin = 4.0f;
+    CGSize sizeThatFitsTitle = [_clipTitleLabel sizeThatFits:CGRectInset(_clipClippingLayer.bounds, kTitleMargin, kTitleMargin).size];
+    CGPoint titleOrigin = CGPointMake(CGRectGetMinX(_clipClippingLayer.bounds) + kTitleMargin,
+                                      CGRectGetMinY(_clipClippingLayer.bounds) + kTitleMargin);
+    _clipTitleLabel.layer.bounds = (CGRect){titleOrigin, sizeThatFitsTitle};
+    _clipTitleLabel.layer.position = titleOrigin;
+    // ensure that the label actually redraws into its new bounds
+    [_clipTitleLabel setNeedsDisplay];
 }
 
 - (void)setSelected:(BOOL)selected {
@@ -111,12 +171,15 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         CABasicAnimation *clipPositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         CABasicAnimation *clipThumbnailBoundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
         CABasicAnimation *clipThumbnailPositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
+        CABasicAnimation *clipTitleBoundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
+        CABasicAnimation *clipTitlePositionAnimation = [CABasicAnimation animationWithKeyPath:@"position"];
         CABasicAnimation *pathAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         CABasicAnimation *strokeAnimation = [CABasicAnimation animationWithKeyPath:@"strokeColor"];
         boundsAnimation.duration =
             clippingBoundsAnimation.duration = clipBoundsAnimation.duration =
             clippingPositionAnimation.duration = clipPositionAnimation.duration =
             clipThumbnailBoundsAnimation.duration = clipThumbnailPositionAnimation.duration =
+            clipTitleBoundsAnimation.duration = clipTitlePositionAnimation.duration =
             pathAnimation.duration = 0.3;
         strokeAnimation.duration = (_selected ? 0.8 : 0.6);
         strokeAnimation.delegate = self;
@@ -131,7 +194,7 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
                          } completion:nil];
         if (_selected) {
             BBClipLayer *__weak weakSelf = self;
-            double delayInSeconds = thumbnailFadeDelay - 0.1;
+            double delayInSeconds = thumbnailFadeDelay - 0.2;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                 BBClipLayer *strongSelf = weakSelf;
@@ -160,6 +223,8 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         clipPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clip.position];
         clipThumbnailBoundsAnimation.fromValue = [NSValue valueWithCGRect:_clipThumbnailImageView.layer.bounds];
         clipThumbnailPositionAnimation.fromValue = [NSValue valueWithCGPoint:_clipThumbnailImageView.layer.position];
+        clipTitleBoundsAnimation.fromValue = [NSValue valueWithCGRect:_clipTitleLabel.layer.bounds];
+        clipTitlePositionAnimation.fromValue = [NSValue valueWithCGPoint:_clipTitleLabel.layer.position];
 
         self.bounds = bounds;
         [self setNeedsLayout];
@@ -172,6 +237,8 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
         [_clip addAnimation:clipPositionAnimation forKey:@"position"];
         [_clipThumbnailImageView.layer addAnimation:clipThumbnailBoundsAnimation forKey:@"bounds"];
         [_clipThumbnailImageView.layer addAnimation:clipThumbnailPositionAnimation forKey:@"position"];
+        [_clipTitleLabel.layer addAnimation:clipTitleBoundsAnimation forKey:@"bounds"];
+        [_clipTitleLabel.layer addAnimation:clipTitlePositionAnimation forKey:@"position"];
 
         [self addAnimation:pathAnimation forKey:@"path"];
 
@@ -199,6 +266,20 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 }
 
 - (void)play {
+    BBClipLayer *__weak weakSelf = self;
+    double delayInSeconds = 1.0;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        BBClipLayer *strongSelf = weakSelf;
+        if (strongSelf->_clip.player.rate > 0.0f) {
+            CABasicAnimation *titleOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+            titleOpacityAnimation.duration = 0.5;
+            titleOpacityAnimation.fromValue = @(strongSelf->_clipTitleLabel.layer.opacity);
+            strongSelf->_clipTitleLabel.layer.opacity = 0.0f;
+            [strongSelf->_clipTitleLabel.layer addAnimation:titleOpacityAnimation forKey:@"opacity"];
+        }
+    });
+
     CABasicAnimation *strokeAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     strokeAnimation.duration =  CMTimeGetSeconds(_clip.player.currentItem.duration);
     strokeAnimation.fromValue = @(self.strokeEnd);
@@ -215,7 +296,15 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 - (void)stop {
     [_clip.player pause];
     [_clip.player.currentItem seekToTime:kCMTimeZero];
+
+    [self removeAnimationForKey:@"strokeEnd"];
     self.strokeEnd = 1.0;
+
+    CABasicAnimation *titleOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    titleOpacityAnimation.duration = 0.3;
+    titleOpacityAnimation.fromValue = @(_clipTitleLabel.layer.opacity);
+    _clipTitleLabel.layer.opacity = 1.0f;
+    [_clipTitleLabel.layer addAnimation:titleOpacityAnimation forKey:@"opacity"];
 }
 
 - (void)playbackFinished:(NSNotification *)notification {

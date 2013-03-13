@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>FreePlay_1</key>
+	<string>Reconnect and spin</string>
+	<key>FreePlay_2</key>
+	<string>Remove handle</string>
+	<key>FreePlay_3</key>
+	<string>Create stringer</string>
+	<key>ColorMix_1</key>
+	<string>Apply a stripe</string>
+	<key>ColorMix_2</key>
+	<string>Rotate and heat</string>
+	<key>ColorMix_3</key>
+	<string>Twist and pull</string>
+	<key>Bead_1</key>
+	<string>Apply a layer</string>
+	<key>Bead_2</key>
+	<string>Even out surface</string>
+	<key>Bead_3</key>
+	<string>Create cylinder</string>
+</dict>
+</plist>
