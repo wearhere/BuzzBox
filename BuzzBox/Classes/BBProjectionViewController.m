@@ -14,6 +14,7 @@
 #import "BBWizardViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import "GPUImage.h"
 
 
 NSString *const BBInstructionIndexChanged = @"BBInstructionIndexChanged";
@@ -28,6 +29,7 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 };
 
 @interface BBProjectionViewController () <UIGestureRecognizerDelegate>
+@property (nonatomic) BOOL backgroundBlurred;
 @property (nonatomic, weak) BBClipView *currentClip;
 @property (nonatomic, strong) NSArray *currentIllustrationImages;
 @end
@@ -36,8 +38,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     BBRodPosition _rodPosition;
 
     AVCaptureSession *_session;
-    AVCaptureVideoPreviewLayer *_videoPreviewLayer;
-    UIImageView *_videoBlurImageView;
+    GPUImageView *_filteredVideoView;
+    GPUImageVideoCamera *_videoCamera;
+    GPUImageFastBlurFilter *_filter;
 
     BBProjectionIntroView *_introView;
     BBTitleLabel *_instructionLabel;
@@ -92,14 +95,20 @@ static BBProjectionViewController *__projectionViewController = nil;
 #endif
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 
-    _videoPreviewLayer = [AVCaptureVideoPreviewLayer layerWithSession:_session];
-    _videoPreviewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-    [view.layer addSublayer:_videoPreviewLayer];
+    _videoCamera = [[GPUImageVideoCamera alloc] initWithSessionPreset:AVCaptureSessionPresetHigh cameraPosition:AVCaptureDevicePositionBack];
+    _videoCamera.outputImageOrientation = UIInterfaceOrientationLandscapeLeft;
 
-    _videoBlurImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"tint-01.png"]];
-    _videoBlurImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [view.layer addSublayer:_videoBlurImageView.layer];
-    
+    _backgroundBlurred = YES;
+    _filter = [[GPUImageFastBlurFilter alloc] init];
+    _filter.blurPasses = 5;
+    _filter.blurSize = 5.0f;
+    _filteredVideoView = [[GPUImageView alloc] initWithFrame:view.bounds];
+    _filteredVideoView.fillMode = kGPUImageFillModePreserveAspectRatioAndFill;
+    [view.layer addSublayer:_filteredVideoView.layer];
+
+    [_videoCamera addTarget:_filter];
+    [_filter addTarget:_filteredVideoView];
+
     _introView = [[BBProjectionIntroView alloc] initWithFrame:CGRectZero];
     [view.layer addSublayer:_introView.layer];
     
@@ -107,7 +116,7 @@ static BBProjectionViewController *__projectionViewController = nil;
     _illustrationImageView.contentMode = UIViewContentModeScaleAspectFill;
     [view.layer addSublayer:_illustrationImageView.layer];
 
-    _clipTableView = [[BBClipTableView alloc] initWithFrame:CGRectZero];
+    _clipTableView = [[BBClipTableView alloc] initWithFrame:view.bounds];
     _clipTableView.backgroundColor = [UIColor clearColor];
     _clipTableView.opaque = NO;
     _clipTableView.layer.opacity = 0.0f;
@@ -131,23 +140,26 @@ static BBProjectionViewController *__projectionViewController = nil;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [_videoCamera startCameraCapture];
+
+    [self setBackgroundBlurred:YES];
     [self updateForRodPosition];
 
     _toggleInterfaceGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleInterface)];
     _toggleInterfaceGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer:_toggleInterfaceGestureRecognizer];
+    [_filteredVideoView addGestureRecognizer:_toggleInterfaceGestureRecognizer];
 
     _toggleClipGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toggleClip)];
     _toggleClipGestureRecognizer.delegate = self;
-    [self.view addGestureRecognizer:_toggleClipGestureRecognizer];
+    [_filteredVideoView addGestureRecognizer:_toggleClipGestureRecognizer];
 
     _previousRowGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(previousRow)];
     _previousRowGestureRecognizer.direction = UISwipeGestureRecognizerDirectionDown;
-    [self.view addGestureRecognizer:_previousRowGestureRecognizer];
+    [_filteredVideoView addGestureRecognizer:_previousRowGestureRecognizer];
 
     _nextRowGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(nextRow)];
     _nextRowGestureRecognizer.direction = UISwipeGestureRecognizerDirectionUp;
-    [self.view addGestureRecognizer:_nextRowGestureRecognizer];
+    [_filteredVideoView addGestureRecognizer:_nextRowGestureRecognizer];
 
     [self registerMessageHandlers];
 }
@@ -172,17 +184,12 @@ static BBProjectionViewController *__projectionViewController = nil;
     }];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self updateVideoPreviewOrientation:self.interfaceOrientation];
-}
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [_introView countDownWithCompletion:^{
         [UIView animateWithDuration:.3 animations:^{
             _introView.alpha = 0.0f;
-            _videoBlurImageView.alpha = 0.0f;
+            [self setBackgroundBlurred:NO];
             _instructionLabel.alpha = 1.0f;
         }];
     }];
@@ -191,8 +198,7 @@ static BBProjectionViewController *__projectionViewController = nil;
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
 
-    _videoPreviewLayer.frame = self.view.bounds;
-    _videoBlurImageView.frame = self.view.bounds;
+    _filteredVideoView.frame = self.view.bounds;
     _introView.frame = self.view.bounds;
     CGSize sizeThatFitsInstructions = [_instructionLabel sizeThatFits:CGRectInset(self.view.bounds, kInstructionLabelMargin, kInstructionLabelMargin).size];
     _instructionLabel.frame = (CGRect){ CGPointMake(CGRectGetMinX(self.view.bounds) + kInstructionLabelMargin,
@@ -204,9 +210,19 @@ static BBProjectionViewController *__projectionViewController = nil;
     _clipTableView.frame = self.view.bounds;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self updateVideoPreviewOrientation:toInterfaceOrientation];
+- (void)setBackgroundBlurred:(BOOL)backgroundBlurred {
+    if (backgroundBlurred != _backgroundBlurred) {
+        _backgroundBlurred = backgroundBlurred;
+        if (backgroundBlurred) {
+            [_videoCamera removeTarget:_filteredVideoView];
+            [_videoCamera addTarget:_filter];
+            [_filter addTarget:_filteredVideoView];
+        } else {
+            [_filter removeTarget:_filteredVideoView];
+            [_videoCamera removeTarget:_filter];
+            [_videoCamera addTarget:_filteredVideoView];
+        }
+    }
 }
 
 - (NSString *)nextInstruction {
@@ -219,25 +235,6 @@ static BBProjectionViewController *__projectionViewController = nil;
     CATransition *transition = [CATransition animation];
     transition.duration = 0.3;
     return transition;
-}
-
-#pragma mark - Background Recording
-
-- (void)updateVideoPreviewOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
-    if (!_videoPreviewLayer.connection.supportsVideoOrientation) return;
-    
-    AVCaptureVideoOrientation videoOrientation = _videoPreviewLayer.connection.videoOrientation;
-	if (toInterfaceOrientation == UIInterfaceOrientationPortrait) {
-		videoOrientation = AVCaptureVideoOrientationPortrait;
-    } else if (toInterfaceOrientation == UIInterfaceOrientationPortraitUpsideDown) {
-		videoOrientation = AVCaptureVideoOrientationPortraitUpsideDown;
-    } else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) {
-		videoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-    } else if (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight) {
-		videoOrientation = AVCaptureVideoOrientationLandscapeRight;
-    }
-
-    _videoPreviewLayer.connection.videoOrientation = videoOrientation;
 }
 
 #pragma mark - Clips
@@ -318,9 +315,7 @@ static BBProjectionViewController *__projectionViewController = nil;
         }];
     }
 
-    [UIView animateWithDuration:kClipToggleDuration animations:^{
-        _videoBlurImageView.alpha = ((interfaceShown || _instructionIndex == 0) ? 1.0f : 0.0f);
-    }];
+    [self setBackgroundBlurred:(interfaceShown || _instructionIndex == 0)];
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
         if (!interfaceShown && [self.currentIllustrationImages count]) {

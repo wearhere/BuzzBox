@@ -45,6 +45,9 @@
 		F0C0FB6D16F0ADF500CA0501 /* Instructions.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */; };
 		F0C0FB8616F0BDB000CA0501 /* tint-01.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB8516F0BDB000CA0501 /* tint-01.png */; };
 		F0C0FB8816F0E35800CA0501 /* buzzbox_icon-02.png in Resources */ = {isa = PBXBuildFile; fileRef = F0C0FB8716F0E35800CA0501 /* buzzbox_icon-02.png */; };
+		F0C0FBA316F0EA5900CA0501 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C0FBA216F0EA5900CA0501 /* CoreVideo.framework */; };
+		F0C0FBA516F0EA6200CA0501 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C0FBA416F0EA6200CA0501 /* OpenGLES.framework */; };
+		F0C0FBB216F0EB6700CA0501 /* libGPUImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0C0FBAD16F0EB5C00CA0501 /* libGPUImage.a */; };
 		F0E9D6B616E51D440005A391 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B516E51D440005A391 /* UIKit.framework */; };
 		F0E9D6B816E51D440005A391 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B716E51D440005A391 /* Foundation.framework */; };
 		F0E9D6BA16E51D440005A391 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D6B916E51D440005A391 /* CoreGraphics.framework */; };
@@ -61,6 +64,30 @@
 		F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0E9D70916E5BD230005A391 /* CoreMedia.framework */; };
 		F0E9D70C16E5BD9C0005A391 /* ClipCollections.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0E9D70B16E5BD9C0005A391 /* ClipCollections.plist */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F0C0FBAC16F0EB5C00CA0501 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCF1A33414DDB1EC00852800;
+			remoteInfo = GPUImage;
+		};
+		F0C0FBAE16F0EB5C00CA0501 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BCF1A34414DDB1EC00852800;
+			remoteInfo = GPUImageTests;
+		};
+		F0C0FBB016F0EB6400CA0501 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = BCF1A33314DDB1EC00852800;
+			remoteInfo = GPUImage;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		F044EC3B16E9671500052108 /* BBConfigurationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBConfigurationViewController.h; sourceTree = "<group>"; };
@@ -111,6 +138,9 @@
 		F0C0FB6C16F0ADF500CA0501 /* Instructions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Instructions.plist; sourceTree = "<group>"; };
 		F0C0FB8516F0BDB000CA0501 /* tint-01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tint-01.png"; sourceTree = "<group>"; };
 		F0C0FB8716F0E35800CA0501 /* buzzbox_icon-02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buzzbox_icon-02.png"; sourceTree = "<group>"; };
+		F0C0FBA216F0EA5900CA0501 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		F0C0FBA416F0EA6200CA0501 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = GPUImage.xcodeproj; path = GPUImage/framework/GPUImage.xcodeproj; sourceTree = "<group>"; };
 		F0E9D6B216E51D440005A391 /* BuzzBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BuzzBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F0E9D6B516E51D440005A391 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		F0E9D6B716E51D440005A391 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -139,6 +169,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F0C0FBB216F0EB6700CA0501 /* libGPUImage.a in Frameworks */,
+				F0C0FBA516F0EA6200CA0501 /* OpenGLES.framework in Frameworks */,
+				F0C0FBA316F0EA5900CA0501 /* CoreVideo.framework in Frameworks */,
 				F0E9D70A16E5BD230005A391 /* CoreMedia.framework in Frameworks */,
 				F0E9D6DC16E560DE0005A391 /* QuartzCore.framework in Frameworks */,
 				F0E9D6DA16E559130005A391 /* AVFoundation.framework in Frameworks */,
@@ -240,6 +273,23 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		F0C0FB8A16F0E9CC00CA0501 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		F0C0FBA716F0EB5C00CA0501 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F0C0FBAD16F0EB5C00CA0501 /* libGPUImage.a */,
+				F0C0FBAF16F0EB5C00CA0501 /* GPUImageTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F0E9D6A916E51D440005A391 = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +310,8 @@
 		F0E9D6B416E51D440005A391 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F0C0FBA416F0EA6200CA0501 /* OpenGLES.framework */,
+				F0C0FBA216F0EA5900CA0501 /* CoreVideo.framework */,
 				F0E9D70916E5BD230005A391 /* CoreMedia.framework */,
 				F0E9D6DB16E560DE0005A391 /* QuartzCore.framework */,
 				F0E9D6D916E559130005A391 /* AVFoundation.framework */,
@@ -311,6 +363,7 @@
 				F08F29B316EEECA600C76004 /* Projection */,
 				F0E9D6D616E558ED0005A391 /* BBAVCaptureManager.h */,
 				F0E9D6D716E558ED0005A391 /* BBAVCaptureManager.m */,
+				F0C0FB8A16F0E9CC00CA0501 /* Libraries */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -344,6 +397,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				F0C0FBB116F0EB6400CA0501 /* PBXTargetDependency */,
 			);
 			name = BuzzBox;
 			productName = BuzzBox;
@@ -370,12 +424,35 @@
 			mainGroup = F0E9D6A916E51D440005A391;
 			productRefGroup = F0E9D6B316E51D440005A391 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = F0C0FBA716F0EB5C00CA0501 /* Products */;
+					ProjectRef = F0C0FBA616F0EB5C00CA0501 /* GPUImage.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				F0E9D6B116E51D440005A391 /* BuzzBox */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		F0C0FBAD16F0EB5C00CA0501 /* libGPUImage.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libGPUImage.a;
+			remoteRef = F0C0FBAC16F0EB5C00CA0501 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F0C0FBAF16F0EB5C00CA0501 /* GPUImageTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = GPUImageTests.octest;
+			remoteRef = F0C0FBAE16F0EB5C00CA0501 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		F0E9D6B016E51D440005A391 /* Resources */ = {
@@ -443,6 +520,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F0C0FBB116F0EB6400CA0501 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = GPUImage;
+			targetProxy = F0C0FBB016F0EB6400CA0501 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		F0E9D6BE16E51D440005A391 /* InfoPlist.strings */ = {
@@ -520,6 +605,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BuzzBox/BuzzBox-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"./BuzzBox/Classes/Libraries/GPUImage/framework/**",
+				);
 				INFOPLIST_FILE = "BuzzBox/BuzzBox-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -531,6 +620,10 @@
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BuzzBox/BuzzBox-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"./BuzzBox/Classes/Libraries/GPUImage/framework/**",
+				);
 				INFOPLIST_FILE = "BuzzBox/BuzzBox-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;

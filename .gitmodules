@@ -1,0 +1,3 @@
+[submodule "BuzzBox/Classes/Libraries/GPUImage"]
+	path = BuzzBox/Classes/Libraries/GPUImage
+	url = git@github.com:wearhere/GPUImage.git
