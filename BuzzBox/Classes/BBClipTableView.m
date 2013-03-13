@@ -95,7 +95,7 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 - (void)setSelected:(BOOL)selected {
     if (selected != _selected) {
         _selected = selected;
-        if (!selected) [_clip.player pause];
+        if (!selected) [self stop];
         
         CABasicAnimation *boundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
         CABasicAnimation *clippingBoundsAnimation = [CABasicAnimation animationWithKeyPath:@"bounds"];
@@ -152,8 +152,33 @@ typedef NS_ENUM(NSUInteger, BBClipPosition) {
 - (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag {
     if ([anim isKindOfClass:[CABasicAnimation class]] &&
         [((CABasicAnimation *)anim).keyPath isEqualToString:@"strokeColor"] && _selected) {
-        [_clip.player play];
+        [self play];
     }
+}
+
+- (void)play {
+    CABasicAnimation *strokeAnimation = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+    strokeAnimation.duration =  CMTimeGetSeconds(_clip.player.currentItem.duration);
+    strokeAnimation.fromValue = @(self.strokeEnd);
+    self.strokeEnd = 0.0;
+    [self addAnimation:strokeAnimation forKey:@"strokeEnd"];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(playbackFinished:)
+                                                 name:AVPlayerItemDidPlayToEndTimeNotification
+                                               object:_clip.player.currentItem];
+    [_clip.player play];
+}
+
+- (void)stop {
+    [_clip.player pause];
+    [_clip.player.currentItem seekToTime:kCMTimeZero];
+    self.strokeEnd = 1.0;
+}
+
+- (void)playbackFinished:(NSNotification *)notification {
+    [self stop];
+    [self play];
 }
 
 @end

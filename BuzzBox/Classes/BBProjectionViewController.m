@@ -100,29 +100,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     _clipTableView.layer.opacity = 0.0f;
     [view addSubview:_clipTableView];
 
-//    _clipFrameLayer = [CALayer layer];
-//    _clipFrameLayer.backgroundColor = [[UIColor clearColor] CGColor];
-//    _clipFrameLayer.opaque = NO;
-//    _clipFrameLayer.borderColor = [[UIColor colorWithRed:40.0f/255.0f green:135.0f/255.0f blue:170.0f/255.0f alpha:1.0f] CGColor];
-//    _clipFrameLayer.borderWidth = kClipFrameBorderWidth;
-//    _clipFrameLayer.cornerRadius = kClipCornerRadius + kClipFrameBorderWidth;
-//    _clipFrameLayer.shadowOpacity = 0.5f;
-//    _clipFrameLayer.shadowOffset = CGSizeMake(0.0f, 3.0f);
-//    [_clipTableView.layer addSublayer:_clipFrameLayer];
-//
-//    _clipPlayerLayer = [AVPlayerLayer layer];
-//    // the clear background color allows us to show the layer before the video has loaded
-//    _clipPlayerLayer.backgroundColor = [[UIColor clearColor] CGColor];
-//    _clipPlayerLayer.cornerRadius = kClipCornerRadius;
-//    _clipPlayerLayer.masksToBounds = YES;
-//    _clipPlayerLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
-//    AVPlayer *avPlayer = [AVPlayer playerWithPlayerItem:self.currentClipItem];
-//    avPlayer.actionAtItemEnd = AVPlayerActionAtItemEndNone;
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:)
-//                                                 name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-//    _clipPlayerLayer.player = avPlayer;
-//    [_clipTableView.layer addSublayer:_clipPlayerLayer];
-
     self.view = view;
 }
 
@@ -347,12 +324,6 @@ typedef NS_ENUM(NSUInteger, ClipState) {
         _rodPosition.xPos = BBRodPositionXNone;
     }
     [self updateForRodPosition];
-}
-
-- (void)playerItemDidReachEnd:(NSNotification *)notification {
-    // loop the current item
-    AVPlayerItem *p = [notification object];
-    [p seekToTime:kCMTimeZero];
 }
 
 @end
