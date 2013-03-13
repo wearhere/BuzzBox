@@ -7,6 +7,8 @@
 //
 
 #import "BBProjectionViewController.h"
+#import "BBProjectionIntroView.h"
+#import "BBTitleLabel.h"
 #import "BBReceiver.h"
 #import "BBClipTableView.h"
 #import "BBWizardViewController.h"
@@ -16,7 +18,7 @@
 
 static const NSTimeInterval kClipToggleDuration = 0.1;
 
-static const NSTimeInterval kRowSwapRepeatDelay = 0.75;
+static const CGFloat kInstructionLabelMargin = 10.0f;
 
 typedef NS_ENUM(NSUInteger, ClipState) {
     ClipStateClipShown,
@@ -34,6 +36,11 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     AVCaptureSession *_session;
     AVCaptureVideoPreviewLayer *_videoPreviewLayer;
     UIImageView *_videoBlurImageView;
+
+    BBProjectionIntroView *_introView;
+    BBTitleLabel *_instructionLabel;
+    NSArray *_instructions;
+    NSInteger _instructionIndex;
 
     UITapGestureRecognizer *_toggleInterfaceGestureRecognizer;
     UITapGestureRecognizer *_toggleClipGestureRecognizer;
@@ -53,6 +60,9 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 #endif
         _session = session;
         _receiver = receiver;
+
+        NSString *instructionsPath = [[NSBundle mainBundle] pathForResource:@"Instructions" ofType:@"plist"];
+        _instructions = [NSArray arrayWithContentsOfFile:instructionsPath];
     }
     return self;
 }
@@ -78,18 +88,32 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [view.layer addSublayer:_videoPreviewLayer];
 
     _videoBlurImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"blur.png"]];
-    _videoBlurImageView.alpha = 0.0f;
     [view.layer addSublayer:_videoBlurImageView.layer];
-
+    
+    _introView = [[BBProjectionIntroView alloc] initWithFrame:CGRectZero];
+    [view.layer addSublayer:_introView.layer];
+    
     _illustrationImageView = [[UIImageView alloc] initWithFrame:CGRectZero];
     _illustrationImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [view addSubview:_illustrationImageView];
+    [view.layer addSublayer:_illustrationImageView.layer];
 
     _clipTableView = [[BBClipTableView alloc] initWithFrame:CGRectZero];
     _clipTableView.backgroundColor = [UIColor clearColor];
     _clipTableView.opaque = NO;
     _clipTableView.layer.opacity = 0.0f;
-    [view addSubview:_clipTableView];
+    [view.layer addSublayer:_clipTableView.layer];
+
+    _instructionLabel = [[BBTitleLabel alloc] initWithFrame:CGRectZero];
+    _instructionLabel.backgroundColor = [UIColor clearColor];
+    _instructionLabel.opaque = NO;
+    _instructionLabel.font = [UIFont fontWithName:@"ApexNew-Medium" size:20.0f];
+    _instructionLabel.textAlignment = NSTextAlignmentCenter;
+    _instructionLabel.textColor = [UIColor whiteColor];
+    _instructionLabel.numberOfLines = 2;
+    _instructionLabel.alpha = 0.0f;
+    _instructionIndex = -1;
+    _instructionLabel.text = [self nextInstruction];
+    [view.layer addSublayer:_instructionLabel.layer];
 
     self.view = view;
 }
@@ -143,11 +167,27 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [self updateVideoPreviewOrientation:self.interfaceOrientation];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [_introView countDownWithCompletion:^{
+        [UIView animateWithDuration:.3 animations:^{
+            _introView.alpha = 0.0f;
+            _videoBlurImageView.alpha = 0.0f;
+            _instructionLabel.alpha = 1.0f;
+        }];
+    }];
+}
+
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
 
     _videoPreviewLayer.frame = self.view.bounds;
     _videoBlurImageView.frame = self.view.bounds;
+    _introView.frame = self.view.bounds;
+    CGSize sizeThatFitsInstructions = [_instructionLabel sizeThatFits:CGRectInset(self.view.bounds, kInstructionLabelMargin, kInstructionLabelMargin).size];
+    _instructionLabel.frame = (CGRect){ CGPointMake(CGRectGetMinX(self.view.bounds) + kInstructionLabelMargin,
+                                                    CGRectGetMinY(self.view.bounds) + kInstructionLabelMargin),
+                                        sizeThatFitsInstructions};
 
     _illustrationImageView.frame = self.view.bounds;
 
@@ -157,6 +197,16 @@ typedef NS_ENUM(NSUInteger, ClipState) {
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self updateVideoPreviewOrientation:toInterfaceOrientation];
+}
+
+- (NSString *)nextInstruction {
+    return _instructions[++_instructionIndex];
+}
+
+- (CAAnimation *)nextInstructionTransition {
+    CATransition *transition = [CATransition animation];
+    transition.duration = 0.3;
+    return transition;
 }
 
 #pragma mark - Background Recording
@@ -205,34 +255,63 @@ typedef NS_ENUM(NSUInteger, ClipState) {
     [CATransaction setAnimationDuration:kClipToggleDuration];
     BOOL interfaceShown = (_rodPosition.zPos == BBRodPositionZFront);
     if (interfaceShown) {
-        _clipTableView.layer.opacity = 1.0f;
+        if (_instructionIndex == 0) {
+            _instructionLabel.text = [self nextInstruction];
+            [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+        }
+        _clipTableView.layer.opacity = ((_instructionIndex < ([_instructions count] - 1)) ? 0.5f : 1.0f);
     } else {
         _clipTableView.layer.opacity = 0.0f;
     }
 
     if (interfaceShown && (_rodPosition.yPos == BBRodPositionYMiddle)) {
         BBClipView *newClip;
+        NSInteger currentInstructionIndex = _instructionIndex;  // this may advance below
         switch (_rodPosition.xPos) {
             case BBRodPositionXLeft:
                 newClip = _clipTableView.currentRow.leftClip;
                 break;
             case BBRodPositionXCenter:
+                if (_instructionIndex == 3) {
+                    _instructionLabel.text = [self nextInstruction];
+                    [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+                }
                 newClip = _clipTableView.currentRow.centerClip;
                 break;
             case BBRodPositionXRight:
+                if (_instructionIndex == 1 || _instructionIndex == 2) {
+                    _instructionLabel.text = [self nextInstruction];
+                    [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
+
+                    // confirm pause
+                    double delayInSeconds = 2.0;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [self updateForRodPosition];
+                    });
+                }
                 newClip = _clipTableView.currentRow.rightClip;
                 break;
             case BBRodPositionXNone:
                 break;
         }
-        self.currentClip = newClip;
+        // the user hasn't learned to pause before the third instruction
+        if (currentInstructionIndex > 1) {
+            self.currentClip = newClip;
+        }
     } else {
         self.currentClip = nil;
     }
     [CATransaction commit];
 
+    if (!interfaceShown && _instructionIndex == 4) {
+        [UIView animateWithDuration:0.3 animations:^{
+            _instructionLabel.alpha = 0.0f;
+        }];
+    }
+
     [UIView animateWithDuration:kClipToggleDuration animations:^{
-        _videoBlurImageView.alpha = (interfaceShown ? 1.0f : 0.0f);
+        _videoBlurImageView.alpha = ((interfaceShown || _instructionIndex == 0) ? 1.0f : 0.0f);
     }];
 
     [UIView animateWithDuration:kClipToggleDuration animations:^{
