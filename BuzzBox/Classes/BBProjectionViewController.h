@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+#define DEBUGGING_PROJECTION_VIEW 0
+
 @class BBReceiver;
 @interface BBProjectionViewController : UIViewController
 
