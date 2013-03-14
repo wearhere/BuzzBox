@@ -3,10 +3,11 @@
 <plist version="1.0">
 <array>
 	<string>Hold the glass rod over the torch.
-To access the videos, slowly pull the glass rod toward yourself.</string>
-	<string>To navigate through the videos, slowly move your rod to the right.</string>
-	<string>To watch a video, pause your rod on a video thumbnail, and hold it there.</string>
-	<string>Move the rod down and pause over a video thumbnail on the next row to play.</string>
-	<string>To exit the video tutorials, move your rod back over the torch.</string>
+Then, slowly pull the glass rod toward yourself.</string>
+	<string>Move your rod to the right.</string>
+	<string>Pause to play a video.</string>
+	<string>Move the rod down and then pause.</string>
+	<string>Move your rod back over the torch.
+You&apos;ll see an illustration of the last video you watched.</string>
 </array>
 </plist>
