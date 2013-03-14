@@ -188,10 +188,12 @@ static BBProjectionViewController *__projectionViewController = nil;
 
     _filteredVideoView.frame = self.view.bounds;
     _introView.frame = self.view.bounds;
-    CGSize sizeThatFitsInstructions = [_instructionLabel sizeThatFits:CGRectInset(self.view.bounds, kInstructionLabelMargin, kInstructionLabelMargin).size];
+    CGRect insetRect = CGRectInset(self.view.bounds, kInstructionLabelMargin, kInstructionLabelMargin);
+    CGSize sizeThatFitsInstructions = [_instructionLabel sizeThatFits:insetRect.size];
     _instructionLabel.frame = (CGRect){ CGPointMake(CGRectGetMinX(self.view.bounds) + kInstructionLabelMargin,
                                                     CGRectGetMinY(self.view.bounds) + kInstructionLabelMargin),
-                                        sizeThatFitsInstructions};
+                                        CGSizeMake(CGRectGetWidth(insetRect), sizeThatFitsInstructions.height)};
+    [_instructionLabel setNeedsDisplay];
 
     _illustrationImageView.frame = self.view.bounds;
 
@@ -263,7 +265,7 @@ static BBProjectionViewController *__projectionViewController = nil;
                 _instructionLabel.text = [self nextInstruction];
                 [_instructionLabel.layer addAnimation:[self nextInstructionTransition] forKey:nil];
             }
-            _clipTableView.alpha = ((_instructionIndex < ([_instructions count] - 1)) ? 0.5f : 1.0f);
+            _clipTableView.alpha = ((_instructionIndex < [_instructions count]) ? 0.5f : 1.0f);
         } else {
             _clipTableView.alpha = 0.0f;
         }
@@ -308,6 +310,7 @@ static BBProjectionViewController *__projectionViewController = nil;
         [UIView animateWithDuration:0.3 animations:^{
             _instructionLabel.alpha = 0.0f;
         }];
+        _instructionIndex++;
     }
 
     [self setBackgroundBlurred:interfaceShown];
