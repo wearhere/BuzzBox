@@ -4,15 +4,16 @@ BuzzBox
 iPhone component of final project for the Winter 2012-2013 rendition of Stanford e281: dmedia.
 
 BuzzBox is an interactive instruction manual of sorts to be used while flameworking. 
-The flameworker is expected to mount their iPhone on their torch (see 
-[here](http://dschool.stanford.edu/dmedia/buzzbox-prototype/) for a prototype), 
+The flameworker is expected to mount their iPhone on their torch, 
 whereupon they will control BuzzBox by moving their hands/the glass rod in front 
-of the iPhone's camera. This was developed in the space of two weeks, and I sure 
-as hell wasn't going to implement that gesture recognition, though, so BuzzBox is 
-_actually_ operated by a second iPhone over the local WiFi network.
+of the iPhone's camera. You can see a prototype [here](http://dschool.stanford.edu/dmedia/buzzbox-prototype/), 
+and a video of the system in action [here](http://vimeo.com/62533218). 
 
-The flameworker uses BuzzBox in "projection" mode, while a confederate operates 
-BuzzBox in ["wizard" mode](http://en.wikipedia.org/wiki/Wizard_of_Oz_experiment). 
+
+This was developed in the space of two weeks, though, so BuzzBox is 
+_actually_ operated by a second iPhone over the local WiFi network. The flameworker 
+uses BuzzBox in "projection" mode, while a confederate operates BuzzBox in 
+["wizard" mode](http://en.wikipedia.org/wiki/Wizard_of_Oz_experiment). 
 These instances of BuzzBox will automatically pair so long as they're on the 
 same network. The projection will then display a live feed from the iPhone's 
 rear camera, whereas the wizard will display an interface that looks like this: 
