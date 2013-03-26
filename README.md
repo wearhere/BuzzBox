@@ -1,7 +1,7 @@
 BuzzBox
 =======
 
-iPhone component of final project for the Winter 2012-2013 rendition of Stanford e281: dmedia.
+iPhone component of final project for the Winter 2012-2013 rendition of [Stanford e281: dmedia](http://dschool.stanford.edu/dmedia/).
 
 BuzzBox is an interactive instruction manual of sorts to be used while flameworking. 
 The flameworker is expected to mount their iPhone on their torch, 
@@ -52,7 +52,7 @@ by running the wizard in the simulator and the projection on an attached
 iDevice. (Rather, you need to attach an iDevice once to deploy the application, 
 and thereafter the iDevice just has to be on the same Wi-Fi network.)
 
-If you set ONE_HANDED_WIZARD (in BBWizardViewController.h) to 1, then 
+If you set ONE_HANDED_WIZARD (in `BBWizardViewController.h`) to 1, then 
 the dead man's switch will be "held" while the blue dot is being dragged.
 This allows the wizard to be operated with only one hand: the interface 
 shows while you drag the dot through the grid of videos, and hides 
