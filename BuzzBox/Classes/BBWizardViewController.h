@@ -9,7 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
+// set to 1 to launch the wizard (upon selecting "Wizard" on startup)
+// without waiting for the projection to connect
 #define DEBUGGING_WIZARD_VIEW 0
+
+// after a connection failure, if 0, the app will show an alert prompting to "Abort" or "Retry" connecting
+// if 1, the wizard will immediately begin searching for the projection again
 #define AUTO_RETRY 1
 
 typedef NS_ENUM(NSUInteger, BBRodPositionX) {

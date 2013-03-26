@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 
+// set to 1 to launch the projection (upon selecting "Projection" on startup)
+// without waiting for the wizard to connect
 #define DEBUGGING_PROJECTION_VIEW 0
 
 extern NSString *const BBInstructionIndexChanged;
