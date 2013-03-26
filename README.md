@@ -9,7 +9,6 @@ whereupon they will control BuzzBox by moving their hands/the glass rod in front
 of the iPhone's camera. You can see a prototype [here](http://dschool.stanford.edu/dmedia/buzzbox-prototype/), 
 and a video of the system in action [here](http://vimeo.com/62533218). 
 
-
 This was developed in the space of two weeks, though, so BuzzBox is 
 _actually_ operated by a second iPhone over the local WiFi network. The flameworker 
 uses BuzzBox in "projection" mode, while a confederate operates BuzzBox in 
@@ -43,3 +42,18 @@ by moving the rod up/down/left/right) through a tutorial which they begin
 by tapping, once, on the video feed shown by the projection. Thereafter, the 
 projection is hands-off: the wizard's operator is supposed to observe and track 
 the flameworker's hands _as if_ the projection's iPhone was doing so.
+
+Running BuzzBox
+---------------
+
+The best way to use BuzzBox is, as you might expect, with two iDevices. 
+But you can get by, with a loss of just a little bit of flexibility, 
+by running the wizard in the simulator and the projection on an attached 
+iDevice. (Rather, you need to attach an iDevice once to deploy the application, 
+and thereafter the iDevice just has to be on the same Wi-Fi network.)
+
+If you set ONE_HANDED_WIZARD (in BBWizardViewController.h) to 1, then 
+the dead man's switch will be "held" while the blue dot is being dragged.
+This allows the wizard to be operated with only one hand: the interface 
+shows while you drag the dot through the grid of videos, and hides 
+when you lift your finger.

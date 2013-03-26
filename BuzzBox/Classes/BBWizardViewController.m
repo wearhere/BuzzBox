@@ -121,6 +121,9 @@ static const CGSize kRodSize = {80.0f, 80.0f};
 - (void)topDownRodDragged:(UIPanGestureRecognizer *)recognizer {
     switch (recognizer.state) {
         case UIGestureRecognizerStateBegan:
+#if ONE_HANDED_WIZARD
+            _deadMansSwitchPressed = YES;
+#endif
         case UIGestureRecognizerStateChanged:
             self.rodHeld = YES;
 
@@ -149,6 +152,9 @@ static const CGSize kRodSize = {80.0f, 80.0f};
             [self updateRodPosition];
             break;
         default:
+#if ONE_HANDED_WIZARD
+            _deadMansSwitchPressed = NO;
+#endif
             self.rodHeld = NO;
             [self updateRodPosition];
             break;
