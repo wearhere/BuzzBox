@@ -95,6 +95,7 @@ static const CGSize kRodSize = {80.0f, 80.0f};
     [_rodView addGestureRecognizer:_gridDragGestureRecognizer];
 
     _deadMansSwitchPressRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(deadMansSwitchPressed:)];
+    _deadMansSwitchPressRecognizer.minimumPressDuration = 0.25;
     [self.deadMansSwitchView addGestureRecognizer:_deadMansSwitchPressRecognizer];    
 }
 
